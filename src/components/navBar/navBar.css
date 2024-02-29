@@ -1,0 +1,169 @@
+.navBar {
+  padding: 15px 0px;
+  background-color: var( --backgrounds-color-1);
+}
+.navBar .container .ab {
+  display: flex;
+  column-gap: 10px;
+}
+.navBar .container .ab .logo {
+  flex-grow: 0;
+  cursor: pointer;
+}
+.navBar .container .ab .logo img {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+.navBar .container .ab .logo .title {
+  display: none;
+  font-weight: 700;
+  color: var(--main-color);
+}
+.navBar .container .ab .search {
+  flex-grow: 1;
+}
+.navBar .container .ab .search form {
+  height: 100%;
+  display: flex;
+}
+.navBar .container .ab .search form .input_search {
+  flex-grow: 1;
+  width: 100%;
+  outline: none;
+  border: none;
+  background-color: var(--backgrounds-color-2);
+  border-top-left-radius: 22px;
+  border-bottom-left-radius: 22px;
+  padding: 0px 10px;
+  color: var(--main-color);
+  font-size: 18px;
+  caret-color: var(--color-text);
+  color: var(--color-text);
+}
+.navBar .container .ab .search form .input_search::placeholder {
+  color: var(--text-color);
+  font-size: 18px;
+  text-transform: capitalize;
+}
+.navBar .container .ab .search form .button_input_search {
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  background-color: var(--main-color);
+  color: var( --backgrounds-color-1);
+  border-top-right-radius: 22px;
+  border-bottom-right-radius: 22px;
+  padding: 0px 10px;
+  cursor: pointer;
+}
+.navBar .container .ab .search form .button_input_search svg {
+  font-size: 20px;
+  color: var( --backgrounds-color-1);
+}
+.navBar .container .ab .logIn_signIn {
+  flex-grow: 0;
+}
+.navBar .container .ab .logIn_signIn .buttons {
+  display: none;
+}
+.navBar .container .ab .logIn_signIn .icon {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.navBar .container .ab .logIn_signIn .icon svg {
+  font-size: 40px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+.navBar .container .ab .cart_profile {
+  flex-grow: 0;
+}
+.navBar .container .ab .cart_profile .buttons {
+  display: none;
+}
+.navBar .container .ab .cart_profile .icon {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.navBar .container .ab .cart_profile .icon svg {
+  font-size: 40px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+/* start media query  */
+/* md */
+@media (min-width: 768px) {
+  .navBar .container .ab {
+    column-gap: 20px;
+  }
+  .navBar .container .ab .logo {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    text-transform: uppercase;
+  }
+  .navBar .container .ab .logo img {
+    width: 46px;
+    height: 46px;
+  }
+  .navBar .container .ab .logo .title {
+    display: block;
+    font-size: 22px;
+  }
+  .navBar .container .ab .search form .input_search {
+    padding: 0px 20px;
+  }
+  .navBar .container .ab .search form .button_input_search {
+    padding: 0px 20px;
+  }
+  .navBar .container .ab .logIn_signIn .buttons {
+    display: flex;
+    column-gap: 10px;
+    height: 100%;
+  }
+  .navBar .container .ab .logIn_signIn .buttons .button {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    border: 1px solid var(--main-color);
+    border-radius: 22px;
+    padding: 0px 20px;
+    text-transform: capitalize;
+    font-family: 700;
+    cursor: pointer;
+    color: var(--text-color);
+  }
+  .navBar .container .ab .logIn_signIn .buttons :last-child {
+    background-color: var(--main-color);
+    color: var( --backgrounds-color-1);
+  }
+  .navBar .container .ab .logIn_signIn .icon {
+    display: none;
+  }
+  .navBar .container .ab .cart_profile .buttons {
+    display: flex;
+    column-gap: 10px;
+    height: 100%;
+  }
+  .navBar .container .ab .cart_profile .buttons .button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .navBar .container .ab .cart_profile .buttons .button svg {
+    font-size: 32px;
+    color: var(--text-color);
+  }
+  .navBar .container .ab .cart_profile .icon {
+    display: none;
+  }
+}
+@media (min-width: 1024px) {
+  .navBar {
+    padding: 16px 0px;
+  }
+}
+/* end media query */

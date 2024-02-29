@@ -1,0 +1,316 @@
+.products_card {
+  background-color: var( --backgrounds-color-1);
+  border-radius: 7.4px;
+  overflow: hidden;
+  padding: 7.5px;
+  display: grid;
+  grid-template-rows: auto  1fr;
+  gap: 7.5px;
+  cursor: pointer;
+}
+.products_card .sec_1 .ab_img {
+  position: relative;
+  min-height: calc(15px * 10);
+  animation: animationSkeletion 1s linear infinite;
+}
+/* sm	*/
+@media (min-width: 640px) {
+  .products_card .sec_1 .ab_img {
+    min-height: calc(15px * 14);
+  }
+}
+.products_card .sec_1 .ab_img .img {
+  display: block;
+  width: 100%;
+}
+/* Start button like */
+.products_card .sec_1 .ab_img .like {
+  position: absolute;
+  top: 7.5px;
+  right: 7.5px;
+  background-color: #f7f7fa;
+  border-radius: 50%;
+  padding: 4px;
+}
+.products_card .sec_1 .ab_img .like .heart-container {
+  /* --heart-color: rgb(255, 91, 137); */
+  --heart-color: var(--main-color);
+  position: relative;
+  width: 20px;
+  height: 20px;
+  transition: 0.3s;
+}
+/* md	*/
+@media (min-width: 768px) {
+  .products_card .sec_1 .ab_img .like .heart-container {
+    width: 22px;
+    height: 22px;
+  }
+}
+.products_card .sec_1 .ab_img .like .heart-container .checkbox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 20;
+  cursor: pointer;
+}
+.products_card .sec_1 .ab_img .like .heart-container .svg-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.products_card .sec_1 .ab_img .like .heart-container .svg-outline,
+.products_card .sec_1 .ab_img .like .heart-container .svg-filled {
+  fill: var(--heart-color);
+  position: absolute;
+}
+.products_card .sec_1 .ab_img .like .heart-container .svg-filled {
+  animation: keyframes-svg-filled 1s;
+  display: none;
+}
+.products_card .sec_1 .ab_img .like .heart-container .svg-celebrate {
+  position: absolute;
+  animation: keyframes-svg-celebrate 0.5s;
+  animation-fill-mode: forwards;
+  display: none;
+  stroke: var(--heart-color);
+  fill: var(--heart-color);
+  stroke-width: 2px;
+}
+.products_card
+  .sec_1
+  .ab_img
+  .like
+  .heart-container
+  .checkbox:checked
+  ~ .svg-container
+  .svg-filled {
+  display: block;
+}
+.products_card
+  .sec_1
+  .ab_img
+  .like
+  .heart-container
+  .checkbox:checked
+  ~ .svg-container
+  .svg-celebrate {
+  display: block;
+}
+@keyframes keyframes-svg-filled {
+  0% {
+    transform: scale(0);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(1);
+    filter: brightness(1.5);
+  }
+}
+@keyframes keyframes-svg-celebrate {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+    display: none;
+  }
+}
+/* End button like */
+.products_card .sec_1 .ab_img .ratingsAverage_and_ratingsQuantity {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  display: flex;
+  column-gap: 7.5px;
+  background-color: #f7f7fa;
+  padding: 0px 7.5px;
+  border-top-right-radius: 7.5px;
+  color: var(--text-color);
+}
+.products_card
+  .sec_1
+  .ab_img
+  .ratingsAverage_and_ratingsQuantity
+  .ratingsAverage {
+  display: flex;
+  column-gap: 2px;
+  align-items: center;
+}
+.products_card
+  .sec_1
+  .ab_img
+  .ratingsAverage_and_ratingsQuantity
+  .ratingsAverage
+  .number {
+  font-weight: 500;
+  font-size: 14px;
+}
+.products_card
+  .sec_1
+  .ab_img
+  .ratingsAverage_and_ratingsQuantity
+  .ratingsAverage
+  .icon {
+  font-size: 16px;
+  color: goldenrod;
+}
+.products_card
+  .sec_1
+  .ab_img
+  .ratingsAverage_and_ratingsQuantity
+  .ratingsQuantity
+  .number {
+  font-size: 14px;
+}
+.products_card .sec_2 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 4px;
+}
+.products_card .sec_2 .product_title {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 500;
+  text-transform: capitalize;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: var(--transition);
+  line-height: 24px;
+}
+/* lg	*/
+@media (min-width: 1024px) {
+  .products_card .sec_2 .product_title {
+    font-size: 16px;
+  }
+}
+.products_card:hover .sec_2 .product_title {
+  color: var(--main-color);
+  text-decoration: underline;
+}
+.products_card .sec_2 .price {
+  display: flex;
+  gap: 4px;
+}
+.products_card .sec_2 .price .currency {
+  font-size: 12px;
+  color: var(--text-color);
+  text-transform: uppercase;
+}
+.products_card .sec_2 .price .number {
+  font-weight: 500;
+  color: var(--main-color);
+  font-size: 18px;
+}
+.products_card .sec_2 .ab_discount {
+  display: flex;
+  gap: 4px;
+}
+.products_card .sec_2 .ab_discount .price {
+  font-size: 14px;
+  color: #ee2424;
+  text-decoration: line-through;
+}
+.products_card .sec_2 .ab_discount .discount {
+  font-size: 14px;
+  color: #38b000;
+  font-weight: 500;
+}
+.products_card .sold_and_quantity {
+  position: relative;
+}
+.products_card .sold_and_quantity .sold {
+  display: flex;
+  align-items: center;
+  column-gap: 7.5px;
+  background-color: var( --backgrounds-color-1);
+  animation: productSold 10s infinite;
+}
+@keyframes productSold {
+  0% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.products_card .sold_and_quantity .sold .ab_icon .icon {
+  font-size: 16px;
+  color: #38b000;
+  font-weight: 400;
+}
+.products_card .sold_and_quantity .sold .number {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.products_card .sold_and_quantity .quantity {
+  display: flex;
+  align-items: center;
+  column-gap: 7.5px;
+  background-color: var( --backgrounds-color-1);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  animation: productQuantity 10s infinite;
+}
+@keyframes productQuantity {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.products_card .sold_and_quantity .quantity .ab_icon .icon {
+  font-size: 16px;
+  color: goldenrod;
+  font-weight: 400;
+}
+.products_card .sold_and_quantity .quantity .number {
+  font-size: 14px;
+  color: var(--text-color);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
