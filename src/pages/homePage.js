@@ -28,6 +28,7 @@ export default function HomePage() {
       <NavBar />
       <Advertisements />
       <Categories status={categories.status} data={categories.data} />
+      <Products title={'OUR OFFERS'} status={products.status} data={products.data} />      
       <Products title={'MEW PRODUCTS'} status={products.status} data={products.data} />
       <Products title={'OUR BEST SELLERS'} status={products.status} data={products.data} />
     </>

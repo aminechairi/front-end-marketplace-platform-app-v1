@@ -30,6 +30,7 @@ export default function ProductsCard({
   sold,
   ratingsAverage,
   ratingsQuantity,
+  save
 }) {
   return (
     <div className="products_card">
@@ -40,7 +41,7 @@ export default function ProductsCard({
           </Link>
           <div className="like">
             <div className="heart-container" title="Like">
-              <input type="checkbox" className="checkbox" id="Give-It-An-Id" />
+              <input defaultChecked={ Boolean(save) } type="checkbox" className="checkbox" id="Give-It-An-Id" />
               <div className="svg-container">
                 <svg
                   viewBox="0 0 24 24"
@@ -88,11 +89,11 @@ export default function ProductsCard({
           <h1 className="product_title">{title}</h1>
           <div className="price">
             <p className="currency">usd</p>
-            <p className="number">{priceAfterDiscount || price}</p>
+            <p className="number">{priceAfterDiscount?.toFixed(2).replace('.', ',') || price.toFixed(2).replace('.', ',') }</p>
           </div>
           {priceAfterDiscount ? (
             <div className="ab_discount">
-              <p className="price">{price}</p>
+              <p className="price">{price.toFixed(2).replace('.', ',') }</p>
               <p className="discount">
                 {`-${calculateDiscountPercentage(price, priceAfterDiscount)}%`}
               </p>

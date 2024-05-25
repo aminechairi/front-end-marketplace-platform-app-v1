@@ -36,6 +36,7 @@ export default function Products({ title, status, data }) {
                   sold={item.sold}
                   ratingsAverage={item.ratingsAverage}
                   ratingsQuantity={item.ratingsQuantity}
+                  save={item.save}
                 />
               );
             })}
