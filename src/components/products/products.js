@@ -17,7 +17,7 @@ export default function Products({ title, status, data }) {
         </div>
       </div>
     </div>
-  ) : status === "succeeded" ? (
+  ) : status === "succeeded" && Array.isArray(data.data) ? (
     <div className="products">
       <div className="container">
         <div className="ab">
