@@ -49,7 +49,7 @@ export default function Categories({ status, data }) {
   }, []);
 
   const rankedData = [];
-  if (data) {
+  if (Array.isArray(data?.data)) {
     const list = data.data;
     for (let i = 0; i < list.length; i += columnsNumber) {
       const part = list.slice(i, i + columnsNumber);
@@ -59,7 +59,7 @@ export default function Categories({ status, data }) {
 
   return status === "idle" || status === "loading" ? (
     <CategoriesSkeletion />
-  ) : status === "succeeded" ? (
+  ) : status === "succeeded" && Array.isArray(data?.data) ? (
     <div className="categories">
       <div className="container">
         <div className="ab">
