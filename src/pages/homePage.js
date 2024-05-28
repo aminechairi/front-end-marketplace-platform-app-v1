@@ -17,6 +17,11 @@ export default function HomePage() {
   useEffect(() => {
     dispatch(
       fetchCategories({
+        fields: `
+          _id,
+          name,
+          image,
+        `,
         sort: "createdAt",
       })
     );
@@ -25,7 +30,18 @@ export default function HomePage() {
       fetchProducts({
         item: "0",
         queryParams: {
-          sort: "createdAt",
+          fields: `
+            _id,
+            title,
+            price,
+            priceAfterDiscount,
+            imageCover,
+            quantity,
+            sold,
+            ratingsAverage,
+            ratingsQuantity,
+            save
+          `,
         },
       })
     );
@@ -34,7 +50,18 @@ export default function HomePage() {
       fetchProducts({
         item: "1",
         queryParams: {
-          sort: "-createdAt",
+          fields: `
+            _id,
+            title,
+            price,
+            priceAfterDiscount,
+            imageCover,
+            quantity,
+            sold,
+            ratingsAverage,
+            ratingsQuantity,
+            save
+          `,
         },
       })
     );
@@ -43,7 +70,18 @@ export default function HomePage() {
       fetchProducts({
         item: "2",
         queryParams: {
-          sort: "-price",
+          fields: `
+            _id,
+            title,
+            price,
+            priceAfterDiscount,
+            imageCover,
+            quantity,
+            sold,
+            ratingsAverage,
+            ratingsQuantity,
+            save
+          `,
         },
       })
     );

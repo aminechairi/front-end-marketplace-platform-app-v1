@@ -8,7 +8,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const auth = true;
+const auth = false;
 
 export default function NavBar() {
   return (
@@ -58,8 +58,12 @@ export default function NavBar() {
           ) : (
             <div className="logIn_signIn">
               <div className="buttons">
-                <button className="button">log in</button>
-                <button className="button">sign in</button>
+                <Link to="/log-in" className="button">
+                  log in
+                </Link>
+                <Link to="/sign-up" className="button">
+                  sign up
+                </Link>
               </div>
               <div className="icon">
                 <MenuIcon />

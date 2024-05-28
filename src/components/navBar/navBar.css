@@ -1,6 +1,10 @@
 .navBar {
   padding: 15px 0px;
   background-color: var( --backgrounds-color-1);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 .navBar .container .ab {
   display: flex;
