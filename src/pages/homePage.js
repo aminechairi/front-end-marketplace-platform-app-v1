@@ -20,6 +20,7 @@ export default function HomePage() {
         sort: "createdAt",
       })
     );
+
     dispatch(
       fetchProducts({
         item: "0",
@@ -28,6 +29,7 @@ export default function HomePage() {
         },
       })
     );
+
     dispatch(
       fetchProducts({
         item: "1",
@@ -36,6 +38,7 @@ export default function HomePage() {
         },
       })
     );
+
     dispatch(
       fetchProducts({
         item: "2",
@@ -44,6 +47,7 @@ export default function HomePage() {
         },
       })
     );
+
   }, [dispatch]);
 
   return (
