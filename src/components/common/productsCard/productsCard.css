@@ -33,18 +33,18 @@
   padding: 4px;
 }
 .products_card .sec_1 .ab_img .like .heart-container {
-  /* --heart-color: rgb(255, 91, 137); */
-  --heart-color: var(--main-color);
+  --heart-color: rgb(255, 74, 125);
+  /* --heart-color: var(--main-color); */
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   transition: 0.3s;
 }
 /* md	*/
 @media (min-width: 768px) {
   .products_card .sec_1 .ab_img .like .heart-container {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
   }
 }
 .products_card .sec_1 .ab_img .like .heart-container .checkbox {
