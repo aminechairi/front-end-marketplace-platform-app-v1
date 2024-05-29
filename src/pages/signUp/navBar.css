@@ -38,6 +38,9 @@
   border: 1px solid #3867df79;
   border-radius: 14px;
 }
+.sign_up .container .ab .form .form-control:focus {
+  background-color: var(--backgrounds-color-2);
+}
 .sign_up .container .ab .form .error {
   color: red;
   font-size: 14px;
