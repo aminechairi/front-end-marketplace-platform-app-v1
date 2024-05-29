@@ -1,3 +1,6 @@
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+
 import "./navBar.css";
 
 import NavBar from "../../components/navBar/navBar";
@@ -43,12 +46,10 @@ function SignUp() {
 
               {/* Phone number input */}
               <div className="ab_inputs">
-                <label className="label" htmlFor="phone-number">Phone Number</label>
-                <input
-                  className="input"
-                  type="number"
-                  placeholder="Phone Number"
-                  id="phone-number"
+                <label className="label" htmlFor="phone-number">Phone Number (optionals)</label>
+                <PhoneInput
+                  country={'ma'}
+                  placeholder="Enter phone number"
                 />
                 <p className="error">
                   Please, first name must be 16 charachter

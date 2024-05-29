@@ -10,7 +10,7 @@ function LogIn() {
       <div className="sign_in">
         <div className="container">
           <div className="ab">
-            <h1 className="title">sign in</h1>
+            <h1 className="title">log in</h1>
             <form className="form">
               {/* Email input */}
               <div className="ab_inputs">
