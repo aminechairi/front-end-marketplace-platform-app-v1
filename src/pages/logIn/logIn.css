@@ -1,0 +1,73 @@
+.sign_in .container .ab {
+  padding: 30px 0px;
+}
+.sign_in .container .ab .title {
+  padding-bottom: 15px;
+  font-size: 24px;
+  font-weight: 650;
+  color: var(--main-color);
+  text-align: center;
+  text-transform: uppercase;
+}
+.sign_in .container .ab .form .label {
+  display: block;
+  text-align: left;
+  color: var(--text-color);
+  font-weight: 400;
+  text-transform: capitalize;
+  font-size: 16px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+.sign_in .container .ab .form .input {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  padding: 4px;
+  border: 1px solid #3867df79;
+  border-radius: 14px;
+}
+.sign_in .container .ab .form .input:focus {
+  outline: none;
+  background-color: var(--backgrounds-color-2);
+}
+.sign_in .container .ab .form .error {
+  color: red;
+  font-size: 14px;
+  display: none;
+}
+.sign_in .container .ab .form .submit {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  padding: 4px;
+  border: 1px solid var(--main-color);
+  border-radius: 14px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: white;
+}
+.sign_in .container .ab .form .ab_inputs {
+  padding-bottom: 12px;
+}
+/* start media query  */
+/* sm */
+/* @media (min-width: 640px) {
+
+} */
+/* md */
+/* @media (min-width: 768px) {
+
+} */
+/* lg */
+@media (min-width: 1024px) {
+  .sign_in .container .ab {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
+/* xl */
+/* @media (min-width: 1280px) {
+
+} */
+/* end media query */
