@@ -9,6 +9,17 @@
   text-align: center;
   text-transform: uppercase;
 }
+.sign_in .container .ab .alert {
+  background-color: #fff5f5;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid #c53030;
+  margin-bottom: 6px;
+}
+.sign_in .container .ab .error {
+  color: #c53030;
+  font-size: 14px;
+}
 .sign_in .container .ab .form .label {
   display: block;
   text-align: left;
@@ -30,10 +41,6 @@
 .sign_in .container .ab .form .input:focus {
   outline: none;
   background-color: var(--backgrounds-color-2);
-}
-.sign_in .container .ab .form .error {
-  color: red;
-  font-size: 14px;
 }
 .sign_in .container .ab .form .submit {
   display: block;

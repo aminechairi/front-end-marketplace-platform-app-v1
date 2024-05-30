@@ -39,6 +39,11 @@ function LogIn() {
         <div className="container">
           <div className="ab">
             <h1 className="title">log in</h1>
+            <div className="alert">
+              <p className="error">
+                Incorrect email or password.
+              </p>
+            </div>
             <form className="form" onSubmit={formik.handleSubmit}>
               {/* Email input */}
               <div className="ab_inputs">
@@ -56,7 +61,7 @@ function LogIn() {
                   onBlur={formik.handleBlur}
                   style={{
                     borderColor: 
-                    formik.touched.email && formik.errors.email ? "red" : null,
+                    formik.touched.email && formik.errors.email ? "#c53030" : null,
                   }}
                 />
                 {formik.touched.email && formik.errors.email ? (
@@ -80,7 +85,7 @@ function LogIn() {
                   onBlur={formik.handleBlur}
                   style={{
                     borderColor: 
-                    formik.touched.email && formik.errors.email ? "red" : null,
+                    formik.touched.email && formik.errors.email ? "#c53030" : null,
                   }}
                 />
                 {formik.touched.password && formik.errors.password ? (
