@@ -34,7 +34,6 @@
 .sign_in .container .ab .form .error {
   color: red;
   font-size: 14px;
-  display: none;
 }
 .sign_in .container .ab .form .submit {
   display: block;
