@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./logIn.css";
-
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
+
+import { authLogin } from "../../redux/authSlice";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -14,7 +16,9 @@ const validationSchema = Yup.object().shape({
 });
 
 function LogIn() {
-  
+  const login = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -22,7 +26,7 @@ function LogIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
+      dispatch(authLogin(values));
       resetForm({
         values: {
           email: "",
@@ -38,12 +42,21 @@ function LogIn() {
       <div className="sign_in">
         <div className="container">
           <div className="ab">
+            <div
+              className="loading"
+              style={{
+                display: login.status === "loading" ? "block" : "none",
+              }}
+            ></div>
+
             <h1 className="title">log in</h1>
-            <div className="alert">
-              <p className="error">
-                Incorrect email or password.
-              </p>
-            </div>
+
+            {login.data?.message && login.data?.status ? (
+              <div className="alert">
+                <p className="error">{login.data?.message}</p>
+              </div>
+            ) : null}
+
             <form className="form" onSubmit={formik.handleSubmit}>
               {/* Email input */}
               <div className="ab_inputs">
@@ -60,8 +73,10 @@ function LogIn() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   style={{
-                    borderColor: 
-                    formik.touched.email && formik.errors.email ? "#c53030" : null,
+                    borderColor:
+                      formik.touched.email && formik.errors.email
+                        ? "#c53030"
+                        : null,
                   }}
                 />
                 {formik.touched.email && formik.errors.email ? (
@@ -84,11 +99,13 @@ function LogIn() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   style={{
-                    borderColor: 
-                    formik.touched.email && formik.errors.email ? "#c53030" : null,
+                    borderColor:
+                      formik.touched.password
+                        ? "#c53030"
+                        : null,
                   }}
                 />
-                {formik.touched.password && formik.errors.password ? (
+                {formik.touched.password ? (
                   <p className="error">{formik.errors.password}</p>
                 ) : null}
               </div>
