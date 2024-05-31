@@ -6,11 +6,12 @@
   position: absolute;
   width: 100%;
   height: calc(100% - 30px);
-  background-color: #ffffff5c;
+  background-color: #ffffff71;
   cursor: not-allowed;
+  color: var(--main-color);
 }
 .sign_in .container .ab .title {
-  padding-bottom: 15px;
+  padding: 15px 0px;
   font-size: 24px;
   font-weight: 650;
   color: var(--main-color);
@@ -21,11 +22,12 @@
   background-color: #fff5f5;
   padding: 8px;
   border-radius: 14px;
-  border: 1px solid #c53030;
+  border: 1px solid red;
   margin-bottom: 6px;
+  font-weight: 460;
 }
 .sign_in .container .ab .error {
-  color: #c53030;
+  color: red;
   font-size: 14px;
 }
 .sign_in .container .ab .form .label {

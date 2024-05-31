@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./logIn.css";
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import { authLogin } from "../../redux/authSlice";
 
@@ -47,11 +48,15 @@ function LogIn() {
               style={{
                 display: login.status === "loading" ? "block" : "none",
               }}
-            ></div>
+            >
+              <LinearProgress color="inherit" />
+            </div>
 
             <h1 className="title">log in</h1>
 
-            {login.data?.message && login.data?.status ? (
+            {login.data?.message &&
+            login.data?.status &&
+            login.status === "succeeded" ? (
               <div className="alert">
                 <p className="error">{login.data?.message}</p>
               </div>
@@ -75,7 +80,7 @@ function LogIn() {
                   style={{
                     borderColor:
                       formik.touched.email && formik.errors.email
-                        ? "#c53030"
+                        ? "red"
                         : null,
                   }}
                 />
@@ -100,12 +105,12 @@ function LogIn() {
                   onBlur={formik.handleBlur}
                   style={{
                     borderColor:
-                      formik.touched.password
-                        ? "#c53030"
+                      formik.touched.password && formik.errors.password
+                        ? "red"
                         : null,
                   }}
                 />
-                {formik.touched.password ? (
+                {formik.touched.password && formik.errors.password ? (
                   <p className="error">{formik.errors.password}</p>
                 ) : null}
               </div>
