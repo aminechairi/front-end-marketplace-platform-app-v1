@@ -1,13 +1,34 @@
 .sign_up .container .ab {
   padding: 30px 0px;
+  position: relative;
+}
+.sign_up .container .ab .loading {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 30px);
+  background-color: #ffffff71;
+  cursor: not-allowed;
+  color: var(--main-color);
+  z-index: 1;
 }
 .sign_up .container .ab .title {
-  padding-bottom: 15px;
+  padding: 15px 0px;
   font-size: 24px;
   font-weight: 650;
   color: var(--main-color);
   text-align: center;
   text-transform: uppercase;
+}
+.sign_up .container .ab .alert {
+  background-color: #fff5f5;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid red;
+  margin-bottom: 6px;
+}
+.sign_up .container .ab .error {
+  color: red;
+  font-size: 14px;
 }
 .sign_up .container .ab .form .label {
   display: block;
@@ -23,13 +44,12 @@
   display: block;
   width: 100%;
   font-size: 16px;
-  padding: 4px;
+  padding: 8px;
   border: 1px solid #3867df79;
   border-radius: 14px;
 }
 .sign_up .container .ab .form .input:focus {
-  outline: none;
-  background-color: var(--backgrounds-color-2);
+  outline: 1PX solid var(--main-color);
 }
 .sign_up .container .ab .form .form-control  {
   display: block;
@@ -40,11 +60,6 @@
 }
 .sign_up .container .ab .form .form-control:focus {
   background-color: var(--backgrounds-color-2);
-}
-.sign_up .container .ab .form .error {
-  color: red;
-  font-size: 14px;
-  display: none;
 }
 .sign_up .container .ab .form .submit {
   display: block;

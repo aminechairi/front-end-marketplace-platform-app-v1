@@ -48,8 +48,7 @@
   border-radius: 14px;
 }
 .sign_in .container .ab .form .input:focus {
-  outline: none;
-  background-color: var(--backgrounds-color-2);
+  outline: 1PX solid var(--main-color);
 }
 .sign_in .container .ab .form .submit {
   display: block;

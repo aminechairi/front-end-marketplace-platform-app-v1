@@ -7,7 +7,7 @@ import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import { authLogin } from "../../redux/authSlice";
+import { authLogIn } from "../../redux/authSlice";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function LogIn() {
-  const login = useSelector((state) => state.auth);
+  const logIn = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -27,7 +27,7 @@ function LogIn() {
     },
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
-      dispatch(authLogin(values));
+      dispatch(authLogIn(values));
       resetForm({
         values: {
           email: "",
@@ -46,7 +46,7 @@ function LogIn() {
             <div
               className="loading"
               style={{
-                display: login.status === "loading" ? "block" : "none",
+                display: logIn.status === "loading" ? "block" : "none",
               }}
             >
               <LinearProgress color="inherit" />
@@ -54,11 +54,11 @@ function LogIn() {
 
             <h1 className="title">log in</h1>
 
-            {login.data?.message &&
-            login.data?.status &&
-            login.status === "succeeded" ? (
+            {logIn.data?.message &&
+            logIn.data?.status &&
+            logIn.status === "succeeded" ? (
               <div className="alert">
-                <p className="error">{login.data?.message}</p>
+                <p className="error">{logIn.data?.message}</p>
               </div>
             ) : null}
 
