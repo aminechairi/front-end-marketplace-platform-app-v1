@@ -59,7 +59,9 @@ function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
-      values.phoneNumber = "+" + phoneNumber;
+      if (phoneNumber.length > 0) {
+        values.phoneNumber = "+" + phoneNumber;
+      };
       dispatch(authSignUp(values));
       resetForm({
         values: {

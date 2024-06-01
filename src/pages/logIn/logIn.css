@@ -1,18 +1,25 @@
 .sign_in .container .ab {
   padding: 30px 0px;
   position: relative;
+  padding: 12px;
+  margin: 24px auto;
+  border-radius: 14px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  overflow: hidden;
 }
 .sign_in .container .ab .loading {
   position: absolute;
   width: 100%;
-  height: calc(100% - 30px);
+  height: calc(100%);
   background-color: #ffffff71;
   cursor: not-allowed;
   color: var(--main-color);
+  left: 0;
+  top: 0;
 }
 .sign_in .container .ab .title {
-  padding: 15px 0px;
-  font-size: 24px;
+  padding: 0px 0px 12px;
+  font-size: 22px;
   font-weight: 650;
   color: var(--main-color);
   text-align: center;
@@ -61,6 +68,9 @@
   background-color: var(--main-color);
   color: white;
 }
+.sign_in .container .ab .form .submit:focus {
+  outline: 1PX solid var(--main-color);
+}
 .sign_in .container .ab .form .ab_inputs {
   padding-bottom: 12px;
 }
@@ -76,12 +86,13 @@
 /* lg */
 @media (min-width: 1024px) {
   .sign_in .container .ab {
-    width: 50%;
-    margin: 0 auto;
+    width: 70%;
   }
 }
 /* xl */
-/* @media (min-width: 1280px) {
-
-} */
+@media (min-width: 1280px) {
+  .sign_in .container .ab {
+    width: 50%;
+  }
+}
 /* end media query */
