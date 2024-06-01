@@ -54,9 +54,10 @@
   padding: 8px;
   border: 1px solid #3867df79;
   border-radius: 14px;
+  caret-color: var(--main-color);
 }
 .sign_up .container .ab .form .input:focus {
-  outline: 1PX solid var(--main-color);
+  outline: none;
 }
 .sign_up .container .ab .form .form-control  {
   display: block;
@@ -64,9 +65,10 @@
   font-size: 16px;
   border: 1px solid #3867df79;
   border-radius: 14px;
+  caret-color: var(--main-color);
 }
 .sign_up .container .ab .form .form-control:focus {
-  background-color: var(--backgrounds-color-2);
+  outline: none;
 }
 .sign_up .container .ab .form .submit {
   display: block;
@@ -80,7 +82,7 @@
   color: white;
 }
 .sign_up .container .ab .form .submit:focus {
-  outline: 1PX solid var(--main-color);
+  outline: none;
 }
 .sign_up .container .ab .form .ab_first_name_and_last_name {
   display: flex;

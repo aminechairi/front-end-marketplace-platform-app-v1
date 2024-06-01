@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,6 +18,8 @@ const validationSchema = Yup.object().shape({
 });
 
 function LogIn() {
+  const [oneSubmit, setOneSubmit] = useState(false);
+
   const logIn = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -34,6 +37,7 @@ function LogIn() {
           password: "",
         },
       });
+      setOneSubmit(true);
     },
   });
 
@@ -56,7 +60,8 @@ function LogIn() {
 
             {logIn.data?.message &&
             logIn.data?.status &&
-            logIn.status === "succeeded" ? (
+            logIn.status === "succeeded" &&
+            oneSubmit === true ? (
               <div className="alert">
                 <p className="error">{logIn.data?.message}</p>
               </div>

@@ -41,6 +41,8 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignUp() {
+  const [oneSubmit, setOneSubmit] = useState(false);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const handlePhoneNumberChange = (value) => {
     setPhoneNumber(value);
@@ -73,6 +75,7 @@ function SignUp() {
         },
       });
       setPhoneNumber("212");
+      setOneSubmit(true);
     },
   });
 
@@ -95,7 +98,8 @@ function SignUp() {
 
             {signUp.data?.message &&
             signUp.data?.status &&
-            signUp.status === "succeeded" ? (
+            signUp.status === "succeeded" &&
+            oneSubmit === true ? (
               <div className="alert">
                 <p className="error">{signUp.data?.message}</p>
               </div>

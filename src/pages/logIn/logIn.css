@@ -53,9 +53,10 @@
   padding: 8px;
   border: 1px solid #3867df79;
   border-radius: 14px;
+  caret-color: var(--main-color);
 }
 .sign_in .container .ab .form .input:focus {
-  outline: 1PX solid var(--main-color);
+  outline: none;
 }
 .sign_in .container .ab .form .submit {
   display: block;
@@ -69,7 +70,7 @@
   color: white;
 }
 .sign_in .container .ab .form .submit:focus {
-  outline: 1PX solid var(--main-color);
+  outline: none;
 }
 .sign_in .container .ab .form .ab_inputs {
   padding-bottom: 12px;
