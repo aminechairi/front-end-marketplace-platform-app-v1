@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
@@ -40,6 +40,12 @@ function LogIn() {
       setOneSubmit(true);
     },
   });
+
+  useEffect(() => {
+    if (logIn.data?.token) {
+      window.location.replace("/");
+    }
+  }, [logIn.data?.token]);
 
   return (
     <>

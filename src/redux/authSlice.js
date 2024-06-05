@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
+import cookieManager from "../utils/cookieManager";
 
 // Async Thunk for authLogIn
 export const authLogIn = createAsyncThunk("auth/logIn", async (requestBody) => {
@@ -12,6 +13,11 @@ export const authLogIn = createAsyncThunk("auth/logIn", async (requestBody) => {
     body: JSON.stringify(requestBody),
   });
   const data = await response.json();
+
+  if (data.token) {
+    cookieManager("set", "JWTToken", data.token, 90);
+  }
+
   return data;
 });
 
@@ -27,6 +33,11 @@ export const authSignUp = createAsyncThunk(
       body: JSON.stringify(requestBody),
     });
     const data = await response.json();
+
+    if (data.token) {
+      cookieManager("set", "JWTToken", data.token, 90);
+    }
+
     return data;
   }
 );

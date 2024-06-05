@@ -8,7 +8,9 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const auth = false;
+import cookieManager from "../../utils/cookieManager";
+
+const auth = cookieManager("get", "JWTToken");
 
 export default function NavBar() {
   return (
@@ -38,7 +40,7 @@ export default function NavBar() {
               </button>
             </form>
           </div>
-          {auth === true ? (
+          {auth ? (
             <div className="cart_profile">
               <div className="buttons">
                 <button className="button">

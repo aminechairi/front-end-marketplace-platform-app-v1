@@ -18,7 +18,7 @@ function calculateDiscountPercentage(originalPrice, discountedPrice) {
   var roundedDiscountPercentage = Math.round(discountPercentage);
 
   return roundedDiscountPercentage;
-};
+}
 
 export default function ProductsCard({
   _id,
@@ -30,18 +30,30 @@ export default function ProductsCard({
   sold,
   ratingsAverage,
   ratingsQuantity,
-  save
+  save,
 }) {
   return (
     <div className="products_card">
       <section className="sec_1">
         <div className="ab_img">
           <Link to={`/products/${_id}`}>
-            <img src={imageCover} alt="" className="img" />
+            <img
+              src={imageCover}
+              alt=""
+              className="img"
+              onError={(e) => {
+                e.target.src = require("../../../imgs/no found.jpeg");
+              }}
+            />
           </Link>
           <div className="like">
             <div className="heart-container" title="Like">
-              <input defaultChecked={ Boolean(save) } type="checkbox" className="checkbox" id="Give-It-An-Id" />
+              <input
+                defaultChecked={Boolean(save)}
+                type="checkbox"
+                className="checkbox"
+                id="Give-It-An-Id"
+              />
               <div className="svg-container">
                 <svg
                   viewBox="0 0 24 24"
@@ -89,11 +101,14 @@ export default function ProductsCard({
           <h1 className="product_title">{title}</h1>
           <div className="price">
             <p className="currency">usd</p>
-            <p className="number">{priceAfterDiscount?.toFixed(2).replace('.', ',') || price.toFixed(2).replace('.', ',') }</p>
+            <p className="number">
+              {priceAfterDiscount?.toFixed(2).replace(".", ",") ||
+                price.toFixed(2).replace(".", ",")}
+            </p>
           </div>
           {priceAfterDiscount ? (
             <div className="ab_discount">
-              <p className="price">{price.toFixed(2).replace('.', ',') }</p>
+              <p className="price">{price.toFixed(2).replace(".", ",")}</p>
               <p className="discount">
                 {`-${calculateDiscountPercentage(price, priceAfterDiscount)}%`}
               </p>
