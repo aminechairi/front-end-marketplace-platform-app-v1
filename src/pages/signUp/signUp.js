@@ -81,7 +81,7 @@ function SignUp() {
 
   useEffect(() => {
     if (signUp.data?.token) {
-      window.location.replace("/");
+      window.location.replace("/email-verify");
     }
   }, [signUp.data?.token]);
 
