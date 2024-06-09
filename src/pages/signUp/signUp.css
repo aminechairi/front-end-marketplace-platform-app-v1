@@ -26,15 +26,19 @@
   text-align: center;
   text-transform: uppercase;
 }
-.sign_up .container .ab .alert {
+.sign_up .container .ab .alert_error {
   background-color: #fff5f5;
   padding: 8px;
   border-radius: 14px;
-  border: 1px solid red;
+  border: 1px solid #c53030;
   margin-bottom: 6px;
 }
-.sign_up .container .ab .error {
-  color: red;
+.sign_up .container .ab .alert_error p {
+  color: #c53030;
+  font-size: 14px;
+}
+.sign_up .container .ab .error_of_input {
+  color: #c53030;
   font-size: 14px;
 }
 .sign_up .container .ab .form .label {

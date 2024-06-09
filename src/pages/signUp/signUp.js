@@ -106,8 +106,8 @@ function SignUp() {
             signUp.data?.status &&
             signUp.status === "succeeded" &&
             oneSubmit === true ? (
-              <div className="alert">
-                <p className="error">{signUp.data?.message}</p>
+              <div className="alert_error">
+                <p>{signUp.data?.message}</p>
               </div>
             ) : null}
 
@@ -130,12 +130,12 @@ function SignUp() {
                     style={{
                       borderColor:
                         formik.touched.firstName && formik.errors.firstName
-                          ? "red"
+                          ? "#c53030"
                           : null,
                     }}
                   />
                   {formik.touched.firstName && formik.errors.firstName ? (
-                    <p className="error">{formik.errors.firstName}</p>
+                    <p className="error_of_input">{formik.errors.firstName}</p>
                   ) : null}
                 </div>
 
@@ -156,12 +156,12 @@ function SignUp() {
                     style={{
                       borderColor:
                         formik.touched.lastName && formik.errors.lastName
-                          ? "red"
+                          ? "#c53030"
                           : null,
                     }}
                   />
                   {formik.touched.lastName && formik.errors.lastName ? (
-                    <p className="error">{formik.errors.lastName}</p>
+                    <p className="error_of_input">{formik.errors.lastName}</p>
                   ) : null}
                 </div>
               </div>
@@ -183,12 +183,12 @@ function SignUp() {
                   style={{
                     borderColor:
                       formik.touched.email && formik.errors.email
-                        ? "red"
+                        ? "#c53030"
                         : null,
                   }}
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <p className="error">{formik.errors.email}</p>
+                  <p className="error_of_input">{formik.errors.email}</p>
                 ) : null}
               </div>
 
@@ -222,12 +222,12 @@ function SignUp() {
                   style={{
                     borderColor:
                       formik.touched.password && formik.errors.password
-                        ? "red"
+                        ? "#c53030"
                         : null,
                   }}
                 />
                 {formik.touched.password && formik.errors.password ? (
-                  <p className="error">{formik.errors.password}</p>
+                  <p className="error_of_input">{formik.errors.password}</p>
                 ) : null}
               </div>
 
@@ -249,13 +249,13 @@ function SignUp() {
                     borderColor:
                       formik.touched.confirmPassword &&
                       formik.errors.confirmPassword
-                        ? "red"
+                        ? "#c53030"
                         : null,
                   }}
                 />
                 {formik.touched.confirmPassword &&
                 formik.errors.confirmPassword ? (
-                  <p className="error">{formik.errors.confirmPassword}</p>
+                  <p className="error_of_input">{formik.errors.confirmPassword}</p>
                 ) : null}
               </div>
 

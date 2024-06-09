@@ -50,7 +50,7 @@ function LogIn() {
   return (
     <>
       <NavBar />
-      <div className="sign_in">
+      <div className="log_in">
         <div className="container">
           <div className="ab">
             <div
@@ -68,8 +68,8 @@ function LogIn() {
             logIn.data?.status &&
             logIn.status === "succeeded" &&
             oneSubmit === true ? (
-              <div className="alert">
-                <p className="error">{logIn.data?.message}</p>
+              <div className="alert_error">
+                <p>{logIn.data?.message}</p>
               </div>
             ) : null}
 
@@ -91,12 +91,12 @@ function LogIn() {
                   style={{
                     borderColor:
                       formik.touched.email && formik.errors.email
-                        ? "red"
+                        ? "#c53030"
                         : null,
                   }}
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <p className="error">{formik.errors.email}</p>
+                  <p className="error_of_input">{formik.errors.email}</p>
                 ) : null}
               </div>
 
@@ -117,12 +117,12 @@ function LogIn() {
                   style={{
                     borderColor:
                       formik.touched.password && formik.errors.password
-                        ? "red"
+                        ? "#c53030"
                         : null,
                   }}
                 />
                 {formik.touched.password && formik.errors.password ? (
-                  <p className="error">{formik.errors.password}</p>
+                  <p className="error_of_input">{formik.errors.password}</p>
                 ) : null}
               </div>
 
