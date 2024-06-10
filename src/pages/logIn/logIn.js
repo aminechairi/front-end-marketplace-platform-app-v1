@@ -53,14 +53,11 @@ function LogIn() {
       <div className="log_in">
         <div className="container">
           <div className="ab">
-            <div
-              className="loading"
-              style={{
-                display: logIn.status === "loading" ? "block" : "none",
-              }}
-            >
-              <LinearProgress color="inherit" />
-            </div>
+            {logIn.status === "loading" ? (
+              <div className="loading">
+                <LinearProgress color="inherit" />
+              </div>
+            ) : null}
 
             <h1 className="title">log in</h1>
 

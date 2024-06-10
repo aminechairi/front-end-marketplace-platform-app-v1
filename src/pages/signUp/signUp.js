@@ -63,7 +63,7 @@ function SignUp() {
     onSubmit: (values, { resetForm }) => {
       if (phoneNumber.length > 0) {
         values.phoneNumber = "+" + phoneNumber;
-      };
+      }
       dispatch(authSignUp(values));
       resetForm({
         values: {
@@ -81,7 +81,7 @@ function SignUp() {
 
   useEffect(() => {
     if (signUp.data?.token) {
-      window.location.replace("/email-verify");
+      window.location.replace("/users/email-verification");
     }
   }, [signUp.data?.token]);
 
@@ -91,14 +91,11 @@ function SignUp() {
       <div className="sign_up">
         <div className="container">
           <div className="ab">
-            <div
-              className="loading"
-              style={{
-                display: signUp.status === "loading" ? "block" : "none",
-              }}
-            >
-              <LinearProgress color="inherit" />
-            </div>
+            {signUp.status === "loading" ? (
+              <div className="loading">
+                <LinearProgress color="inherit" />
+              </div>
+            ) : null}
 
             <h1 className="title">sign up</h1>
 
@@ -255,7 +252,9 @@ function SignUp() {
                 />
                 {formik.touched.confirmPassword &&
                 formik.errors.confirmPassword ? (
-                  <p className="error_of_input">{formik.errors.confirmPassword}</p>
+                  <p className="error_of_input">
+                    {formik.errors.confirmPassword}
+                  </p>
                 ) : null}
               </div>
 
