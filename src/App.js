@@ -1,18 +1,42 @@
 import { Routes, Route } from "react-router-dom";
 
+import ProtectedRoute from "./components/protectedRoute/protectedRoute";
+
 import HomePage from "./pages/homePage";
 import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
 import EmailVerification from "./pages/emailVerification/emailVerification";
 
+import { HOME, LOGIN, SIGNUP, EMAIL_VERIFICATION } from "./routes";
+
 function App() {
   return (
     <Routes>
-      <Route index element={<HomePage />} />
-      <Route path="/log-in" element={<LogIn />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/users/email-verification" element={<EmailVerification />} />
-      <Route path="/products/:id" element={<></>} />
+      <Route path={HOME} element={<HomePage />} />
+      <Route
+        path={LOGIN}
+        element={
+          <ProtectedRoute isProtected={false} redirectTo={HOME}>
+            <LogIn />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={SIGNUP}
+        element={
+          <ProtectedRoute isProtected={false} redirectTo={HOME}>
+            <SignUp />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={EMAIL_VERIFICATION}
+        element={
+          <ProtectedRoute isProtected={true} redirectTo={HOME}>
+            <EmailVerification />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
