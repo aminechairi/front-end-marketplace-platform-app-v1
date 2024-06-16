@@ -8,7 +8,6 @@ export const fetchCategories = createAsyncThunk(
   async (queryParams) => {
     const url = new URL(`${baseUrl}/categories`);
     url.search = new URLSearchParams(queryParams).toString();
-
     const response = await fetch(url);
     const data = await response.json();
     return data;

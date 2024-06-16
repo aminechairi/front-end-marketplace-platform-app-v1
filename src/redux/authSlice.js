@@ -12,6 +12,7 @@ export const authLogIn = createAsyncThunk("auth/logIn", async (requestBody) => {
     },
     body: JSON.stringify(requestBody),
   });
+
   const data = await response.json();
 
   if (data.token) {
@@ -32,6 +33,7 @@ export const authSignUp = createAsyncThunk(
       },
       body: JSON.stringify(requestBody),
     });
+
     const data = await response.json();
 
     if (data.token) {

@@ -24,6 +24,7 @@ export const fetchProducts = createAsyncThunk(
         Authorization: token,
       },
     });
+
     const data = await response.json();
 
     return { item: requestInformations.item, data: data };

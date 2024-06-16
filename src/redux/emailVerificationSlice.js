@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
 import cookieManager from "../utils/cookieManager";
+import handleUnauthorized from "../utils/handleUnauthorized";
 
 // Async Thunk for emailVerification
 export const emailVerification = createAsyncThunk(
@@ -14,6 +15,9 @@ export const emailVerification = createAsyncThunk(
         Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
       },
     });
+
+    handleUnauthorized(response);
+
     const data = await response.json();
 
     return data;
@@ -32,6 +36,9 @@ export const emailverificationcode = createAsyncThunk(
       },
       body: JSON.stringify(requestBody),
     });
+
+    handleUnauthorized(response);
+
     const data = await response.json();
 
     return data;

@@ -1,4 +1,4 @@
-function cookieManager(action, name, value = "", days = 0) {
+function cookieManager(action, name, value = "", days = 0, path = "/") {
   switch (action) {
     case "set":
       var expires = "";
@@ -7,7 +7,7 @@ function cookieManager(action, name, value = "", days = 0) {
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
         expires = "; expires=" + date.toUTCString();
       }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+      document.cookie = name + "=" + (value || "") + expires + "; path=" + path;
       break;
     case "get":
       var nameEQ = name + "=";
@@ -15,12 +15,11 @@ function cookieManager(action, name, value = "", days = 0) {
       for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) === " ") c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0)
-          return c.substring(nameEQ.length, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
       }
       return null;
     case "delete":
-      document.cookie = name + "=; Max-Age=-99999999;";
+      document.cookie = name + "=; Max-Age=-99999999; path=" + path;
       break;
     case "update":
       var expiresUpdate = "";
@@ -29,20 +28,27 @@ function cookieManager(action, name, value = "", days = 0) {
         dateUpdate.setTime(dateUpdate.getTime() + days * 24 * 60 * 60 * 1000);
         expiresUpdate = "; expires=" + dateUpdate.toUTCString();
       }
-      document.cookie = name + "=" + (value || "") + expiresUpdate + "; path=/";
+      document.cookie = name + "=" + (value || "") + expiresUpdate + "; path=" + path;
       break;
     default:
       console.log('Invalid action. Use "set", "get", "delete", or "update".');
   }
 }
 
+// // Set a cookie with a specific path
+// cookieManager("set", "JWTToken", "TestValue", 90, "/");
+// console.log("Set cookie:", document.cookie);
+
+// // Get a cookie
+// const cookieValue = cookieManager("get", "JWTToken");
+// console.log("Get cookie:", cookieValue);
+
+// // Update a cookie with a specific path
+// cookieManager("update", "JWTToken", "UpdatedValue", 90, "/");
+// console.log("Updated cookie:", document.cookie);
+
+// // Delete a cookie with a specific path
+// cookieManager("delete", "JWTToken", "", 0, "/");
+// console.log("Deleted cookie:", document.cookie);
+
 export default cookieManager;
-
-// cookieManager("set", "JWTToken", "123.123.123", 90);
-
-// var username = cookieManager("get", "JWTToken");
-// console.log(username);
-
-// cookieManager("update", "JWTToken", "456456.456456.456456", 90);
-
-// cookieManager('delete', 'JWTToken');
