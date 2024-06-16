@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
-
-import "./navBar.css";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
+import "./navBar.css";
+import ScrollToTop from "../common/scrollToTop/scrollToTop";
 import cookieManager from "../../utils/cookieManager";
 
 const auth = cookieManager("get", "JWTToken");
@@ -17,17 +16,19 @@ export default function NavBar() {
     <div className="navBar">
       <div className="container">
         <div className="ab">
-          <Link to={`/`}>
-            <div className="logo">
-              <img
-                src={require("../../imgs/logo.png")}
-                width={80}
-                height={80}
-                alt=""
-              />
-              <h1 className="title">dianomi</h1>
-            </div>
-          </Link>
+          <ScrollToTop>
+            <Link to={`/`}>
+              <div className="logo">
+                <img
+                  src={require("../../imgs/logo.png")}
+                  width={80}
+                  height={80}
+                  alt=""
+                />
+                <h1 className="title">dianomi</h1>
+              </div>
+            </Link>
+          </ScrollToTop>
           <div className="search">
             <form>
               <input
@@ -60,12 +61,16 @@ export default function NavBar() {
           ) : (
             <div className="logIn_signIn">
               <div className="buttons">
-                <Link to="/log-in" className="button">
-                  log in
-                </Link>
-                <Link to="/sign-up" className="button">
-                  sign up
-                </Link>
+                <ScrollToTop>
+                  <Link to="/log-in" className="button">
+                    log in
+                  </Link>
+                </ScrollToTop>
+                <ScrollToTop>
+                  <Link to="/sign-up" className="button">
+                    sign up
+                  </Link>
+                </ScrollToTop>
               </div>
               <div className="icon">
                 <MenuIcon />
