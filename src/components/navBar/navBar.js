@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,10 +8,13 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import "./navBar.css";
 import ScrollToTop from "../common/scrollToTop/scrollToTop";
 import cookieManager from "../../utils/cookieManager";
+
+import { authLogOut } from "../../redux/authSlice";
 
 const auth = cookieManager("get", "JWTToken");
 
@@ -42,6 +46,12 @@ export default function NavBar() {
     setMenuVisible(!menuVisible);
   };
 
+  const dispatch = useDispatch();
+
+  const logOutFunction = () => {
+    dispatch(authLogOut());
+  };
+
   return (
     <div className="navBar">
       <div className="container">
@@ -59,6 +69,7 @@ export default function NavBar() {
               </div>
             </Link>
           </ScrollToTop>
+
           <div className="search">
             <form>
               <input
@@ -71,43 +82,76 @@ export default function NavBar() {
               </button>
             </form>
           </div>
+
           {auth ? (
-            <div className="cart_profile">
+            <div className="chooses">
               <div className="buttons">
                 <button className="button">
-                  <FavoriteBorderIcon />
+                  <ScrollToTop>
+                    <Link to="/">
+                      <FavoriteBorderIcon />
+                    </Link>
+                  </ScrollToTop>
                 </button>
                 <button className="button">
-                  <ShoppingCartCheckoutIcon />
+                  <ScrollToTop>
+                    <Link to="/">
+                      <ShoppingCartCheckoutIcon />
+                    </Link>
+                  </ScrollToTop>
                 </button>
-                <button className="button">
+                <button className="button" onClick={toggleMenu}>
                   <AccountCircleIcon />
+                  <div className="ab_menu" style={menuStyle}>
+                    <div className="container">
+                      <ul className="menu">
+                        <li>
+                          <ScrollToTop>
+                            <Link to="/">
+                              <AccountCircleIcon /> profile
+                            </Link>
+                          </ScrollToTop>
+                        </li>
+                        <li>
+                          <Link onClick={logOutFunction}>
+                            <LogoutIcon /> log out
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </button>
               </div>
+
               <div className="icon" onClick={toggleMenu}>
                 <MenuIcon />
                 <div className="ab_menu" style={menuStyle}>
                   <ul className="menu">
                     <li>
                       <ScrollToTop>
-                        <Link to="/sign-up">
+                        <Link to="/">
                           <AccountCircleIcon /> profile
                         </Link>
                       </ScrollToTop>
                     </li>
                     <li>
                       <ScrollToTop>
-                        <Link to="/log-in">
+                        <Link to="/">
                           <FavoriteBorderIcon /> saves
                         </Link>
                       </ScrollToTop>
                     </li>
                     <li>
                       <ScrollToTop>
-                        <Link to="/sign-up">
+                        <Link to="/">
                           <ShoppingCartCheckoutIcon /> shopping cart
                         </Link>
                       </ScrollToTop>
+                    </li>
+                    <li>
+                      <Link onClick={logOutFunction}>
+                        <LogoutIcon /> log out
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -115,6 +159,7 @@ export default function NavBar() {
             </div>
           ) : (
             <div className="logIn_signIn">
+
               <div className="buttons">
                 <ScrollToTop>
                   <Link to="/log-in" className="button">
@@ -127,6 +172,7 @@ export default function NavBar() {
                   </Link>
                 </ScrollToTop>
               </div>
+
               <div className="icon" onClick={toggleMenu}>
                 <MenuIcon />
                 <div className="ab_menu" style={menuStyle}>
@@ -148,6 +194,7 @@ export default function NavBar() {
                   </ul>
                 </div>
               </div>
+
             </div>
           )}
         </div>

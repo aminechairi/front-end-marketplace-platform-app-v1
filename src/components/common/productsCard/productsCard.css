@@ -52,7 +52,7 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  z-index: 20;
+  z-index: 1;
   cursor: pointer;
 }
 .products_card .sec_1 .ab_img .like .heart-container .svg-container {

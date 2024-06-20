@@ -44,18 +44,14 @@ export const authSignUp = createAsyncThunk(
   }
 );
 
-// Async Thunk for logout
-// export const logout = createAsyncThunk(
-//   "auth/logout",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       localStorage.removeItem("token");
-//       return {};
-//     } catch (error) {
-//       return rejectWithValue("Logout failed");
-//     }
-//   }
-// );
+// Async Thunk for authLogOut
+export const authLogOut = createAsyncThunk(
+  "auth/authLogOut",
+  async () => {
+    cookieManager("delete", "JWTToken");
+    throw window.location.replace("/");
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -91,17 +87,6 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       });
-    // Log out
-    // .addCase(logout.fulfilled, (state) => {
-    //   state.status = "idle";
-    //   state.user = null;
-    //   state.token = null;
-    //   state.error = null;
-    // })
-    // .addCase(logout.rejected, (state, action) => {
-    //   state.status = "failed";
-    //   state.error = action.payload;
-    // });
   },
 });
 
