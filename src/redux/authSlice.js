@@ -49,7 +49,7 @@ export const authLogOut = createAsyncThunk(
   "auth/authLogOut",
   async () => {
     cookieManager("delete", "JWTToken");
-    throw window.location.replace("/");
+    throw window.location.replace("/log-in");
   }
 );
 
