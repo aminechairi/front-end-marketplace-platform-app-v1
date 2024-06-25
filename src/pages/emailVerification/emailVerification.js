@@ -35,13 +35,8 @@ function EmailVerification() {
       emailVerificationCode: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       dispatch(emailverificationcode(values));
-      resetForm({
-        values: {
-          emailVerificationCode: "",
-        },
-      });
     },
   });
 

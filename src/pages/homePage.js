@@ -5,6 +5,7 @@ import NavBar from "../components/navBar/navBar";
 import Advertisements from "../components/advertisements/advertisements";
 import Categories from "../components/categories/categories";
 import Products from "../components/products/products";
+import Footer from "../components/footer/footer";
 
 import { fetchCategories } from "../redux/categoriesSlice";
 import { fetchProducts } from "../redux/productsSlice";
@@ -108,6 +109,7 @@ export default function HomePage() {
         status={products["2"].status}
         data={products["2"].data}
       />
+      <Footer />
     </>
   );
 }

@@ -60,20 +60,11 @@ function SignUp() {
       confirmPassword: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       if (phoneNumber.length > 0) {
         values.phoneNumber = "+" + phoneNumber;
       }
       dispatch(authSignUp(values));
-      resetForm({
-        values: {
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        },
-      });
       setPhoneNumber("212");
       setOneSubmit(true);
     },

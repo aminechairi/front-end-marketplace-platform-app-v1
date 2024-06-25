@@ -29,14 +29,8 @@ function LogIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       dispatch(authLogIn(values));
-      resetForm({
-        values: {
-          email: "",
-          password: "",
-        },
-      });
       setOneSubmit(true);
     },
   });
