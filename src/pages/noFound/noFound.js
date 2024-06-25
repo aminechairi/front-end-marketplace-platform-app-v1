@@ -13,7 +13,7 @@ export default function NoFound() {
       <div className="noFound">
         <div className="container">
           <div className="ab">
-            <img src={require("../../imgs/404.png")} alt="" />
+            <img src={require("../../imgs/404.jpg")} alt="" />
             <p>
               Oops! The page you are looking for seems to be nowhere to be
               found!

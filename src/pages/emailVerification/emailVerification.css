@@ -1,11 +1,16 @@
+.email_verification {
+  padding: 80px 0px;
+  background-color: var(--backgrounds-color-1);
+}
 .email_verification .container .ab {
   padding: 30px 0px;
   position: relative;
   padding: 12px;
-  margin: 80px auto;
+  margin: 0px auto;
   border-radius: 14px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   overflow: hidden;
+  background-color: var(--backgrounds-color-1);
 }
 .email_verification .container .ab .loading {
   position: absolute;
