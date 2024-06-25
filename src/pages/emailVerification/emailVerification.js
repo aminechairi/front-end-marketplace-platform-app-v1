@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import "./emailVerification.css";
 import NavBar from "../../components/navBar/navBar";
@@ -22,6 +23,8 @@ const validationSchema = Yup.object().shape({
 function EmailVerification() {
   const emailVrf = useSelector((state) => state.emailVerification);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(emailVerification());
@@ -44,9 +47,9 @@ function EmailVerification() {
 
   useEffect(() => {
     if (emailVrf.data?.status === "Verified") {
-      window.location.replace("/");
+      navigate("/");
     }
-  }, [emailVrf.data?.status]);
+  }, [emailVrf.data?.status, navigate]);
 
   return (
     <>
@@ -121,4 +124,5 @@ function EmailVerification() {
     </>
   );
 }
+
 export default EmailVerification;

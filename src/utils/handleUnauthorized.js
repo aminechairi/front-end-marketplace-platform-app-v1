@@ -4,7 +4,7 @@ import cookieManager from "./cookieManager";
 const handleUnauthorized = (response) => {
   if (response.status === 401) {
     cookieManager("delete", "JWTToken");
-    throw window.location.replace("/");
+    throw window.location.replace("/log-in");
   }
   if (response.status === 403) {
     throw window.location.replace("/users/email-verification");
