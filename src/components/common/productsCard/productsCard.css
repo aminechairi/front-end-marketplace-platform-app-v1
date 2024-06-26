@@ -24,7 +24,7 @@
   width: 100%;
 }
 /* Start button like */
-.products_card .sec_1 .ab_img .like {
+.products_card .sec_1 .ab_img .save {
   position: absolute;
   top: 7.5px;
   right: 7.5px;
@@ -32,7 +32,7 @@
   border-radius: 50%;
   padding: 4px;
 }
-.products_card .sec_1 .ab_img .like .heart-container {
+.products_card .sec_1 .ab_img .save .heart-container {
   --heart-color: rgb(255, 74, 125);
   /* --heart-color: var(--main-color); */
   position: relative;
@@ -42,12 +42,12 @@
 }
 /* md	*/
 @media (min-width: 768px) {
-  .products_card .sec_1 .ab_img .like .heart-container {
+  .products_card .sec_1 .ab_img .save .heart-container {
     width: 24px;
     height: 24px;
   }
 }
-.products_card .sec_1 .ab_img .like .heart-container .checkbox {
+.products_card .sec_1 .ab_img .save .heart-container .checkbox {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -55,23 +55,23 @@
   z-index: 1;
   cursor: pointer;
 }
-.products_card .sec_1 .ab_img .like .heart-container .svg-container {
+.products_card .sec_1 .ab_img .save .heart-container .svg-container {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.products_card .sec_1 .ab_img .like .heart-container .svg-outline,
-.products_card .sec_1 .ab_img .like .heart-container .svg-filled {
+.products_card .sec_1 .ab_img .save .heart-container .svg-outline,
+.products_card .sec_1 .ab_img .save .heart-container .svg-filled {
   fill: var(--heart-color);
   position: absolute;
 }
-.products_card .sec_1 .ab_img .like .heart-container .svg-filled {
+.products_card .sec_1 .ab_img .save .heart-container .svg-filled {
   animation: keyframes-svg-filled 1s;
   display: none;
 }
-.products_card .sec_1 .ab_img .like .heart-container .svg-celebrate {
+.products_card .sec_1 .ab_img .save .heart-container .svg-celebrate {
   position: absolute;
   animation: keyframes-svg-celebrate 0.5s;
   animation-fill-mode: forwards;
@@ -83,7 +83,7 @@
 .products_card
   .sec_1
   .ab_img
-  .like
+  .save
   .heart-container
   .checkbox:checked
   ~ .svg-container
@@ -93,7 +93,7 @@
 .products_card
   .sec_1
   .ab_img
-  .like
+  .save
   .heart-container
   .checkbox:checked
   ~ .svg-container

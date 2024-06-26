@@ -65,7 +65,7 @@ export default function NavBar() {
                   height={80}
                   alt=""
                 />
-                <h1 className="title">dianomi</h1>
+                <h1 className="title">e shop app</h1>
               </div>
             </Link>
           </ScrollToTop>

@@ -65,7 +65,6 @@ function SignUp() {
         values.phoneNumber = "+" + phoneNumber;
       }
       dispatch(authSignUp(values));
-      setPhoneNumber("212");
       setOneSubmit(true);
     },
   });

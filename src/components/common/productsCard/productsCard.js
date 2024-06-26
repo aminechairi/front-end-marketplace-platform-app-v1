@@ -1,10 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import "./productsCard.css";
-
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
+import { /* useSelector */ useDispatch } from "react-redux";
+
+import {
+  addProductToSaves,
+  removeProductFromSaves,
+} from "../../../redux/savesSlice";
 
 // Calculate Discount Percentage
 function calculateDiscountPercentage(originalPrice, discountedPrice) {
@@ -32,6 +37,25 @@ export default function ProductsCard({
   ratingsQuantity,
   save,
 }) {
+  // const saves = useSelector((state) => state.saves);
+  const dispatch = useDispatch();
+
+  const [isSaved, setIsSaved] = useState(Boolean(save));
+
+  const handleSaveChange = (e, productId) => {
+    setIsSaved(e.target.checked);
+
+    if (e.target.checked) {
+      dispatch(
+        addProductToSaves({
+          productId: productId,
+        })
+      );
+    } else {
+      dispatch(removeProductFromSaves(productId));
+    };
+  };
+
   return (
     <div className="products_card">
       <section className="sec_1">
@@ -46,13 +70,14 @@ export default function ProductsCard({
               }}
             />
           </Link>
-          <div className="like">
+          <div className="save">
             <div className="heart-container" title="Like">
               <input
-                defaultChecked={Boolean(save)}
+                checked={isSaved}
                 type="checkbox"
                 className="checkbox"
                 id="Give-It-An-Id"
+                onChange={(e) => handleSaveChange(e, _id)}
               />
               <div className="svg-container">
                 <svg

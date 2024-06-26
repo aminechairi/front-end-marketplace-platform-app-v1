@@ -3,6 +3,7 @@ import authReducer from "./authSlice";
 import emailVerificationReducer from "./emailVerificationSlice";
 import categoriesReducer from "./categoriesSlice";
 import productsReducer from "./productsSlice";
+import savesReducer from "./savesSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     emailVerification: emailVerificationReducer,
     categories: categoriesReducer,
     products: productsReducer,
+    saves: savesReducer,
   },
 });
 
