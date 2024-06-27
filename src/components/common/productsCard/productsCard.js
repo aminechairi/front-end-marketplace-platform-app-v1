@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./productsCard.css";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
@@ -10,6 +10,7 @@ import {
   addProductToSaves,
   removeProductFromSaves,
 } from "../../../redux/savesSlice";
+import cookieManager from "../../../utils/cookieManager";
 
 // Calculate Discount Percentage
 function calculateDiscountPercentage(originalPrice, discountedPrice) {
@@ -41,19 +42,23 @@ export default function ProductsCard({
   const dispatch = useDispatch();
 
   const [isSaved, setIsSaved] = useState(Boolean(save));
+  const navigate = useNavigate();
 
   const handleSaveChange = (e, productId) => {
     setIsSaved(e.target.checked);
-
-    if (e.target.checked) {
-      dispatch(
-        addProductToSaves({
-          productId: productId,
-        })
-      );
+    if (cookieManager("get", "JWTToken")) {
+      if (e.target.checked) {
+        dispatch(
+          addProductToSaves({
+            productId: productId,
+          })
+        );
+      } else {
+        dispatch(removeProductFromSaves(productId));
+      };
     } else {
-      dispatch(removeProductFromSaves(productId));
-    };
+      navigate("log-in");
+    }
   };
 
   return (

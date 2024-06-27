@@ -1,7 +1,7 @@
 .navBar {
   padding: 15px 0px;
   background-color: var( --backgrounds-color-1);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: var(--shadow-1);
   position: sticky;
   top: 0;
   z-index: 2;
@@ -115,7 +115,7 @@
   row-gap: 2px;
   border-radius: 7.4px;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: var(--shadow-1);
 }
 .navBar .container .ab .ab_menu .menu > li > a {
   display: flex;

@@ -12,6 +12,7 @@
   --text-color: #050505;
   --backgrounds-color-1: #fff;
   --backgrounds-color-2: #f7f7fa;
+  --shadow-1: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   --transition: 0.3s all;
   --animation-skeletion: animationSkeletion 1s linear infinite;
 }
