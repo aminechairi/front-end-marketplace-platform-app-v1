@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +10,7 @@ import Footer from "../../components/footer/footer";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { authLogIn } from "../../redux/authSlice";
+import { setCookie } from "../../redux/cookiesSlice";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,6 +24,8 @@ function LogIn() {
 
   const logIn = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -37,9 +41,12 @@ function LogIn() {
 
   useEffect(() => {
     if (logIn.data?.token) {
-      window.location.replace("/");
+      dispatch(
+        setCookie({ name: "JWTToken", value: logIn.data?.token, days: 90 })
+      );
+      navigate("/");
     }
-  }, [logIn.data?.token]);
+  }, [dispatch, logIn.data?.token, navigate]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
-import cookieManager from "../utils/cookieManager";
+import { deleteCookie } from "./cookiesSlice";
 
 // Async Thunk for authLogIn
 export const authLogIn = createAsyncThunk("auth/logIn", async (requestBody) => {
@@ -12,13 +12,7 @@ export const authLogIn = createAsyncThunk("auth/logIn", async (requestBody) => {
     },
     body: JSON.stringify(requestBody),
   });
-
   const data = await response.json();
-
-  if (data.token) {
-    cookieManager("set", "JWTToken", data.token, 90);
-  }
-
   return data;
 });
 
@@ -33,13 +27,7 @@ export const authSignUp = createAsyncThunk(
       },
       body: JSON.stringify(requestBody),
     });
-
     const data = await response.json();
-
-    if (data.token) {
-      cookieManager("set", "JWTToken", data.token, 90);
-    }
-
     return data;
   }
 );
@@ -47,9 +35,9 @@ export const authSignUp = createAsyncThunk(
 // Async Thunk for authLogOut
 export const authLogOut = createAsyncThunk(
   "auth/authLogOut",
-  async () => {
-    cookieManager("delete", "JWTToken");
-    throw window.location.replace("/log-in");
+  async (_, { dispatch }) => {
+    dispatch(deleteCookie({ name: "JWTToken" }));
+    return true;
   }
 );
 
@@ -84,6 +72,18 @@ const authSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(authSignUp.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      // Log out
+      .addCase(authLogOut.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(authLogOut.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.data = null;
+      })
+      .addCase(authLogOut.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

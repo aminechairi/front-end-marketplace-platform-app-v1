@@ -1,8 +1,8 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import "./emailVerification.css";
 import NavBar from "../../components/navBar/navBar";
@@ -11,7 +11,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import {
   emailVerification,
-  emailverificationcode,
+  emailVerificationCode,
 } from "../../redux/emailVerificationSlice";
 
 const validationSchema = Yup.object().shape({
@@ -36,7 +36,7 @@ function EmailVerification() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(emailverificationcode(values));
+      dispatch(emailVerificationCode(values));
     },
   });
 

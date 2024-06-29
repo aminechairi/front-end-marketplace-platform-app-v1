@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
@@ -12,11 +12,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 import "./navBar.css";
 import ScrollToTop from "../common/scrollToTop/scrollToTop";
-import cookieManager from "../../utils/cookieManager";
-
 import { authLogOut } from "../../redux/authSlice";
-
-const auth = cookieManager("get", "JWTToken");
 
 export default function NavBar() {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -25,6 +21,10 @@ export default function NavBar() {
     visibility: "hidden",
     transform: "translateY(-10px)",
   });
+
+  const auth = useSelector((state) => state.cookies.JWTToken);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (menuVisible) {
@@ -46,10 +46,11 @@ export default function NavBar() {
     setMenuVisible(!menuVisible);
   };
 
-  const dispatch = useDispatch();
-
-  const logOutFunction = () => {
-    dispatch(authLogOut());
+  const logOutFunction = async () => {
+    const resultAction = await dispatch(authLogOut());
+    if (authLogOut.fulfilled.match(resultAction)) {
+      navigate("/log-in");
+    }
   };
 
   return (
@@ -159,7 +160,6 @@ export default function NavBar() {
             </div>
           ) : (
             <div className="logIn_signIn">
-
               <div className="buttons">
                 <ScrollToTop>
                   <Link to="/log-in" className="button">
@@ -194,7 +194,6 @@ export default function NavBar() {
                   </ul>
                 </div>
               </div>
-
             </div>
           )}
         </div>

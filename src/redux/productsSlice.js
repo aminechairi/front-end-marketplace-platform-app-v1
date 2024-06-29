@@ -1,20 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
-import cookieManager from "../utils/cookieManager";
 
 // Async Thunk for fetching products from the API
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async (requestInformations) => {
+  async (requestInformations, { getState }) => {
     const url = new URL(`${baseUrl}/products`);
     url.search = new URLSearchParams(
       requestInformations.queryParams
     ).toString();
 
-    let token = ``;
-    if (cookieManager("get", "JWTToken")) {
-      token = `Bearer ${cookieManager("get", "JWTToken")}`;
+    const state = getState();
+    const JWTToken = state.cookies.JWTToken;
+
+    let token = '';
+    if (JWTToken) {
+      token = `Bearer ${JWTToken}`;
     }
 
     const response = await fetch(url, {

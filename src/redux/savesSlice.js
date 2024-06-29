@@ -1,18 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
-import cookieManager from "../utils/cookieManager";
 import handleUnauthorized from "../utils/handleUnauthorized";
 
 // Async Thunk for add product to saves from the API
 export const addProductToSaves = createAsyncThunk(
   "saves/addProductToSaves",
-  async (requestBody) => {
+  async (requestBody, { getState }) => {
+    const state = getState();
+    const JWTToken = state.cookies.JWTToken;
+
     const response = await fetch(`${baseUrl}/saves`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+        Authorization: `Bearer ${JWTToken}`,
       },
       body: JSON.stringify(requestBody),
     });
@@ -28,12 +30,15 @@ export const addProductToSaves = createAsyncThunk(
 // Async Thunk for remove product from saves from the API
 export const removeProductFromSaves = createAsyncThunk(
   "saves/removeProductFromSaves",
-  async (productId) => {
+  async (productId, { getState }) => {
+    const state = getState();
+    const JWTToken = state.cookies.JWTToken;
+
     const response = await fetch(`${baseUrl}/saves/${productId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+        Authorization: `Bearer ${JWTToken}`,
       },
     });
 

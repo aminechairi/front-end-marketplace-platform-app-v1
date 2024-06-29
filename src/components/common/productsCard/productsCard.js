@@ -4,13 +4,12 @@ import "./productsCard.css";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
-import { /* useSelector */ useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   addProductToSaves,
   removeProductFromSaves,
 } from "../../../redux/savesSlice";
-import cookieManager from "../../../utils/cookieManager";
 
 // Calculate Discount Percentage
 function calculateDiscountPercentage(originalPrice, discountedPrice) {
@@ -38,15 +37,16 @@ export default function ProductsCard({
   ratingsQuantity,
   save,
 }) {
-  // const saves = useSelector((state) => state.saves);
+  const JWTToken = useSelector((state) => state.cookies.JWTToken);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isSaved, setIsSaved] = useState(Boolean(save));
-  const navigate = useNavigate();
 
   const handleSaveChange = (e, productId) => {
     setIsSaved(e.target.checked);
-    if (cookieManager("get", "JWTToken")) {
+    if (JWTToken) {
       if (e.target.checked) {
         dispatch(
           addProductToSaves({
@@ -55,9 +55,9 @@ export default function ProductsCard({
         );
       } else {
         dispatch(removeProductFromSaves(productId));
-      };
+      }
     } else {
-      navigate("log-in");
+      navigate("/log-in");
     }
   };
 
