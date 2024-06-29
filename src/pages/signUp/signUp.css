@@ -64,9 +64,14 @@
   border: 1px solid #3867df79;
   border-radius: 14px;
   caret-color: var(--main-color);
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
 }
 .sign_up .container .ab .form .input:focus {
   outline: none;
+}
+.sign_up .container .ab .form .input::placeholder {
+  color: var(--imputs-placeholder);
 }
 .sign_up .container .ab .form .form-control  {
   display: block;
@@ -75,9 +80,35 @@
   border: 1px solid #3867df79;
   border-radius: 14px;
   caret-color: var(--main-color);
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
 }
 .sign_up .container .ab .form .form-control:focus {
   outline: none;
+}
+.sign_up .container .ab .form .flag-dropdown {
+  border: none;
+}
+.sign_up .container .ab .form .selected-flag {
+  border: 1px solid #3867df79;
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
+}
+.sign_up .container .ab .form .country-list {
+  background-color: var(--backgrounds-color-1);
+}
+.sign_up .container .ab .form .country {
+  color: var(--text-color);
+}
+.sign_up .container .ab .form .country:hover {
+  background-color: var(--backgrounds-color-2);
+}
+.sign_up .container .ab .form .highlight {
+  color: var(--text-color);
+  background-color: var(--backgrounds-color-1);
+}
+.sign_up .container .ab .form .dial-code {
+  color: var(--imputs-placeholder);
 }
 .sign_up .container .ab .form .submit {
   display: block;

@@ -13,19 +13,35 @@
   --backgrounds-color-1: #fff;
   --backgrounds-color-2: #f7f7fa;
   --shadow-1: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  --imputs-placeholder: #888888;
   --transition: 0.3s all;
   --animation-skeletion: animationSkeletion 1s linear infinite;
+
+  /* --main-color: #3866df;
+  --text-color: #f5f5f5;
+  --backgrounds-color-1: #121212;
+  --backgrounds-color-2: #1d1d1d;
+  --shadow-1: rgba(0, 0, 0, 0.7) 0px 4px 12px;
+  --imputs-placeholder: #888888;
+  --transition: 0.3s all;
+  --animation-skeletion: animationSkeletion 1s linear infinite; */
 }
 
 /* Start animation skeletion */
 @keyframes animationSkeletion {
   0%, 100% {
     background-color: #eeeeee;
-    color: #eeeeee;    
+    color: #eeeeee;
+
+    /* background-color: #333333;
+    color: #333333;    */
   }
   50% {
     background-color: #dddddd;
     color: #dddddd;
+
+    /* background-color: #444444;
+    color: #444444; */
   }
 }
 /* End animation skeletion */

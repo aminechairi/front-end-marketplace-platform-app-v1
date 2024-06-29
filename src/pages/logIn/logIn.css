@@ -63,6 +63,11 @@
   border: 1px solid #3867df79;
   border-radius: 14px;
   caret-color: var(--main-color);
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
+}
+.log_in .container .ab .form .input::placeholder {
+  color: var(--imputs-placeholder);
 }
 .log_in .container .ab .form .input:focus {
   outline: none;
