@@ -255,7 +255,7 @@ function SignUp() {
                 ) : null}
               </div>
 
-              <input className="submit" type="submit" defaultValue="Submit" />
+              <input className="submit" type="submit" value="Sign up" />
             </form>
           </div>
         </div>

@@ -82,12 +82,25 @@
   cursor: pointer;
   background-color: var(--main-color);
   color: white;
+  margin-bottom: 12px;
 }
 .log_in .container .ab .form .submit:focus {
   outline: none;
 }
 .log_in .container .ab .form .ab_inputs {
   padding-bottom: 12px;
+}
+.log_in .container .ab .forgot_password {
+  display: block;
+  width: 100%;
+  color: var(--main-color);
+  text-align: center;
+  font-size: 16px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.log_in .container .ab .forgot_password:hover {
+  text-decoration: underline;
 }
 /* start media query  */
 /* sm */

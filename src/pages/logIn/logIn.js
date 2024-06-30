@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
@@ -124,8 +124,11 @@ function LogIn() {
                 ) : null}
               </div>
 
-              <input className="submit" type="submit" defaultValue="Submit" />
+              <input className="submit" type="submit" value="Log in" />
             </form>
+            <Link>
+              <button className=" forgot_password">forgot password</button>
+            </Link>
           </div>
         </div>
       </div>
