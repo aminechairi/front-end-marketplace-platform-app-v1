@@ -9,6 +9,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import "./navBar.css";
 import ScrollToTop from "../common/scrollToTop/scrollToTop";
@@ -20,6 +22,11 @@ export default function NavBar() {
     opacity: 0,
     visibility: "hidden",
     transform: "translateY(-10px)",
+  });
+
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode === "true" || false;
   });
 
   const auth = useSelector((state) => state.cookies.JWTToken);
@@ -42,8 +49,23 @@ export default function NavBar() {
     }
   }, [menuVisible]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      darkMode ? "dark" : "light"
+    );
+  }, [darkMode]);
+
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("darkMode", newMode);
+      return newMode;
+    });
   };
 
   const logOutFunction = async () => {
@@ -87,6 +109,9 @@ export default function NavBar() {
           {auth ? (
             <div className="chooses">
               <div className="buttons">
+                <button className="button" onClick={toggleDarkMode}>
+                  {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                </button>
                 <button className="button">
                   <ScrollToTop>
                     <Link to="/">
@@ -150,6 +175,19 @@ export default function NavBar() {
                       </ScrollToTop>
                     </li>
                     <li>
+                      <Link onClick={toggleDarkMode}>
+                        {darkMode ? (
+                          <>
+                            <Brightness7Icon /> light mode
+                          </>
+                        ) : (
+                          <>
+                            <Brightness4Icon /> dark mode
+                          </>
+                        )}
+                      </Link>
+                    </li>
+                    <li>
                       <Link onClick={logOutFunction}>
                         <LogoutIcon /> log out
                       </Link>
@@ -161,6 +199,9 @@ export default function NavBar() {
           ) : (
             <div className="logIn_signIn">
               <div className="buttons">
+                <Link className="button" onClick={toggleDarkMode}>
+                  {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                </Link>
                 <ScrollToTop>
                   <Link to="/log-in" className="button">
                     log in
@@ -190,6 +231,19 @@ export default function NavBar() {
                           <ExitToAppIcon /> sign up
                         </Link>
                       </ScrollToTop>
+                    </li>
+                    <li>
+                      <Link onClick={toggleDarkMode}>
+                        {darkMode ? (
+                          <>
+                            <Brightness7Icon /> light mode
+                          </>
+                        ) : (
+                          <>
+                            <Brightness4Icon /> dark mode
+                          </>
+                        )}
+                      </Link>
                     </li>
                   </ul>
                 </div>

@@ -14,34 +14,37 @@
   --backgrounds-color-2: #f7f7fa;
   --shadow-1: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   --imputs-placeholder: #888888;
+  --bg-color-forms-loading: #ffffff9f;
   --transition: 0.3s all;
+  --color-skeletion-1: #eeeeee;
+  --color-skeletion-2: #dddddd;
   --animation-skeletion: animationSkeletion 1s linear infinite;
+}
 
-  /* --main-color: #3866df;
+/* Dark mode styles */
+[data-theme='dark'] {
+  --main-color: #3866df;
   --text-color: #f5f5f5;
   --backgrounds-color-1: #121212;
   --backgrounds-color-2: #1d1d1d;
   --shadow-1: rgba(0, 0, 0, 0.7) 0px 4px 12px;
   --imputs-placeholder: #888888;
+  --bg-color-forms-loading: #0000009f;
   --transition: 0.3s all;
-  --animation-skeletion: animationSkeletion 1s linear infinite; */
+  --color-skeletion-1: #333333;
+  --color-skeletion-2: #444444;
+  --animation-skeletion: animationSkeletion 1s linear infinite;
 }
 
 /* Start animation skeletion */
 @keyframes animationSkeletion {
   0%, 100% {
-    background-color: #eeeeee;
-    color: #eeeeee;
-
-    /* background-color: #333333;
-    color: #333333;    */
+    background-color: var(--color-skeletion-1);
+    color: var(--color-skeletion-1);  
   }
   50% {
-    background-color: #dddddd;
-    color: #dddddd;
-
-    /* background-color: #444444;
-    color: #444444; */
+    background-color: var(--color-skeletion-2);
+    color: var(--color-skeletion-2);
   }
 }
 /* End animation skeletion */

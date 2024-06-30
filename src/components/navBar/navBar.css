@@ -154,10 +154,6 @@
     width: 46px;
     height: 46px;
   }
-  .navBar .container .ab .logo .title {
-    display: block;
-    font-size: 22px;
-  }
   .navBar .container .ab .search form .input_search {
     padding: 0px 20px;
   }
@@ -181,9 +177,18 @@
     cursor: pointer;
     color: var(--text-color);
   }
-  .navBar .container .ab .logIn_signIn .buttons :last-child {
+  .navBar .container .ab .logIn_signIn .buttons > :nth-child(3) {
     background-color: var(--main-color);
     color: var( --backgrounds-color-1);
+  }
+  .navBar .container .ab .logIn_signIn .buttons > :nth-child(1) {
+    background-color: transparent;
+    color: var( --text-color);
+    border-color: transparent;
+    padding: 0;
+  }
+  .navBar .container .ab .logIn_signIn .buttons > :nth-child(1) svg {
+    font-size: 32px;
   }
   .navBar .container .ab .logIn_signIn .icon {
     display: none;
@@ -206,7 +211,6 @@
     display: none;
   }
   .navBar .container .ab .ab_menu {
-    /* background-color: transparent; */
     top: 78px;
   }
   .navBar .container .ab .ab_menu .menu {
@@ -217,6 +221,10 @@
 @media (min-width: 1024px) {
   .navBar {
     padding: 16px 0px;
+  }
+  .navBar .container .ab .logo .title {
+    display: block;
+    font-size: 22px;
   }
 }
 /* end media query */
