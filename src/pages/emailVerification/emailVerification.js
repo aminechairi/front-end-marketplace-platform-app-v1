@@ -49,7 +49,7 @@ function EmailVerification() {
   return (
     <>
       <NavBar />
-      <div className="email_verification">
+      <div className="forms email_verification">
         <div className="container">
           <div className="ab">
             {emailVrf.status === "loading" ? (

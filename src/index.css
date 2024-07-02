@@ -49,6 +49,138 @@
 }
 /* End animation skeletion */
 
+/* start Forms design */
+.forms {
+  background-color: var(--backgrounds-color-1);
+}
+.forms .container .ab {
+  padding: 30px 0px;
+  position: relative;
+  padding: 12px;
+  margin: 0px auto;
+  border-radius: 14px;
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+  background-color: var(--backgrounds-color-1);
+}
+.forms .container .ab .loading {
+  position: absolute;
+  width: 100%;
+  height: calc(100%);
+  background-color: var(--bg-color-forms-loading);
+  cursor: not-allowed;
+  color: var(--main-color);
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+.forms .container .ab .title {
+  padding: 0px 0px 12px;
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--main-color);
+  text-align: center;
+  text-transform: uppercase;
+}
+.forms .container .ab .alert_error {
+  background-color: #fff5f5;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid #c53030;
+  margin-bottom: 6px;
+}
+.forms .container .ab .alert_error p {
+  color: #c53030;
+  font-size: 14px;
+}
+.forms .container .ab .alert_success {
+  background-color: #e6fffa;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid #38b2ac;
+  margin-bottom: 6px;
+}
+.forms .container .ab .alert_success p {
+  color: #294e52;
+  font-size: 14px;
+}
+.forms .container .ab .error_of_input {
+  color: #c53030;
+  font-size: 14px;
+}
+.forms .container .ab .form .label {
+  display: block;
+  text-align: left;
+  color: var(--text-color);
+  font-weight: 400;
+  text-transform: capitalize;
+  font-size: 16px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+.forms .container .ab .form .input {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  padding: 8px;
+  border: 1px solid #3867df79;
+  border-radius: 14px;
+  caret-color: var(--main-color);
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
+}
+.forms .container .ab .form .input:focus {
+  outline: none;
+}
+.forms .container .ab .form .input::placeholder {
+  color: var(--imputs-placeholder);
+}
+.forms .container .ab .form .submit {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  padding: 4px;
+  border: 1px solid var(--main-color);
+  border-radius: 14px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: white;
+}
+.forms .container .ab .form .submit:focus {
+  outline: none;
+}
+.forms .container .ab .form .ab_inputs {
+  padding-bottom: 12px;
+}
+.forms .container .ab .link {
+  display: block;
+  width: 100%;
+  color: var(--main-color);
+  text-align: center;
+  font-size: 16px;
+  text-transform: capitalize;
+  cursor: pointer;
+  margin-top: 12px;
+}
+.forms .container .ab .link:hover {
+  text-decoration: underline;
+}
+/* start media query  */
+/* lg */
+@media (min-width: 1024px) {
+  .forms .container .ab {
+    width: 70%;
+  }
+}
+/* xl */
+@media (min-width: 1280px) {
+  .forms .container .ab {
+    width: 50%;
+  }
+}
+/* end media query */
+/* end Forms design */
+
 /* sm	*/
 /* @media (min-width: 640px) {} */
 /* md	*/

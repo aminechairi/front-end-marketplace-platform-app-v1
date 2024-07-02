@@ -51,7 +51,7 @@ function LogIn() {
   return (
     <>
       <NavBar />
-      <div className="log_in">
+      <div className="forms log_in">
         <div className="container">
           <div className="ab">
             {logIn.status === "loading" ? (
@@ -126,8 +126,8 @@ function LogIn() {
 
               <input className="submit" type="submit" value="Log in" />
             </form>
-            <Link>
-              <button className=" forgot_password">forgot password</button>
+            <Link to="forgot-password">
+              <button className="link">forgot password</button>
             </Link>
           </div>
         </div>

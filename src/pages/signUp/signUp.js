@@ -85,7 +85,7 @@ function SignUp() {
   return (
     <>
       <NavBar />
-      <div className="sign_up">
+      <div className="forms sign_up">
         <div className="container">
           <div className="ab">
             {signUp.status === "loading" ? (
