@@ -10,6 +10,7 @@ import {
   addProductToSaves,
   removeProductFromSaves,
 } from "../../../redux/savesSlice";
+import { LOGIN } from "./../../../routes";
 
 // Calculate Discount Percentage
 function calculateDiscountPercentage(originalPrice, discountedPrice) {
@@ -57,7 +58,7 @@ export default function ProductsCard({
         dispatch(removeProductFromSaves(productId));
       }
     } else {
-      navigate("/log-in");
+      navigate(LOGIN);
     }
   };
 

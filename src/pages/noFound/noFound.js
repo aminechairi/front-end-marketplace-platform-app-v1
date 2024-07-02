@@ -5,6 +5,7 @@ import "./noFound.css";
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import ScrollToTop from "../../components/common/scrollToTop/scrollToTop";
+import { HOME  } from "../../routes";
 
 export default function NoFound() {
   return (
@@ -20,7 +21,7 @@ export default function NoFound() {
             </p>
             <p>Rephrase your search or go to:</p>
             <ScrollToTop>
-              <Link to="/">
+              <Link to={HOME}>
                 <button className="buttom">Home Page</button>
               </Link>
             </ScrollToTop>

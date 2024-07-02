@@ -15,6 +15,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import "./navBar.css";
 import ScrollToTop from "../common/scrollToTop/scrollToTop";
 import { authLogOut } from "../../redux/authSlice";
+import { HOME, LOGIN, SIGNUP } from "../../routes";
 
 export default function NavBar() {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -71,7 +72,7 @@ export default function NavBar() {
   const logOutFunction = async () => {
     const resultAction = await dispatch(authLogOut());
     if (authLogOut.fulfilled.match(resultAction)) {
-      navigate("/log-in");
+      navigate(LOGIN);
     }
   };
 
@@ -80,7 +81,7 @@ export default function NavBar() {
       <div className="container">
         <div className="ab">
           <ScrollToTop>
-            <Link to={`/`}>
+            <Link to={HOME}>
               <div className="logo">
                 <img
                   src={require("../../imgs/logo.png")}
@@ -203,12 +204,12 @@ export default function NavBar() {
                   {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                 </Link>
                 <ScrollToTop>
-                  <Link to="/log-in" className="button">
+                  <Link to={LOGIN} className="button">
                     log in
                   </Link>
                 </ScrollToTop>
                 <ScrollToTop>
-                  <Link to="/sign-up" className="button">
+                  <Link to={SIGNUP} className="button">
                     sign up
                   </Link>
                 </ScrollToTop>
@@ -220,14 +221,14 @@ export default function NavBar() {
                   <ul className="menu">
                     <li>
                       <ScrollToTop>
-                        <Link to="/log-in">
+                        <Link to={LOGIN}>
                           <LoginIcon /> log in
                         </Link>
                       </ScrollToTop>
                     </li>
                     <li>
                       <ScrollToTop>
-                        <Link to="/sign-up">
+                        <Link to={SIGNUP}>
                           <ExitToAppIcon /> sign up
                         </Link>
                       </ScrollToTop>

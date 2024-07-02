@@ -14,6 +14,7 @@ import PhoneInput from "react-phone-input-2";
 
 import { authSignUp } from "../../redux/authSlice";
 import { setCookie } from "../../redux/cookiesSlice";
+import { EMAIL_VERIFICATION } from "../../routes";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -78,7 +79,7 @@ function SignUp() {
       dispatch(
         setCookie({ name: "JWTToken", value: signUp.data?.token, days: 90 })
       );
-      navigate("/users/email-verification");
+      navigate(EMAIL_VERIFICATION);
     }
   }, [dispatch, signUp.data?.token, navigate]);
 

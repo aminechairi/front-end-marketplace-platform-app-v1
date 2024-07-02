@@ -13,6 +13,7 @@ import {
   emailVerification,
   emailVerificationCode,
 } from "../../redux/emailVerificationSlice";
+import { HOME } from "../../routes";
 
 const validationSchema = Yup.object().shape({
   emailVerificationCode: Yup.string().required(
@@ -42,7 +43,7 @@ function EmailVerification() {
 
   useEffect(() => {
     if (emailVrf.data?.status === "Verified") {
-      navigate("/");
+      navigate(HOME);
     }
   }, [emailVrf.data?.status, navigate]);
 

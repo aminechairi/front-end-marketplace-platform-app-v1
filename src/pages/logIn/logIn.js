@@ -11,6 +11,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import { authLogIn } from "../../redux/authSlice";
 import { setCookie } from "../../redux/cookiesSlice";
+import { HOME, FORGOT_PASSWORD  } from "../../routes";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -44,7 +45,7 @@ function LogIn() {
       dispatch(
         setCookie({ name: "JWTToken", value: logIn.data?.token, days: 90 })
       );
-      navigate("/");
+      navigate(HOME);
     }
   }, [dispatch, logIn.data?.token, navigate]);
 
@@ -126,7 +127,7 @@ function LogIn() {
 
               <input className="submit" type="submit" value="Log in" />
             </form>
-            <Link to="forgot-password">
+            <Link to={FORGOT_PASSWORD}>
               <button className="link">forgot password</button>
             </Link>
           </div>
