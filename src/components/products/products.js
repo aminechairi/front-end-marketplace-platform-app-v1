@@ -1,7 +1,7 @@
 import "./products.css";
 
-import ProductsCard from "../common/productsCard/productsCard";
-import ProductsCardSkeletion from "../common/productsCard/productsCardSkeletion";
+import ProductsCard from "../productsCard/productsCard";
+import ProductsCardSkeletion from "../productsCard/productsCardSkeletion";
 
 export default function Products({ title, status, data }) {
   return status === "idle" || status === "loading" ? (

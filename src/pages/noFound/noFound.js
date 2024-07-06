@@ -4,7 +4,7 @@ import "./noFound.css";
 
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
-import ScrollToTop from "../../components/common/scrollToTop/scrollToTop";
+import ScrollToTop from "../../components/scrollToTop/scrollToTop";
 import { HOME  } from "../../routes";
 
 export default function NoFound() {

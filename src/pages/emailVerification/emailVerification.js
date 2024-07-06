@@ -62,7 +62,8 @@ function EmailVerification() {
             <h1 className="title">email Verification</h1>
 
             {emailVrf.data?.message &&
-            emailVrf.data?.status === "fail" &&
+            (emailVrf.data?.status === "fail" ||
+              emailVrf.data?.status === "error") &&
             emailVrf.status === "succeeded" ? (
               <div className="alert_error">
                 <p>{emailVrf.data?.message}</p>

@@ -9,8 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addProductToSaves,
   removeProductFromSaves,
-} from "../../../redux/savesSlice";
-import { LOGIN } from "./../../../routes";
+} from "../../redux/savesSlice";
+import { LOGIN } from "./../../routes";
 
 // Calculate Discount Percentage
 function calculateDiscountPercentage(originalPrice, discountedPrice) {
@@ -38,12 +38,10 @@ export default function ProductsCard({
   ratingsQuantity,
   save,
 }) {
+  const [isSaved, setIsSaved] = useState(Boolean(save));
   const JWTToken = useSelector((state) => state.cookies.JWTToken);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const [isSaved, setIsSaved] = useState(Boolean(save));
 
   const handleSaveChange = (e, productId) => {
     setIsSaved(e.target.checked);
@@ -72,7 +70,7 @@ export default function ProductsCard({
               alt=""
               className="img"
               onError={(e) => {
-                e.target.src = require("../../../imgs/no found.jpeg");
+                e.target.src = require("../../imgs/no found.jpeg");
               }}
             />
           </Link>

@@ -13,7 +13,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import "./navBar.css";
-import ScrollToTop from "../common/scrollToTop/scrollToTop";
+import ScrollToTop from "../scrollToTop/scrollToTop";
 import { authLogOut } from "../../redux/authSlice";
 import { HOME, LOGIN, SIGNUP } from "../../routes";
 

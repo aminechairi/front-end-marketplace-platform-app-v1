@@ -6,9 +6,19 @@ import HomePage from "./pages/homePage";
 import NoFound from "./pages/noFound/noFound";
 import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
+import ForgotPassword from "./pages/forgotPassword/forgotPassword";
+import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
 import EmailVerification from "./pages/emailVerification/emailVerification";
 
-import { HOME, NO_FOUND, LOGIN, SIGNUP, EMAIL_VERIFICATION } from "./routes";
+import {
+  HOME,
+  NO_FOUND,
+  LOGIN,
+  SIGNUP,
+  FORGOT_PASSWORD,
+  PASSWORD_RESET_CODE,
+  EMAIL_VERIFICATION,
+} from "./routes";
 
 function App() {
   return (
@@ -28,6 +38,22 @@ function App() {
         element={
           <ProtectedRoute isProtected={false} redirectTo={HOME}>
             <SignUp />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={FORGOT_PASSWORD}
+        element={
+          <ProtectedRoute isProtected={false} redirectTo={HOME}>
+            <ForgotPassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PASSWORD_RESET_CODE}
+        element={
+          <ProtectedRoute isProtected={false} redirectTo={HOME}>
+            <PasswordResetCode />
           </ProtectedRoute>
         }
       />

@@ -98,7 +98,8 @@ function SignUp() {
             <h1 className="title">sign up</h1>
 
             {signUp.data?.message &&
-            signUp.data?.status &&
+            (signUp.data?.status === "fail" ||
+              signUp.data?.status === "error") &&
             signUp.status === "succeeded" &&
             oneSubmit === true ? (
               <div className="alert_error">
