@@ -10,6 +10,9 @@
   display: flex;
   column-gap: 10px;
 }
+.navBar .container .ab a {
+  flex-shrink: 0;
+}
 .navBar .container .ab .logo {
   flex-grow: 0;
   cursor: pointer;
