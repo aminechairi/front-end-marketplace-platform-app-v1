@@ -8,7 +8,7 @@ export default function Products({ title, status, data }) {
     <div className="products">
       <div className="container">
         <div className="ab">
-          <h1 className="title">{title}</h1>
+          {title.length > 0 ? <h1 className="title">{title}</h1> : null}
           <div className="ab_cards">
             {Array.from(new Array(10)).map((_, i) => {
               return <ProductsCardSkeletion key={i + 1} />;
@@ -21,7 +21,7 @@ export default function Products({ title, status, data }) {
     <div className="products">
       <div className="container">
         <div className="ab">
-          <h1 className="title">{title}</h1>
+        {title.length > 0 ? <h1 className="title">{title}</h1> : null}
           <div className="ab_cards">
             {data.data.map((item, i) => {
               return (

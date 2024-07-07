@@ -181,6 +181,56 @@
 /* end media query */
 /* end forms design */
 
+/* start not found */
+.noFound {
+  background-color: var(--backgrounds-color-2);
+  padding: 80px 0;
+}
+.noFound .container .ab {
+  margin: 0px auto;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  box-shadow: var(--shadow-1);
+  padding: 12px;
+  background-color: var(--backgrounds-color-1);
+}
+/* sm */
+@media (min-width: 640px) {
+  .noFound .container .ab {
+    width: 440px;
+  }
+}
+.noFound .container .ab img {
+  width: 160px;
+  margin: 0 auto;
+}
+.noFound .container .ab h1 {
+  font-size: 16px;
+  color: var(--text-color);
+  font-weight: 500;
+  text-align: center;
+}
+.noFound .container .ab p {
+  font-size: 16px;
+  color: var(--text-color);
+  text-align: center;
+}
+.noFound .container .ab .buttom {
+  display: block;
+  width: 200px;
+  font-size: 16px;
+  padding: 4px;
+  border: 1px solid var(--main-color);
+  border-radius: 14px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: white;
+  margin: 0 auto;
+}
+/* end not found */
+
 /* sm	*/
 /* @media (min-width: 640px) {} */
 /* md	*/

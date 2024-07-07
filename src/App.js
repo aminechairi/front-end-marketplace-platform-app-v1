@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 
 import HomePage from "./pages/homePage";
+import Search from "./pages/search/search";
 import NoFound from "./pages/noFound/noFound";
 import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
@@ -12,6 +13,7 @@ import EmailVerification from "./pages/emailVerification/emailVerification";
 
 import {
   HOME,
+  SEARCH,
   NO_FOUND,
   LOGIN,
   SIGNUP,
@@ -24,6 +26,7 @@ function App() {
   return (
     <Routes>
       <Route path={HOME} element={<HomePage />} />
+      <Route path={SEARCH} element={<Search />} />
       <Route path={NO_FOUND} element={<NoFound />} />
       <Route
         path={LOGIN}

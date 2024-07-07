@@ -10,7 +10,7 @@ import Footer from "../components/footer/footer";
 import { fetchCategories } from "../redux/categoriesSlice";
 import { fetchProducts } from "../redux/productsSlice";
 
-export default function HomePage() {
+function HomePage() {
   const categories = useSelector((state) => state.categories);
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
@@ -113,3 +113,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export default HomePage;

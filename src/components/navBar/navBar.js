@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
@@ -33,6 +33,7 @@ export default function NavBar() {
   const auth = useSelector((state) => state.cookies.JWTToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { searchValue } = useParams();
 
   useEffect(() => {
     if (menuVisible) {
@@ -76,6 +77,14 @@ export default function NavBar() {
     }
   };
 
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const query = event.target.search.value;
+    if (query.length > 0) {
+      navigate(`/search/${query}`);
+    }
+  };
+
   return (
     <div className="navBar">
       <div className="container">
@@ -95,11 +104,13 @@ export default function NavBar() {
           </ScrollToTop>
 
           <div className="search">
-            <form>
+            <form onSubmit={handleSearch}>
               <input
                 className="input_search"
-                type="text"
+                type="search"
+                name="search"
                 placeholder="Search..."
+                defaultValue={searchValue}
               />
               <button className="button_input_search" type="submit">
                 <SearchIcon />
