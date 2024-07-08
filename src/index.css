@@ -52,7 +52,7 @@
 
 /* start forms design */
 .forms {
-  background-color: var(--backgrounds-color-1);
+  background-color: var(--backgrounds-color-2);
 }
 .forms .container .ab {
   padding: 30px 0px;
@@ -231,7 +231,7 @@
   width: 160px;
 }
 .noFound .container .ab h1 {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-color);
   font-weight: 500;
   text-align: center;

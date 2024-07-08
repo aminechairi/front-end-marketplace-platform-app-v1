@@ -43,13 +43,8 @@ function Search() {
   return (
     <>
       <NavBar />
-      {products[0].data?.data.length !== 0 ? (
-        <Products
-          title={""}
-          status={products["0"].status}
-          data={products["0"].data}
-        />
-      ) : (
+      {products[0].data?.data.length === 0 &&
+      products[0].status === "succeeded" ? (
         <div className="noFound">
           <div className="container">
             <div className="ab">
@@ -65,6 +60,12 @@ function Search() {
             </div>
           </div>
         </div>
+      ) : (
+        <Products
+          title={""}
+          status={products["0"].status}
+          data={products["0"].data}
+        />
       )}
       <Footer />
     </>
