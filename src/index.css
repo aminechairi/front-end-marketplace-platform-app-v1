@@ -22,7 +22,7 @@
 }
 
 /* Dark mode styles */
-[data-theme='dark'] {
+[data-theme="dark"] {
   --main-color: #3866df;
   --text-color: #f5f5f5;
   --backgrounds-color-1: #121212;
@@ -38,9 +38,10 @@
 
 /* Start animation skeletion */
 @keyframes animationSkeletion {
-  0%, 100% {
+  0%,
+  100% {
     background-color: var(--color-skeletion-1);
-    color: var(--color-skeletion-1);  
+    color: var(--color-skeletion-1);
   }
   50% {
     background-color: var(--color-skeletion-2);
@@ -184,38 +185,63 @@
 /* start not found */
 .noFound {
   background-color: var(--backgrounds-color-2);
-  padding: 80px 0;
+}
+.noFound .container {
+  height: calc(100vh - 70px);
+  position: relative;
+}
+/* md	*/
+@media (min-width: 768px) {
+  .noFound .container {
+    height: calc(100vh - 76px);
+  }
+}
+/* lg	*/
+@media (min-width: 1024px) {
+  .noFound .container {
+    height: calc(100vh - 78px);
+  }
 }
 .noFound .container .ab {
-  margin: 0px auto;
-  border-radius: 14px;
+  position: absolute;
+  top: -70px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  padding: 0px 16px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   row-gap: 8px;
-  box-shadow: var(--shadow-1);
-  padding: 12px;
-  background-color: var(--backgrounds-color-1);
 }
-/* sm */
-@media (min-width: 640px) {
+/* md	*/
+@media (min-width: 768px) {
   .noFound .container .ab {
-    width: 440px;
+    top: -76px;
+  }
+}
+/* lg	*/
+@media (min-width: 1024px) {
+  .noFound .container .ab {
+    top: -78px;
   }
 }
 .noFound .container .ab img {
   width: 160px;
-  margin: 0 auto;
 }
 .noFound .container .ab h1 {
   font-size: 16px;
   color: var(--text-color);
   font-weight: 500;
   text-align: center;
+  max-width: 500px;
 }
 .noFound .container .ab p {
   font-size: 16px;
   color: var(--text-color);
   text-align: center;
+  max-width: 500px;
 }
 .noFound .container .ab .buttom {
   display: block;
@@ -227,7 +253,6 @@
   cursor: pointer;
   background-color: var(--main-color);
   color: white;
-  margin: 0 auto;
 }
 /* end not found */
 
