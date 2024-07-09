@@ -50,6 +50,29 @@ export const removeProductFromSaves = createAsyncThunk(
   }
 );
 
+// Async Thunk for fetch saves from the API
+export const fetchSaves = createAsyncThunk(
+  "fetchSaves/fetchSaves",
+  async (_, { getState }) => {
+    const state = getState();
+    const JWTToken = state.cookies.JWTToken;
+
+    const response = await fetch(`${baseUrl}/saves`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${JWTToken}`,
+      },
+    });
+
+    handleUnauthorized(response);
+
+    const data = await response.json();
+
+    return data;
+  }
+);
+
 const savesSlice = createSlice({
   name: "saves",
   initialState: {
@@ -87,4 +110,30 @@ const savesSlice = createSlice({
   },
 });
 
-export default savesSlice.reducer;
+const fetchSavesSlice = createSlice({
+  name: "fetchSaves",
+  initialState: {
+    data: null,
+    status: "idle",
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // Fetch saves
+      .addCase(fetchSaves.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchSaves.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = action.payload;
+      })
+      .addCase(fetchSaves.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+  },
+});
+
+export const savesReducer = savesSlice.reducer;
+export const fetchSavesReducer = fetchSavesSlice.reducer;

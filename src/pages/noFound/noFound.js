@@ -12,7 +12,7 @@ export default function NoFound() {
       <div className="noFound">
         <div className="container">
           <div className="ab">
-            <img src={require("../../imgs/error-404.png")} alt="" />
+            <img src={require("../../imgs/no-results.png")} alt="" />
             <h1>Uh-oh, something went wrong here</h1>
             <p>Just keep browsing to get back on track</p>
             <ScrollToTop>

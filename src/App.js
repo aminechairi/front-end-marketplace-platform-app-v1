@@ -1,25 +1,26 @@
 import { Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
-
 import HomePage from "./pages/homePage";
 import Search from "./pages/search/search";
-import NoFound from "./pages/noFound/noFound";
 import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
 import ForgotPassword from "./pages/forgotPassword/forgotPassword";
 import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
 import EmailVerification from "./pages/emailVerification/emailVerification";
+import Saves from "./pages/saves/saves";
+import NoFound from "./pages/noFound/noFound";
 
 import {
   HOME,
   SEARCH,
-  NO_FOUND,
   LOGIN,
   SIGNUP,
   FORGOT_PASSWORD,
   PASSWORD_RESET_CODE,
   EMAIL_VERIFICATION,
+  SAVES,
+  NO_FOUND,
 } from "./routes";
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
     <Routes>
       <Route path={HOME} element={<HomePage />} />
       <Route path={SEARCH} element={<Search />} />
-      <Route path={NO_FOUND} element={<NoFound />} />
+
       <Route
         path={LOGIN}
         element={
@@ -60,6 +61,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path={EMAIL_VERIFICATION}
         element={
@@ -68,6 +70,16 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path={SAVES}
+        element={
+          <ProtectedRoute isProtected={true} redirectTo={HOME}>
+            <Saves />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path={NO_FOUND} element={<NoFound />} />
     </Routes>
   );
 }

@@ -43,7 +43,7 @@ function Search() {
   return (
     <>
       <NavBar />
-      {products[0].data?.data.length === 0 &&
+      {products[0].data?.data?.length === 0 &&
       products[0].status === "succeeded" ? (
         <div className="noFound">
           <div className="container">

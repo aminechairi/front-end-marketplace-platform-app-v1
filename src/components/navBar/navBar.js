@@ -15,7 +15,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import "./navBar.css";
 import ScrollToTop from "../scrollToTop/scrollToTop";
 import { authLogOut } from "../../redux/authSlice";
-import { HOME, LOGIN, SIGNUP } from "../../routes";
+import { HOME, LOGIN, SIGNUP, SAVES } from "../../routes";
 
 export default function NavBar() {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -126,7 +126,7 @@ export default function NavBar() {
                 </button>
                 <button className="button">
                   <ScrollToTop>
-                    <Link to="/">
+                    <Link to={SAVES}>
                       <FavoriteBorderIcon />
                     </Link>
                   </ScrollToTop>
@@ -174,7 +174,7 @@ export default function NavBar() {
                     </li>
                     <li>
                       <ScrollToTop>
-                        <Link to="/">
+                        <Link to={SAVES}>
                           <FavoriteBorderIcon /> saves
                         </Link>
                       </ScrollToTop>
