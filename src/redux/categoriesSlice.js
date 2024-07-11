@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
+import handleUnauthorized from "../utils/handleUnauthorized";
 
 // Async Thunk for fetching categories from the API
 export const fetchCategories = createAsyncThunk(
@@ -9,6 +10,7 @@ export const fetchCategories = createAsyncThunk(
     const url = new URL(`${baseUrl}/categories`);
     url.search = new URLSearchParams(queryParams).toString();
     const response = await fetch(url);
+    handleUnauthorized(response);
     const data = await response.json();
     return data;
   }

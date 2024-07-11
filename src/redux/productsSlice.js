@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import baseUrl from "../config/config";
+import handleUnauthorized from "../utils/handleUnauthorized";
 
 // Async Thunk for fetching products from the API
 export const fetchProducts = createAsyncThunk(
@@ -26,6 +27,8 @@ export const fetchProducts = createAsyncThunk(
         Authorization: token,
       },
     });
+
+    handleUnauthorized(response);
 
     const data = await response.json();
 

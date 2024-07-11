@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/forgotPassword/forgotPassword";
 import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
 import EmailVerification from "./pages/emailVerification/emailVerification";
 import Saves from "./pages/saves/saves";
+import TooManyRequests from "./pages/tooManyRequests/tooManyRequests";
 import NoFound from "./pages/noFound/noFound";
 
 import {
@@ -20,6 +21,7 @@ import {
   PASSWORD_RESET_CODE,
   EMAIL_VERIFICATION,
   SAVES,
+  TOO_MANY_REQUESTS,
   NO_FOUND,
 } from "./routes";
 
@@ -79,6 +81,7 @@ function App() {
         }
       />
 
+      <Route path={TOO_MANY_REQUESTS} element={<TooManyRequests />} />
       <Route path={NO_FOUND} element={<NoFound />} />
     </Routes>
   );
