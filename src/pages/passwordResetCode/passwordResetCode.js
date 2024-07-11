@@ -111,7 +111,7 @@ function PasswordResetCode() {
                     borderColor:
                       formik.touched.passwordResetCode &&
                       formik.errors.passwordResetCode
-                        ? "#c53030"
+                        ? "var(--color-of-error)"
                         : null,
                   }}
                 />
@@ -143,7 +143,7 @@ function PasswordResetCode() {
                         borderColor:
                           formik.touched.newPassword &&
                           formik.errors.newPassword
-                            ? "#c53030"
+                            ? "var(--color-of-error)"
                             : null,
                       }}
                     />
@@ -172,7 +172,7 @@ function PasswordResetCode() {
                         borderColor:
                           formik.touched.confirmNewPassword &&
                           formik.errors.confirmNewPassword
-                            ? "#c53030"
+                            ? "var(--color-of-error)"
                             : null,
                       }}
                     />

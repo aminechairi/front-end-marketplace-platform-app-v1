@@ -126,7 +126,7 @@ function SignUp() {
                     style={{
                       borderColor:
                         formik.touched.firstName && formik.errors.firstName
-                          ? "#c53030"
+                          ? "var(--color-of-error)"
                           : null,
                     }}
                   />
@@ -152,7 +152,7 @@ function SignUp() {
                     style={{
                       borderColor:
                         formik.touched.lastName && formik.errors.lastName
-                          ? "#c53030"
+                          ? "var(--color-of-error)"
                           : null,
                     }}
                   />
@@ -179,7 +179,7 @@ function SignUp() {
                   style={{
                     borderColor:
                       formik.touched.email && formik.errors.email
-                        ? "#c53030"
+                        ? "var(--color-of-error)"
                         : null,
                   }}
                 />
@@ -218,7 +218,7 @@ function SignUp() {
                   style={{
                     borderColor:
                       formik.touched.password && formik.errors.password
-                        ? "#c53030"
+                        ? "var(--color-of-error)"
                         : null,
                   }}
                 />
@@ -245,7 +245,7 @@ function SignUp() {
                     borderColor:
                       formik.touched.confirmPassword &&
                       formik.errors.confirmPassword
-                        ? "#c53030"
+                        ? "var(--color-of-error)"
                         : null,
                   }}
                 />

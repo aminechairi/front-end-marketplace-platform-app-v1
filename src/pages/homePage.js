@@ -86,7 +86,6 @@ function HomePage() {
         },
       })
     );
-
   }, [dispatch]);
 
   return (

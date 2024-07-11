@@ -83,7 +83,7 @@ function ForgotPassword() {
                   style={{
                     borderColor:
                       formik.touched.email && formik.errors.email
-                        ? "#c53030"
+                        ? "var(--color-of-error)"
                         : null,
                   }}
                 />

@@ -99,7 +99,7 @@ function EmailVerification() {
                       borderColor:
                         formik.touched.emailVerificationCode &&
                         formik.errors.emailVerificationCode
-                          ? "#c53030"
+                          ? "var(--color-of-error)"
                           : null,
                     }}
                   />

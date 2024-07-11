@@ -12,6 +12,7 @@
   --text-color: #050505;
   --backgrounds-color-1: #fff;
   --backgrounds-color-2: #f7f7fa;
+  --color-of-error: #c53030;
   --shadow-1: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   --imputs-placeholder: #888888;
   --bg-color-forms-loading: #ffffff9f;
@@ -27,6 +28,7 @@
   --text-color: #f5f5f5;
   --backgrounds-color-1: #121212;
   --backgrounds-color-2: #1d1d1d;
+  --color-of-error: #c53030;
   --shadow-1: rgba(0, 0, 0, 0.7) 0px 4px 12px;
   --imputs-placeholder: #888888;
   --bg-color-forms-loading: #0000009f;
@@ -87,11 +89,11 @@
   background-color: #fff5f5;
   padding: 8px;
   border-radius: 14px;
-  border: 1px solid #c53030;
+  border: 1px solid var(--color-of-error);
   margin-bottom: 6px;
 }
 .forms .container .ab .alert_error p {
-  color: #c53030;
+  color: var(--color-of-error);
   font-size: 14px;
 }
 .forms .container .ab .alert_success {
@@ -106,7 +108,7 @@
   font-size: 14px;
 }
 .forms .container .ab .error_of_input {
-  color: #c53030;
+  color: var(--color-of-error);
   font-size: 14px;
 }
 .forms .container .ab .form .label {
