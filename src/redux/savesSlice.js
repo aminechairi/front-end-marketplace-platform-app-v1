@@ -53,11 +53,14 @@ export const removeProductFromSaves = createAsyncThunk(
 // Async Thunk for fetch saves from the API
 export const fetchSaves = createAsyncThunk(
   "fetchSaves/fetchSaves",
-  async (_, { getState }) => {
+  async (queryParams, { getState }) => {
+    const url = new URL(`${baseUrl}/saves`);
+    url.search = new URLSearchParams(queryParams).toString();
+
     const state = getState();
     const JWTToken = state.cookies.JWTToken;
 
-    const response = await fetch(`${baseUrl}/saves`, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

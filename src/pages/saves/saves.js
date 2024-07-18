@@ -12,7 +12,13 @@ const Saves = () => {
   const saves = useSelector((state) => state.fetchSaves);
 
   useEffect(() => {
-    dispatch(fetchSaves());
+    dispatch(
+      fetchSaves({
+        page: "1",
+        limit: "20",
+        fields: `productId`,
+      })
+    );
   }, [dispatch]);
 
   let products = [];

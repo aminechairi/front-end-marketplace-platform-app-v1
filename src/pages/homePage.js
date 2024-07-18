@@ -18,6 +18,8 @@ function HomePage() {
   useEffect(() => {
     dispatch(
       fetchCategories({
+        page: "1",
+        limit: "40",
         fields: `
           _id,
           name,
@@ -31,6 +33,8 @@ function HomePage() {
       fetchProducts({
         item: "0",
         queryParams: {
+          page: "1",
+          limit: "10",
           fields: `
             _id,
             title,
@@ -51,6 +55,8 @@ function HomePage() {
       fetchProducts({
         item: "1",
         queryParams: {
+          page: "1",
+          limit: "10",
           fields: `
             _id,
             title,
@@ -71,6 +77,8 @@ function HomePage() {
       fetchProducts({
         item: "2",
         queryParams: {
+          page: "1",
+          limit: "10",
           fields: `
             _id,
             title,

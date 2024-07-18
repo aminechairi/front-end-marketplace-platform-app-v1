@@ -22,6 +22,8 @@ function Search() {
       fetchProducts({
         item: "0",
         queryParams: {
+          page: "1",
+          limit: "20",
           search: `${searchValue}`,
           fields: `
           _id,
