@@ -21,22 +21,32 @@ export default function Products({ title, status, data }) {
     <div className="products">
       <div className="container">
         <div className="ab">
-        {title.length > 0 ? <h1 className="title">{title}</h1> : null}
+          {title.length > 0 ? <h1 className="title">{title}</h1> : null}
           <div className="ab_cards">
-            {data.data.map((item, i) => {
+            {data.data.map((items, i) => {
+              // Get index of object that has the smallest price from sizes array.
+              let minPriceIndex = 0;
+              items.sizes.forEach((item, index) => {
+                if (item.price < items.sizes[minPriceIndex].price) {
+                  minPriceIndex = index;
+                }
+              });
               return (
                 <ProductsCard
                   key={i + 1}
-                  _id={item._id}
-                  title={item.title}
-                  price={item.price}
-                  priceAfterDiscount={item.priceAfterDiscount}
-                  imageCover={item.imageCover}
-                  quantity={item.quantity}
-                  sold={item.sold}
-                  ratingsAverage={item.ratingsAverage}
-                  ratingsQuantity={item.ratingsQuantity}
-                  save={item.save}
+                  _id={items._id}
+                  title={items.title}
+                  price={items.price || items?.sizes[minPriceIndex]?.price}
+                  priceAfterDiscount={
+                    items.priceAfterDiscount ||
+                    items?.sizes[minPriceIndex]?.priceAfterDiscount
+                  }
+                  imageCover={items.imageCover}
+                  quantity={items.quantity}
+                  sold={items.sold}
+                  ratingsAverage={items.ratingsAverage}
+                  ratingsQuantity={items.ratingsQuantity}
+                  save={items.save}
                 />
               );
             })}

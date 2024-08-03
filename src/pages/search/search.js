@@ -32,6 +32,7 @@ function Search() {
           priceAfterDiscount,
           imageCover,
           quantity,
+          sizes,
           sold,
           ratingsAverage,
           ratingsQuantity,
