@@ -1,5 +1,6 @@
 export const HOME = "/";
 export const SEARCH = "/search/:searchValue";
+export const PRODUCT = "/product/:productId";
 
 export const LOGIN = "/auth/log-in";
 export const SIGNUP = "/auth/sign-up";

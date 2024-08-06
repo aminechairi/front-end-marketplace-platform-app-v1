@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import HomePage from "./pages/homePage";
 import Search from "./pages/search/search";
+import Product from "./pages/product/product";
 import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
 import ForgotPassword from "./pages/forgotPassword/forgotPassword";
@@ -15,6 +16,7 @@ import NoFound from "./pages/noFound/noFound";
 import {
   HOME,
   SEARCH,
+  PRODUCT,
   LOGIN,
   SIGNUP,
   FORGOT_PASSWORD,
@@ -30,6 +32,7 @@ function App() {
     <Routes>
       <Route path={HOME} element={<HomePage />} />
       <Route path={SEARCH} element={<Search />} />
+      <Route path={PRODUCT} element={<Product />} />
 
       <Route
         path={LOGIN}

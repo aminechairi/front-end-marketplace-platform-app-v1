@@ -71,8 +71,10 @@
 .products_card_skeletion .sold_and_quantity .sold .ab_icon .icon {
   font-size: 16px;
   font-weight: 400;
+  animation: var(--animation-skeletion);
 }
 .products_card_skeletion .sold_and_quantity .sold .number {
   font-size: 14px;
   font-weight: 400;
+  animation: var(--animation-skeletion);
 }

@@ -64,7 +64,7 @@ export default function ProductsCard({
     <div className="products_card">
       <section className="sec_1">
         <div className="ab_img">
-          <Link to={`/products/${_id}`}>
+          <Link to={`/product/${_id}`}>
             <img
               src={imageCover}
               alt=""
@@ -125,7 +125,7 @@ export default function ProductsCard({
           </div>
         </div>
       </section>
-      <Link to={`/products/${_id}`}>
+      <Link to={`/product/${_id}`}>
         <section className="sec_2">
           <h1 className="product_title">{title}</h1>
           <div className="price">

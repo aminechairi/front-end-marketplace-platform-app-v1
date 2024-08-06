@@ -42,7 +42,7 @@ export default function Products({ title, status, data }) {
                     items?.sizes[minPriceIndex]?.priceAfterDiscount
                   }
                   imageCover={items.imageCover}
-                  quantity={items.quantity}
+                  quantity={items.quantity || items?.sizes[minPriceIndex]?.quantity}
                   sold={items.sold}
                   ratingsAverage={items.ratingsAverage}
                   ratingsQuantity={items.ratingsQuantity}
