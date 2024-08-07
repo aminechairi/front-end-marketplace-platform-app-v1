@@ -8,6 +8,7 @@ import StarIcon from "@mui/icons-material/Star";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import NavBar from "../../components/navBar/navBar";
+import ImageMagnifier from "../../components/imageMagnifier/imageMagnifier";
 import Footer from "../../components/footer/footer";
 
 // Calculate Discount Percentage
@@ -25,16 +26,16 @@ function calculateDiscountPercentage(originalPrice, discountedPrice) {
 }
 
 const images = [
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
-  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-9bbb5c5d-cc18-4ecc-959a-a7d9f1ad03ee-1722624771109.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240806%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240806T171506Z&X-Amz-Expires=3600&X-Amz-Signature=00beec57cea7024faa9d0701fc0a2894e12fa727063d0d5c6eb9c17548390f6c&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
+  "https://eshopapp.s3.eu-central-1.amazonaws.com/products/product-4d9f74ed-358d-4efa-8093-78f23b07cac3-1708456206275.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAUYJ4SPQHQ2WGHZFS%2F20240807%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240807T140703Z&X-Amz-Expires=3600&X-Amz-Signature=3aac9bfe9fb8b1b9138db4d5993b81863c95c50ecfe23d47250eacb1030bef96&X-Amz-SignedHeaders=host&x-id=GetObject",
 ];
 
 function Product() {
@@ -80,21 +81,19 @@ function Product() {
                     }}
                     modules={[Pagination]}
                   >
-                    {images.map((src, index) => (
-                      <SwiperSlide key={index}>
-                        <img
-                          src={src}
-                          alt=""
-                          className="img"
-                          onError={(e) => {
-                            e.target.src = require("../../imgs/no found.jpeg");
-                          }}
-                        />
-                      </SwiperSlide>
-                    ))}
+                    {images.map((src, index) => {
+                      return (
+                        <SwiperSlide key={index}>
+                          <ImageMagnifier src={src} />
+                        </SwiperSlide>
+                      );
+                    })}
                   </Swiper>
                 </div>
               </div>
+              {/* 
+                ===================================================
+              */}
               <div className="product_informations">
                 <h1 className="product_title">
                   PlayStation 5 Slim Console (International Version) Disc
@@ -107,6 +106,7 @@ function Product() {
                   original PS5 while offering a more compact form factor, making
                   it a perfect fit for any entertainment setup.
                 </p>
+                <div className="product_color"></div>
                 <div className="ratingsAverage_and_ratingsQuantity">
                   <div className="ratingsAverage">
                     <p className="number">3.2</p>
