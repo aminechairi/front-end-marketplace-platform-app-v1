@@ -4,8 +4,8 @@ function ImageMagnifier({
   src,
   width,
   height,
-  magnifierHeight = 300,
-  magnifieWidth = 200,
+  magnifierHeight = 300 * 5,
+  magnifieWidth = 200 * 5,
   zoomLevel = 2.5,
 }) {
   const [[x, y], setXY] = useState([0, 0]);
