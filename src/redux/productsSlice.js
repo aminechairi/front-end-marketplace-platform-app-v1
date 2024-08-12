@@ -7,7 +7,8 @@ import handleUnauthorized from "../utils/handleUnauthorized";
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (requestInformations, { getState }) => {
-    const url = new URL(`${baseUrl}/products`);
+    const productId = requestInformations.id || "";
+    const url = new URL(`${baseUrl}/products/${productId}`);
     url.search = new URLSearchParams(
       requestInformations.queryParams
     ).toString();
@@ -15,7 +16,7 @@ export const fetchProducts = createAsyncThunk(
     const state = getState();
     const JWTToken = state.cookies.JWTToken;
 
-    let token = '';
+    let token = "";
     if (JWTToken) {
       token = `Bearer ${JWTToken}`;
     }
@@ -54,20 +55,6 @@ const procutsSlice = createSlice({
     error: null,
   },
   reducers: {},
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(fetchProducts.pending, (state) => {
-  //       state.status = "loading";
-  //     })
-  //     .addCase(fetchProducts.fulfilled, (state, action) => {
-  //       state.status = "succeeded";
-  //       state.data = action.payload;
-  //     })
-  //     .addCase(fetchProducts.rejected, (state, action) => {
-  //       state.status = "failed";
-  //       state.error = action.error.message;
-  //     });
-  // },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state, action) => {

@@ -1,6 +1,38 @@
 import "./buttinSave.css";
 
-function ButtinSave({ _id, isSaved, handleSaveChange }) {
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  addProductToSaves,
+  removeProductFromSaves,
+} from "../../redux/savesSlice";
+import { LOGIN } from "./../../routes";
+
+function ButtinSave({ _id, save }) {
+  const [isSaved, setIsSaved] = useState(Boolean(save));
+  const JWTToken = useSelector((state) => state.cookies.JWTToken);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSaveChange = (e, productId) => {
+    setIsSaved(e.target.checked);
+    if (JWTToken) {
+      if (e.target.checked) {
+        dispatch(
+          addProductToSaves({
+            productId: productId,
+          })
+        );
+      } else {
+        dispatch(removeProductFromSaves(productId));
+      }
+    } else {
+      navigate(LOGIN);
+    }
+  };
+
   return (
     <div className="heart-container" title="Like">
       <input

@@ -1,19 +1,10 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./productsCard.css";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
-import { useSelector, useDispatch } from "react-redux";
 import ButtinSave from "../buttinSave/buttinSave";
 import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
-
-import {
-  addProductToSaves,
-  removeProductFromSaves,
-} from "../../redux/savesSlice";
-import { LOGIN } from "./../../routes";
-
 
 export default function ProductsCard({
   _id,
@@ -27,28 +18,6 @@ export default function ProductsCard({
   ratingsQuantity,
   save,
 }) {
-  const [isSaved, setIsSaved] = useState(Boolean(save));
-  const JWTToken = useSelector((state) => state.cookies.JWTToken);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleSaveChange = (e, productId) => {
-    setIsSaved(e.target.checked);
-    if (JWTToken) {
-      if (e.target.checked) {
-        dispatch(
-          addProductToSaves({
-            productId: productId,
-          })
-        );
-      } else {
-        dispatch(removeProductFromSaves(productId));
-      }
-    } else {
-      navigate(LOGIN);
-    }
-  };
-
   return (
     <div className="products_card">
       <section className="sec_1">
@@ -64,11 +33,7 @@ export default function ProductsCard({
             />
           </Link>
           <div className="save">
-            <ButtinSave
-              _id={_id}
-              isSaved={isSaved}
-              handleSaveChange={handleSaveChange}
-            />
+            <ButtinSave _id={_id} save={save} />
           </div>
           <div className="ratingsAverage_and_ratingsQuantity">
             <div className="ratingsAverage">
