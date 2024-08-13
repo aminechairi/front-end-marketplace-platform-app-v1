@@ -19,7 +19,7 @@
 /* xl	*/
 @media (min-width: 1280px) {
   .product_information {
-    width: 550px;
+    width: 500px;
     flex-grow: 0;
   }
 }
@@ -35,7 +35,6 @@
 }
 .product_information .prices .price_2 {
   font-size: 18px;
-  font-weight: 500;
   color: var(--text-color);
 }
 /* md	*/
@@ -43,6 +42,10 @@
   .product_information .prices .price_2 {
     font-size: 22px;
   }
+}
+.product_information .prices .price_2 .price {
+  font-weight: 500;
+  color: var(--main-color);
 }
 .product_information .prices .discount {
   color: #4bb718;

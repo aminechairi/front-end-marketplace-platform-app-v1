@@ -47,7 +47,7 @@ function ProductInformation({ productInfo }) {
   };
 
   const incrementQuantity = () => {
-    if (quantity < sizeInfo.quantity) {
+    if (quantity < (productInfo.quantity || sizeInfo.quantity)) {
       setQuantity((prevQuantity) => prevQuantity + 1);
     }
   };
@@ -71,15 +71,16 @@ function ProductInformation({ productInfo }) {
         sizeInfo.priceAfterDiscount !== null ? (
           <>
             <p className="price_1">
-              {sizeInfo.priceAfterDiscount.toFixed(2).replace(".", ",")} UDS
+              {sizeInfo.price !== undefined && sizeInfo.price !== null
+                ? sizeInfo.price.toFixed(2).replace(".", ",")
+                : "N/A"}{" "}
+              UDS
             </p>
             <p className="price_2">
               <span className="price">
-                {sizeInfo.price !== undefined && sizeInfo.price !== null
-                  ? sizeInfo.price.toFixed(2).replace(".", ",")
-                  : "N/A"}{" "}
-                UDS
+                {sizeInfo.priceAfterDiscount.toFixed(2).replace(".", ",")}
               </span>
+              <span> USD</span>
               &nbsp;/&nbsp;
               <span className="discount">
                 -
@@ -97,8 +98,8 @@ function ProductInformation({ productInfo }) {
               {sizeInfo.price !== undefined && sizeInfo.price !== null
                 ? sizeInfo.price.toFixed(2).replace(".", ",")
                 : "N/A"}{" "}
-              UDS
             </span>
+            <span> USD</span>
           </p>
         )}
       </div>
@@ -129,7 +130,7 @@ function ProductInformation({ productInfo }) {
           <h1 className="title">Quantity</h1>
           <section className="section_of_values">
             <Inventory2Icon className="quantity_icon" />
-            <p className="value">{sizeInfo.quantity || productInfo.quantity}</p>
+            <p className="value">{productInfo.quantity || sizeInfo.quantity}</p>
           </section>
         </div>
       </div>
