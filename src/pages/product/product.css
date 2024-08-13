@@ -1,6 +1,6 @@
 .product_page {
   padding: 15px 0px;
-  background-color: var(--backgrounds-color-2);
+  background-color: var(--backgrounds-color-1);
 }
 /* md	*/
 @media (min-width: 768px) {

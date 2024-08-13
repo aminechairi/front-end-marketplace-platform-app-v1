@@ -5,8 +5,9 @@ import { Pagination } from "swiper/modules";
 import "./productSlider.css";
 
 import ImageMagnifier from "../../components/imageMagnifier/imageMagnifier";
+import ButtonSave from "../../components/buttinSave/buttinSave";
 
-function ProductSlider({ productImages }) {
+function ProductSlider({ productImages, _id, save }) {
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -50,6 +51,9 @@ function ProductSlider({ productImages }) {
             );
           })}
         </Swiper>
+      </div>
+      <div className="save">
+        <ButtonSave _id={_id} save={save} />
       </div>
     </div>
   );

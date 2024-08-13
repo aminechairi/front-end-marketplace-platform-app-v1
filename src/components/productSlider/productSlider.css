@@ -5,6 +5,7 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+  position: relative;
 }
 /* md	*/
 @media (min-width: 768px) {
@@ -63,4 +64,17 @@
   width: 100%;
   display: block;
   cursor: zoom-in;
+}
+.product_slider .save {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--backgrounds-color-2);
+  padding: calc(15px / 2);
+  border-radius: 50%;
+  box-shadow: var(--shadow-1);
+  position: absolute;
+  top: calc(15px / 2);
+  right: calc(15px / 2);
+  z-index: 1;
 }

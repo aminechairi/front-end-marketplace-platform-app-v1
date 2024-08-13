@@ -8,7 +8,6 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ButtonSave from "../../components/buttinSave/buttinSave";
 
 import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
 
@@ -130,7 +129,7 @@ function ProductInformation({ productInfo }) {
           <h1 className="title">Quantity</h1>
           <section className="section_of_values">
             <Inventory2Icon className="quantity_icon" />
-            <p className="value">{sizeInfo.quantity || 36}</p>
+            <p className="value">{sizeInfo.quantity || productInfo.quantity}</p>
           </section>
         </div>
       </div>
@@ -165,7 +164,7 @@ function ProductInformation({ productInfo }) {
         </div>
       )}
 
-      {/* <div className="q_a_s">
+      <div className="q_a_s">
         <div className="quantity">
           <button className="button" onClick={decrementQuantity}>
             <RemoveIcon className="icon" />
@@ -175,11 +174,8 @@ function ProductInformation({ productInfo }) {
             <AddIcon className="icon" />
           </button>
         </div>
-        <button className="add_to_cart">Add to Cart</button>
-        <div className="save">
-          <ButtonSave _id={productInfo._id} save={productInfo.save} />
-        </div>
-      </div> */}
+        <button className="add_to_cart">Add to cart</button>
+      </div>
     </div>
   );
 }

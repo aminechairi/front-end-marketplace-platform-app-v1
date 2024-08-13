@@ -2,16 +2,9 @@
   --heart-color: rgb(255, 74, 125);
   /* --heart-color: var(--main-color); */
   position: relative;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   transition: 0.3s;
-}
-/* md	*/
-@media (min-width: 768px) {
-  .heart-container {
-    width: 24px;
-    height: 24px;
-  }
 }
 .heart-container .checkbox {
   position: absolute;

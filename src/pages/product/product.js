@@ -47,7 +47,11 @@ function Product() {
             <section className="section_1">
               {productData ? (
                 <>
-                  <ProductSlider productImages={productImages} />
+                  <ProductSlider
+                    productImages={productImages}
+                    _id={productData._id}
+                    save={productData.save}
+                  />
                   <ProductInformation productInfo={productData} />
                 </>
               ) : null}
