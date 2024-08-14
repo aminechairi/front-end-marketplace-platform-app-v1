@@ -121,6 +121,24 @@
 .product_information .sizes button.selected {
   border: 1px solid var(--main-color);
 }
+.product_information .group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, auto));
+  gap: calc(15px / 2);
+}
+.product_information .group .img {
+  padding: 1px;
+  border-radius: 7px;
+  box-shadow: var(--shadow-1);
+}
+.product_information .group .img.selected {
+  background-color: var(--main-color);
+}
+.product_information .group .img img {
+  display: block;
+  width: 100%;
+  border-radius: 7px;
+}
 .product_information .q_a_s {
   display: flex;
   column-gap: calc(15px / 2);

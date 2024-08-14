@@ -18,11 +18,12 @@ function Product() {
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setProductData(null);
       const response = await fetch(`${baseUrl}/products/${productId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookieManager("get", "JWTToken")}`, // Assuming JWTToken is stored in cookies
+          Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
         },
       });
 

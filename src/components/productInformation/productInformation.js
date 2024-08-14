@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import "./productInformation.css";
 
@@ -8,6 +9,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import ScrollToTop from "../scrollToTop/scrollToTop";
 
 import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
 
@@ -72,7 +74,7 @@ function ProductInformation({ productInfo }) {
     <div className="product_information">
       <p className="relations">
         <span>Category</span>&nbsp;:&nbsp;
-        <span>{productInfo.category.name}</span>
+        <span>{productInfo.category?.name}</span>
       </p>
 
       <h1 className="title">{productInfo.title}</h1>
@@ -172,7 +174,7 @@ function ProductInformation({ productInfo }) {
         <div className="sizes">
           {productInfo.sizes.map((item) => (
             <button
-              key={item.size}
+              key={item._id}
               onClick={() => handleSizeClick(item)}
               className={
                 selectedSize && selectedSize.size === item.size
@@ -185,6 +187,26 @@ function ProductInformation({ productInfo }) {
           ))}
         </div>
       )}
+
+      {productInfo.group ? (
+        <div className="group">
+          {productInfo.group.productsIDs.map((item) => {
+            return (
+              <ScrollToTop key={item._id}>
+                <Link to={`/product/${item._id}`}>
+                  <div
+                    className={`img ${
+                      item._id === productInfo._id ? "selected" : ""
+                    }`}
+                  >
+                    <img src={item.imageCover} alt="" />
+                  </div>
+                </Link>
+              </ScrollToTop>
+            );
+          })}
+        </div>
+      ) : null}
 
       <div className="q_a_s">
         <div className="quantity">
