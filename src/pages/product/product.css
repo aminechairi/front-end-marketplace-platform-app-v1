@@ -19,3 +19,10 @@
     flex-direction: row;
   }
 }
+/* xl	*/
+@media (min-width: 1280px) {
+  .product_page .container .ab .section_1 {
+    width: 1000px;
+    margin: 0 auto;
+  }
+}

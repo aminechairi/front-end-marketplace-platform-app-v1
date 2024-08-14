@@ -12,9 +12,19 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
 
 function ProductInformation({ productInfo }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeInfo, setSizeInfo] = useState({});
   const [quantity, setQuantity] = useState(1);
+
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const getShortDescription = () => {
+    const words = productInfo.description.split(" ");
+    return words.slice(0, 32).join(" ") + (words.length > 32 ? "..." : "");
+  };
 
   useEffect(() => {
     if (productInfo.sizes && productInfo.sizes.length > 0) {
@@ -64,7 +74,19 @@ function ProductInformation({ productInfo }) {
         <span>Category</span>&nbsp;:&nbsp;
         <span>{productInfo.category.name}</span>
       </p>
+
       <h1 className="title">{productInfo.title}</h1>
+
+      <div className="description_container">
+        <p className="description">
+          {isExpanded ? productInfo.description : getShortDescription()}
+        </p>
+        {productInfo.description.split(" ").length > 32 && (
+          <button onClick={toggleDescription} className="learn_more_button">
+            {isExpanded ? "Show Less" : "Learn More"}
+          </button>
+        )}
+      </div>
 
       <div className="prices">
         {sizeInfo.priceAfterDiscount !== undefined &&
@@ -78,9 +100,8 @@ function ProductInformation({ productInfo }) {
             </p>
             <p className="price_2">
               <span className="price">
-                {sizeInfo.priceAfterDiscount.toFixed(2).replace(".", ",")}
+                {sizeInfo.priceAfterDiscount.toFixed(2).replace(".", ",")} USD
               </span>
-              <span> USD</span>
               &nbsp;/&nbsp;
               <span className="discount">
                 -
@@ -98,8 +119,8 @@ function ProductInformation({ productInfo }) {
               {sizeInfo.price !== undefined && sizeInfo.price !== null
                 ? sizeInfo.price.toFixed(2).replace(".", ",")
                 : "N/A"}{" "}
+              USD
             </span>
-            <span> USD</span>
           </p>
         )}
       </div>

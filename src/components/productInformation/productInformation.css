@@ -16,16 +16,21 @@
     flex-grow: 1;
   }
 }
-/* xl	*/
-@media (min-width: 1280px) {
-  .product_information {
-    width: 500px;
-    flex-grow: 0;
-  }
-}
 .product_information > .title {
   color: var(--text-color);
   font-size: 22px;
+  font-weight: 500;
+}
+.product_information .description_container {
+  position: relative;
+}
+.product_information .description_container .description {
+  color: var(--text-color);
+  font-size: 16px;
+}
+.product_information .description_container .learn_more_button {
+  color: var(--main-color);
+  font-size: 16px;
   font-weight: 500;
 }
 .product_information .prices .price_1 {

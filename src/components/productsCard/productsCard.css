@@ -30,7 +30,7 @@
   right: 7.5px;
   background-color: var(--backgrounds-color-2);
   border-radius: 50%;
-  padding: 4px;
+  padding: calc(15px / 3);
 }
 /* End button like */
 .products_card .sec_1 .ab_img .ratingsAverage_and_ratingsQuantity {

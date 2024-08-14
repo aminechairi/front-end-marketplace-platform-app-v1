@@ -58,7 +58,7 @@ export default function ProductsCard({
           </div>
           {priceAfterDiscount ? (
             <div className="ab_discount">
-              <p className="price">{price.toFixed(2).replace(".", ",")}</p>
+              <p className="price">{price.toFixed(2).replace(".", ",")} USD</p>
               <p className="discount">
                 {`-${calculateDiscountPercentage(price, priceAfterDiscount)}%`}
               </p>
