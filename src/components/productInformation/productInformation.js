@@ -9,7 +9,6 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ScrollToTop from "../scrollToTop/scrollToTop";
 
 import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
 
@@ -56,6 +55,7 @@ function ProductInformation({ productInfo }) {
       price: size.price,
       priceAfterDiscount: size.priceAfterDiscount,
     });
+    setQuantity(1);
   };
 
   const incrementQuantity = () => {
@@ -192,17 +192,21 @@ function ProductInformation({ productInfo }) {
         <div className="group">
           {productInfo.group.productsIDs.map((item) => {
             return (
-              <ScrollToTop key={item._id}>
-                <Link to={`/product/${item._id}`}>
-                  <div
-                    className={`img ${
-                      item._id === productInfo._id ? "selected" : ""
-                    }`}
-                  >
-                    <img src={item.imageCover} alt="" />
-                  </div>
-                </Link>
-              </ScrollToTop>
+              <Link
+                to={`/product/${item._id}`}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                <div
+                  className={`img ${
+                    item._id === productInfo._id ? "selected" : ""
+                  }`}
+                  onError={(e) => {
+                    e.target.src = require("../../imgs/no found.jpeg");
+                  }}
+                >
+                  <img src={item.imageCover} alt="" />
+                </div>
+              </Link>
             );
           })}
         </div>

@@ -6,6 +6,8 @@ import "./product.css";
 import NavBar from "../../components/navBar/navBar";
 import ProductSlider from "../../components/productSlider/productSlider";
 import ProductInformation from "../../components/productInformation/productInformation";
+import ProductSliderSkeletion from "../../components/productSlider/productSliderSkeletion";
+import ProductInformationSkeleton from "../../components/productInformation/productInformationSkeleton";
 import Footer from "../../components/footer/footer";
 
 import baseUrl from "../../config/config";
@@ -55,7 +57,12 @@ function Product() {
                   />
                   <ProductInformation productInfo={productData} />
                 </>
-              ) : null}
+              ) : (
+                <>
+                  <ProductSliderSkeletion />
+                  <ProductInformationSkeleton />
+                </>
+              )}
             </section>
           </div>
         </div>

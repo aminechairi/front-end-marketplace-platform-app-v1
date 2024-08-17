@@ -1,0 +1,17 @@
+.product_slider_skeletion {
+  width: 100%;
+  height: 420px;
+  animation: var(--animation-skeletion);
+}
+/* md	*/
+@media (min-width: 768px) {
+  .product_slider_skeletion {
+    width: 50%;
+  }
+}
+/* lg	*/
+@media (min-width: 1024px) {
+  .product_slider_skeletion {
+    width: 400px;
+  }
+}
