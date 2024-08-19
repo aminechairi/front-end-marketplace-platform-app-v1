@@ -26,6 +26,7 @@ export default function ProductsCard({
             <img
               src={imageCover}
               alt=""
+              loading="lazy"
               className="img"
               onError={(e) => {
                 e.target.src = require("../../imgs/no found.jpeg");

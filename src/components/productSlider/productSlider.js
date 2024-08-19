@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
 
 import "./productSlider.css";
 
@@ -41,7 +40,6 @@ function ProductSlider({ productImages, _id, save }) {
           pagination={{
             type: "fraction",
           }}
-          modules={[Pagination]}
         >
           {productImages.map((src, index) => {
             return (

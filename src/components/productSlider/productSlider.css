@@ -47,10 +47,6 @@
   border-radius: 7px;
   cursor: pointer;
 }
-.product_slider .images .img:hover {
-  background-color: rgb(211, 211, 211);
-  box-shadow: var(--shadow-1);
-}
 .product_slider .images .img.active {
   background-color: var(--main-color);
 }

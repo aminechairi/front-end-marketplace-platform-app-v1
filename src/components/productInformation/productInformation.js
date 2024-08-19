@@ -194,6 +194,7 @@ function ProductInformation({ productInfo }) {
             return (
               <Link
                 to={`/product/${item._id}`}
+                key={item._id}
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
                 <div

@@ -1,5 +1,5 @@
 .categories_skeletion {
-  background-color: var( --backgrounds-color-1);
+  background-color: var(--backgrounds-color-1);
   padding: 0px 0px 15px;
 }
 .categories_skeletion .container .ab .title {
@@ -9,7 +9,6 @@
 }
 .categories_skeletion .container .ab .title span {
   animation: var(--animation-skeletion);
-  border-radius: 7.5px;
 }
 .categories_skeletion .container .ab .ab_cards {
   display: grid;
@@ -21,21 +20,20 @@
   flex-direction: column;
 }
 .categories_skeletion .container .ab .ab_cards .card .ab_img {
-  border-radius: 50%;
   padding-bottom: 14px;
 }
 .categories_skeletion .container .ab .ab_cards .card .ab_img .img {
   display: block;
   width: 100%;
   height: calc(15px * 8);
-  border-radius: 7.5px;
+
   animation: var(--animation-skeletion);
 }
 .categories_skeletion .container .ab .ab_cards .card .h1 {
   text-align: center;
   font-size: 16px;
   animation: var(--animation-skeletion);
-  border-radius: 7.5px;
+
   font-weight: 500;
   text-transform: capitalize;
   display: -webkit-box;
@@ -45,12 +43,12 @@
 }
 .categories_skeletion .container .ab .mySwiper .swiper-button-prev::after {
   color: var(--main-color);
-  background-color: var( --backgrounds-color-1);
+  background-color: var(--backgrounds-color-1);
   border: 1px solid rgb(218, 218, 218);
   margin-left: 15px;
   font-size: 20px;
   padding: 14px;
-  border-radius: 15px;
+
   transition: all 0.3s;
   opacity: 0;
   display: none;
@@ -60,12 +58,12 @@
 }
 .categories_skeletion .container .ab .mySwiper .swiper-button-next::after {
   color: var(--main-color);
-  background-color: var( --backgrounds-color-1);
+  background-color: var(--backgrounds-color-1);
   border: 1px solid rgb(218, 218, 218);
   margin-right: 15px;
   font-size: 20px;
   padding: 14px;
-  border-radius: 15px;
+
   transition: all 0.3s;
   opacity: 0;
   display: none;
