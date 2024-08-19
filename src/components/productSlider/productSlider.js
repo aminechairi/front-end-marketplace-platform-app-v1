@@ -27,7 +27,7 @@ function ProductSlider({ productImages, _id, save }) {
             alt=""
             className={`img ${activeIndex === index ? "active" : ""}`}
             onError={(e) => {
-              e.target.src = require("../../imgs/no found.jpeg");
+              e.target.src = require("../../imgs/Product image on error.png");
             }}
             onClick={() => handleImageClick(index)}
           />

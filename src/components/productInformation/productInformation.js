@@ -202,7 +202,7 @@ function ProductInformation({ productInfo }) {
                     item._id === productInfo._id ? "selected" : ""
                   }`}
                   onError={(e) => {
-                    e.target.src = require("../../imgs/no found.jpeg");
+                    e.target.src = require("../../imgs/Product image on error.png");
                   }}
                 >
                   <img src={item.imageCover} alt="" />

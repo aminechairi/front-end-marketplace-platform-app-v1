@@ -29,7 +29,7 @@ export default function ProductsCard({
               loading="lazy"
               className="img"
               onError={(e) => {
-                e.target.src = require("../../imgs/no found.jpeg");
+                e.target.src = require("../../imgs/Product image on error.png");
               }}
             />
           </Link>

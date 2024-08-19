@@ -78,7 +78,7 @@ export default function Categories({ status, data }) {
                               src={item.image}
                               alt=""
                               onError={(e) => {
-                                e.target.src = require("../../imgs/no found.jpeg");
+                                e.target.src = require("../../imgs/Category image on error.png");
                               }}
                             />
                             <h1 className="h1">{item.name}</h1>

@@ -40,7 +40,7 @@ function ImageMagnifier({
           setShowMagnifier(false);
         }}
         onError={(e) => {
-          e.target.src = require("../../imgs/no found.jpeg");
+          e.target.src = require("../../imgs/Product image on error.png");
         }}
         className="img"
         alt=""
