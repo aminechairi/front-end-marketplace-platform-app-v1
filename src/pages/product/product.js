@@ -70,8 +70,8 @@ function Product() {
                 <>
                   <ProductSlider
                     productImages={productImages}
-                    _id={productData._id}
-                    save={productData.save}
+                    _id={productData?.data._id}
+                    save={productData?.data.save}
                   />
                   <ProductInformation productInfo={productData?.data} />
                 </>
