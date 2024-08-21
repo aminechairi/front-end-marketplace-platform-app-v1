@@ -12,6 +12,7 @@
   display: grid;
   grid-template-columns: repeat(2 , 1fr);
   gap: 15px;
+  padding: 0px calc(15px / 2);
 }
 .brands .container .ab .ab_cards .card {
   display: flex;
@@ -24,6 +25,9 @@
 .brands .container .ab .ab_cards .card .img {
   border-radius: 7.4px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.brands .container .ab .mySwiper .swiper-pagination {
+  position: static;
 }
 .brands .container .ab .mySwiper .swiper-button-prev::after {
   color: var(--main-color);

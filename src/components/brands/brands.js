@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -64,7 +64,13 @@ export default function Brands({ status, data }) {
       <div className="container">
         <div className="ab">
           <h1 className="title">BRANDS</h1>
-          <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+
+          <Swiper
+            pagination={true}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+            className="mySwiper"
+          >
             {rankedData.map((item, i) => {
               return (
                 <SwiperSlide key={i + 1}>

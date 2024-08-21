@@ -33,6 +33,9 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.categories .container .ab .mySwiper .swiper-pagination {
+  position: static;
+}
 .categories .container .ab .mySwiper .swiper-button-prev::after {
   color: var(--main-color);
   background-color: var( --backgrounds-color-1);

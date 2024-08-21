@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -64,7 +64,12 @@ export default function Categories({ status, data }) {
       <div className="container">
         <div className="ab">
           <h1 className="title">CATEGORIES</h1>
-          <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+          <Swiper
+            navigation={true}
+            pagination={true}
+            modules={[Navigation, Pagination]}
+            className="mySwiper"
+          >
             {rankedData.map((item, i) => {
               return (
                 <SwiperSlide key={i + 1}>
@@ -72,7 +77,7 @@ export default function Categories({ status, data }) {
                     {item.map((item, i) => {
                       return (
                         <Link to={`/categories/${item._id}`} key={i + 1}>
-                          <div className="card" >
+                          <div className="card">
                             <img
                               className="img"
                               src={item.image}
