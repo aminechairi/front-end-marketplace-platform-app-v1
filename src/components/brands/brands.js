@@ -1,33 +1,29 @@
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import "./categoriesSkeleton.css";
+import "./brands.css";
+
+import BrandsSkeletion from "./brandsSkeletion";
 
 const checkWindowWidth = () => {
   if (window.innerWidth < 640) {
     return 6;
   } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
-    return 5;
-  } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
     return 6;
-  } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
+  } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
     return 8;
+  } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
+    return 12;
   } else {
-    return 10;
+    return 12;
   }
 };
 
-export default function CategoriesSkeletion() {
-  const data = [];
-  for (let i = 0; i < checkWindowWidth(); i++) {
-    data.push({
-      name: "full category name & sub",
-    });
-  }
-
+export default function Brands({ status, data }) {
   const [columnsNumber, setColumnsNumver] = useState(checkWindowWidth());
 
   useEffect(() => {
@@ -35,13 +31,13 @@ export default function CategoriesSkeletion() {
       if (window.innerWidth < 640) {
         setColumnsNumver(6);
       } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
-        setColumnsNumver(5);
-      } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
         setColumnsNumver(6);
-      } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
+      } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
         setColumnsNumver(8);
+      } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
+        setColumnsNumver(12);
       } else {
-        setColumnsNumver(10);
+        setColumnsNumver(12);
       }
     };
 
@@ -53,18 +49,21 @@ export default function CategoriesSkeletion() {
   }, []);
 
   const rankedData = [];
-  for (let i = 0; i < data.length; i += columnsNumber) {
-    const part = data.slice(i, i + columnsNumber);
-    rankedData.push(part);
+  if (Array.isArray(data?.data)) {
+    const list = data.data;
+    for (let i = 0; i < list.length; i += columnsNumber) {
+      const part = list.slice(i, i + columnsNumber);
+      rankedData.push(part);
+    }
   }
 
-  return (
-    <div className="categories_skeletion">
+  return status === "idle" || status === "loading" ? (
+    <BrandsSkeletion />
+  ) : status === "succeeded" && Array.isArray(data?.data) ? (
+    <div className="brands">
       <div className="container">
         <div className="ab">
-          <h1 className="title">
-            <span>CATEGORIES CATEGORIES</span>
-          </h1>
+          <h1 className="title">BRANDS</h1>
           <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
             {rankedData.map((item, i) => {
               return (
@@ -72,12 +71,18 @@ export default function CategoriesSkeletion() {
                   <div className="ab_cards">
                     {item.map((item, i) => {
                       return (
-                        <div className="card" key={i + 1}>
-                          <div className="ab_img">
-                            <div className="img"></div>
+                        <Link to={`/brands/${item._id}`} key={i + 1}>
+                          <div className="card">
+                            <img
+                              className="img"
+                              src={item.image}
+                              alt=""
+                              onError={(e) => {
+                                e.target.src = require("../../imgs/Brand image on error.png");
+                              }}
+                            />
                           </div>
-                          <h1 className="h1">{item.name}</h1>
-                        </div>
+                        </Link>
                       );
                     })}
                   </div>
@@ -88,5 +93,5 @@ export default function CategoriesSkeletion() {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

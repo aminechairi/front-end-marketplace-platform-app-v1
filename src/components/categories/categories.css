@@ -91,6 +91,7 @@
   .categories .container .ab .ab_cards {
     grid-template-columns: repeat(6, 1fr);
     gap: 15px;
+    padding: 0px 7.5px;
   }
   .categories .container .ab .ab_cards .card  {
     gap: 15px;
