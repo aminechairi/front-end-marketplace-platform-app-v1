@@ -22,7 +22,10 @@ export default function ProductsCard({
     <div className="products_card">
       <section className="sec_1">
         <div className="ab_img">
-          <Link to={`/product/${_id}`}>
+          <Link
+            to={`/product/${_id}`}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
             <img
               src={imageCover}
               alt=""
@@ -47,7 +50,10 @@ export default function ProductsCard({
           </div>
         </div>
       </section>
-      <Link to={`/product/${_id}`}>
+      <Link
+        to={`/product/${_id}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
         <section className="sec_2">
           <h1 className="product_title">{title}</h1>
           <div className="price">

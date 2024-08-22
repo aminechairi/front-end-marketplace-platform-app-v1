@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./product.css";
 
@@ -8,17 +9,21 @@ import ProductSlider from "../../components/productSlider/productSlider";
 import ProductInformation from "../../components/productInformation/productInformation";
 import ProductSliderSkeletion from "../../components/productSlider/productSliderSkeletion";
 import ProductInformationSkeleton from "../../components/productInformation/productInformationSkeleton";
+import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 import ScrollToTop from "../../components/scrollToTop/scrollToTop";
 
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { HOME } from "../../routes";
+import { fetchProducts } from "../../redux/productsSlice";
 
 function Product() {
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
   const [productImages, setProductImages] = useState([]);
+  const products = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -45,6 +50,47 @@ function Product() {
     fetchProduct();
   }, [productId]);
 
+  useEffect(() => {
+    if (productData?.data) {
+      const category = productData.data.category._id;
+      const subCategories = productData.data.subCategories.map(
+        (item) => item._id
+      );
+      let underSubCategories = [];
+      if (productData.data.underSubCategories) {
+        underSubCategories = productData.data.underSubCategories.map(
+          (item) => item._id
+        );
+      }
+
+      dispatch(
+        fetchProducts({
+          item: "0",
+          queryParams: {
+            page: "1",
+            limit: "5",
+            category,
+            subCategories,
+            underSubCategories,
+            fields: `
+              _id,
+              title,
+              price,
+              priceAfterDiscount,
+              imageCover,
+              quantity,
+              sizes,
+              sold,
+              ratingsAverage,
+              ratingsQuantity,
+              save
+            `,
+          },
+        })
+      );
+    }
+  }, [productData, dispatch]);
+
   return (
     <>
       <NavBar />
@@ -70,14 +116,19 @@ function Product() {
                 <>
                   <ProductSlider
                     productImages={productImages}
-                    _id={productData?.data._id}
-                    save={productData?.data.save}
+                    _id={productData.data._id}
+                    save={productData.data.save}
                   />
-                  <ProductInformation productInfo={productData?.data} />
+                  <ProductInformation productInfo={productData.data} />
                 </>
               </section>
             </div>
           </div>
+          <Products
+            title={"PRODUCTS RELATED TO THIS ITEM"}
+            status={products["0"].status}
+            data={products["0"].data}
+          />
         </div>
       ) : (
         <div className="noFound">
