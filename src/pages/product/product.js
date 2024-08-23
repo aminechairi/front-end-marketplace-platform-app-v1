@@ -52,15 +52,20 @@ function Product() {
 
   useEffect(() => {
     if (productData?.data) {
-      const category = productData.data.category._id;
-      const subCategories = productData.data.subCategories.map(
-        (item) => item._id
-      );
-      let underSubCategories = [];
-      if (productData.data.underSubCategories) {
-        underSubCategories = productData.data.underSubCategories.map(
-          (item) => item._id
-        );
+      // The same relations.
+      const theSameRelations = {};
+      if (productData.data.category) {
+        theSameRelations.category = productData.data.category;
+      }
+      if (productData.data.subCategories.length > 0) {
+        theSameRelations.subCategories = productData.data.subCategories;
+      }
+      if (productData.data.underSubCategories.length > 0) {
+        theSameRelations.underSubCategories =
+          productData.data.underSubCategories;
+      }
+      if (productData.data.brand) {
+        theSameRelations.brand = productData.data.brand;
       }
 
       dispatch(
@@ -69,9 +74,7 @@ function Product() {
           queryParams: {
             page: "1",
             limit: "5",
-            category,
-            subCategories,
-            underSubCategories,
+            ...theSameRelations,
             fields: `
               _id,
               title,
@@ -94,7 +97,6 @@ function Product() {
   return (
     <>
       <NavBar />
-
       {productData === null ? (
         <div className="product_page">
           <div className="container">
