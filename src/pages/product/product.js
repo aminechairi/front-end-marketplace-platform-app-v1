@@ -55,7 +55,7 @@ function Product() {
       // The same relations.
       const theSameRelations = {};
       if (productData.data.category) {
-        theSameRelations.category = productData.data.category;
+        theSameRelations.category = productData.data.category._id;
       }
       if (productData.data.subCategories.length > 0) {
         theSameRelations.subCategories = productData.data.subCategories;
@@ -65,7 +65,7 @@ function Product() {
           productData.data.underSubCategories;
       }
       if (productData.data.brand) {
-        theSameRelations.brand = productData.data.brand;
+        theSameRelations.brand = productData.data.brand._id;
       }
 
       dispatch(
@@ -73,7 +73,7 @@ function Product() {
           item: "0",
           queryParams: {
             page: "1",
-            limit: "5",
+            limit: "10",
             ...theSameRelations,
             fields: `
               _id,

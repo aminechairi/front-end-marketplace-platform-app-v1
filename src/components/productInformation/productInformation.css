@@ -102,6 +102,7 @@
 }
 .product_information .relations :last-child {
   font-weight: 500;
+  text-transform: capitalize;
 }
 .product_information .sizes {
   display: flex;
