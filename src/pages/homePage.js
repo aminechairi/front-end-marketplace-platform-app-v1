@@ -19,18 +19,20 @@ function HomePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      fetchCategories({
-        page: "1",
-        limit: "40",
-        fields: `
-          _id,
-          name,
-          image,
-        `,
-        sort: "createdAt",
-      })
-    );
+    if (!categories.data) {
+      dispatch(
+        fetchCategories({
+          page: "1",
+          limit: "40",
+          fields: `
+            _id,
+            name,
+            image,
+          `,
+          sort: "createdAt",
+        })
+      );
+    }
 
     dispatch(
       fetchProducts({
@@ -101,18 +103,20 @@ function HomePage() {
       })
     );
 
-    dispatch(
-      fetchBrands({
-        page: "1",
-        limit: "48",
-        fields: `
-          _id,
-          image,
-        `,
-        sort: "createdAt",
-      })
-    );
-  }, [dispatch]);
+    if (!brands.data) {
+      dispatch(
+        fetchBrands({
+          page: "1",
+          limit: "48",
+          fields: `
+            _id,
+            image,
+          `,
+          sort: "createdAt",
+        })
+      );
+    }
+  }, [brands.data, categories.data, dispatch]);
 
   return (
     <>
