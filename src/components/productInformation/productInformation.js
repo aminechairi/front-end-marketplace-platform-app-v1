@@ -16,7 +16,9 @@ function ProductInformation({ productInfo }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeInfo, setSizeInfo] = useState({});
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(
+    productInfo.quantity === 0 || sizeInfo.quantity === 0 ? 0 : 1
+  );
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -59,7 +61,7 @@ function ProductInformation({ productInfo }) {
   };
 
   const incrementQuantity = () => {
-    if (quantity < (productInfo.quantity || sizeInfo.quantity)) {
+    if (quantity < (productInfo.quantity ?? sizeInfo.quantity)) {
       setQuantity((prevQuantity) => prevQuantity + 1);
     }
   };
@@ -153,7 +155,7 @@ function ProductInformation({ productInfo }) {
           <h1 className="title">Quantity</h1>
           <section className="section_of_values">
             <Inventory2Icon className="quantity_icon" />
-            <p className="value">{productInfo.quantity || sizeInfo.quantity}</p>
+            <p className="value">{productInfo.quantity ?? sizeInfo.quantity}</p>
           </section>
         </div>
       </div>

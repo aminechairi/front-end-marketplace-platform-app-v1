@@ -59,7 +59,7 @@ export default function ProductsCard({
           <div className="price">
             <p className="currency">usd</p>
             <p className="number">
-              {priceAfterDiscount?.toFixed(2).replace(".", ",") ||
+              {priceAfterDiscount?.toFixed(2).replace(".", ",") ??
                 price.toFixed(2).replace(".", ",")}
             </p>
           </div>

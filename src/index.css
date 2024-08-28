@@ -260,6 +260,26 @@
 }
 /* end not found */
 
+/* start pagination */
+.MuiPagination-ul {
+  background-color: var(--backgrounds-color-2);
+  color: var(--main-color);
+  justify-content: center;
+  padding: 15px 0px !important;
+}
+.MuiPagination-ul .MuiButtonBase-root {
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
+}
+.MuiPagination-ul .MuiButtonBase-root:hover {
+  background-color: var(--backgrounds-color-1);
+}
+.MuiPagination-ul .Mui-selected {
+  background-color: var(--main-color) !important;
+  color: white !important;
+}
+/* end pagination */
+
 /* sm	*/
 /* @media (min-width: 640px) {} */
 /* md	*/
