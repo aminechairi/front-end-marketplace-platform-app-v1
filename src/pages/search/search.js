@@ -35,6 +35,7 @@ function Search() {
           page: page.toString(),
           limit: "10",
           search: searchValue,
+          sort: `-sold,-ratingsAverage`,
           fields: `
           _id,
           title,

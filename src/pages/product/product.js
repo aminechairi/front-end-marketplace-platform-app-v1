@@ -87,6 +87,7 @@ function Product() {
             page: "1",
             limit: "10",
             ...theSameRelations,
+            sort: `-sold,-ratingsAverage`,
             fields: `
               _id,
               title,

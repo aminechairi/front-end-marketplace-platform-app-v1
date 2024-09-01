@@ -40,6 +40,7 @@ function HomePage() {
         queryParams: {
           page: "1",
           limit: "10",
+          sort: `-priceAfterDiscount`,
           fields: `
             _id,
             title,
@@ -86,6 +87,7 @@ function HomePage() {
         queryParams: {
           page: "1",
           limit: "10",
+          sort: `-sold`,
           fields: `
             _id,
             title,
