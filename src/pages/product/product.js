@@ -27,23 +27,35 @@ function Product() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      setProductData(null);
-      const response = await fetch(`${baseUrl}/products/${productId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-        },
-      });
+      try {
+        setProductData(null);
 
-      const data = await response.json();
+        const response = await fetch(`${baseUrl}/products/${productId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+          },
+        });
 
-      if (data.data) {
-        setProductData(data);
-        const images = [data.data.imageCover, ...data.data.images];
-        setProductImages(images);
-      } else {
-        setProductData(data);
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const data = await response.json();
+
+        if (data.data) {
+          setProductData(data);
+          const images = [data.data.imageCover, ...data.data.images];
+          setProductImages(images);
+        } else {
+          setProductData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setProductData({ error: error.message });
       }
     };
 
