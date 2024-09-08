@@ -8,6 +8,22 @@ import Pagination from "@mui/material/Pagination";
 import Footer from "../../components/footer/footer";
 import { fetchProducts } from "../../redux/productsSlice";
 
+const limit = () => {
+  if (window.matchMedia("(min-width: 1536px)").matches) {
+    return "8"; // 2xl
+  } else if (window.matchMedia("(min-width: 1280px)").matches) {
+    return "8"; // xl
+  } else if (window.matchMedia("(min-width: 1024px)").matches) {
+    return "8"; // lg
+  } else if (window.matchMedia("(min-width: 768px)").matches) {
+    return "9"; // md
+  } else if (window.matchMedia("(min-width: 640px)").matches) {
+    return "8"; // sm
+  } else {
+    return "8"; // Default limit for small screens
+  }
+};
+
 function Search() {
   const { searchValue } = useParams();
   const navigate = useNavigate();
@@ -33,7 +49,7 @@ function Search() {
         item: "0",
         queryParams: {
           page: page.toString(),
-          limit: "10",
+          limit: limit(),
           search: searchValue,
           sort: `-sold,-ratingsAverage`,
           fields: `
@@ -99,6 +115,8 @@ function Search() {
             title={""}
             status={products[0]?.status}
             data={products[0]?.data}
+            gridTemplateColumns={{ lg: 4 }}
+            limit={limit()}
           />
           {products[0]?.status === "succeeded" &&
           products[0]?.data?.paginationResults?.numberOfPages > 1 ? (
