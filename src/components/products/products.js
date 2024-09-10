@@ -10,7 +10,7 @@ export default function Products({
   status,
   data,
   gridTemplateColumns = {},
-  limit = "10",
+  limit,
 }) {
   const AbCards = styled.div`
     display: grid;
@@ -37,7 +37,7 @@ export default function Products({
         <div className="ab">
           {title.length > 0 ? <h1 className="title">{title}</h1> : null}
           <AbCards>
-            {Array.from(new Array(+limit)).map((_, i) => {
+            {Array.from(new Array(limit)).map((_, i) => {
               return <ProductsCardSkeletion key={i + 1} />;
             })}
           </AbCards>

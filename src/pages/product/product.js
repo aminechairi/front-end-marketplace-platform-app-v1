@@ -17,22 +17,10 @@ import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { HOME } from "../../routes";
 import { fetchProducts } from "../../redux/productsSlice";
+import limitOfProducts from "../../utils/limitOfProducts";
 
-const limit = () => {
-  if (window.matchMedia("(min-width: 1536px)").matches) {
-    return "5"; // 2xl
-  } else if (window.matchMedia("(min-width: 1280px)").matches) {
-    return "5"; // xl
-  } else if (window.matchMedia("(min-width: 1024px)").matches) {
-    return "5"; // lg
-  } else if (window.matchMedia("(min-width: 768px)").matches) {
-    return "6"; // md
-  } else if (window.matchMedia("(min-width: 640px)").matches) {
-    return "6"; // sm
-  } else {
-    return "6"; // Default limit for small screens
-  }
-};
+// Limits according to media queries
+const limits = [6, 6, 6, 5, 5, 5];
 
 function Product() {
   const { productId } = useParams();
@@ -101,7 +89,7 @@ function Product() {
           item: "0",
           queryParams: {
             page: "1",
-            limit: limit(),
+            limit: `${limitOfProducts(limits)}`,
             ...theSameRelations,
             sort: `-sold,-ratingsAverage`,
             fields: `
@@ -159,7 +147,7 @@ function Product() {
             title={"PRODUCTS RELATED TO THIS ITEM"}
             status={products["0"].status}
             data={products["0"].data}
-            limit={limit()}
+            limit={limitOfProducts(limits)}
           />
         </div>
       ) : (
