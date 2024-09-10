@@ -133,19 +133,19 @@ function HomePage() {
         title={"OUR OFFERS"}
         status={products["0"].status}
         data={products["0"].data}
-        limit={limitOfProducts(limits)}
+        limitOfProducts={limitOfProducts(limits)}
       />
       <Products
         title={"MEW PRODUCTS"}
         status={products["1"].status}
         data={products["1"].data}
-        limit={limitOfProducts(limits)}
+        limitOfProducts={limitOfProducts(limits)}
       />
       <Products
         title={"OUR BEST SELLERS"}
         status={products["2"].status}
         data={products["2"].data}
-        limit={limitOfProducts(limits)}
+        limitOfProducts={limitOfProducts(limits)}
       />
       <Brands status={brands.status} data={brands.data} />
       <Footer />

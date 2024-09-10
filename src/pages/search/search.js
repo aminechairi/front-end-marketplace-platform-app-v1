@@ -4,7 +4,6 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import NavBar from "../../components/navBar/navBar";
 import Products from "../../components/products/products";
-import Pagination from "@mui/material/Pagination";
 import Footer from "../../components/footer/footer";
 import { fetchProducts } from "../../redux/productsSlice";
 import limitOfProducts from "../../utils/limitOfProducts";
@@ -104,21 +103,11 @@ function Search() {
             status={products[0]?.status}
             data={products[0]?.data}
             gridTemplateColumns={{ lg: 4 }}
-            limit={limitOfProducts(limits)}
+            limitOfProducts={limitOfProducts(limits)}
+            paginationResults={products[0]?.data?.paginationResults}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
           />
-          {products[0]?.status === "succeeded" &&
-          products[0]?.data?.paginationResults?.numberOfPages > 1 ? (
-            <Pagination
-              count={products[0]?.data?.paginationResults?.numberOfPages}
-              page={
-                products[0]?.data?.paginationResults?.currentPage || currentPage
-              }
-              onChange={handlePageChange}
-              siblingCount={0}
-              shape="rounded"
-              size="large"
-            />
-          ) : null}
         </>
       )}
       <Footer />

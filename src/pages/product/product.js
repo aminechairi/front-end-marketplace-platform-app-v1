@@ -147,7 +147,7 @@ function Product() {
             title={"PRODUCTS RELATED TO THIS ITEM"}
             status={products["0"].status}
             data={products["0"].data}
-            limit={limitOfProducts(limits)}
+            limitOfProducts={limitOfProducts(limits)}
           />
         </div>
       ) : (
