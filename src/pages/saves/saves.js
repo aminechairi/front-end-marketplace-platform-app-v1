@@ -1,38 +1,71 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import NavBar from "../../components/navBar/navBar";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 
 import { fetchSaves } from "../../redux/savesSlice";
+import limitOfProducts from "../../utils/limitOfProducts";
+import { SAVES } from "../../routes";
+
+// Limits according to media queries
+const limits = [10, 10, 9, 10, 10, 10];
 
 const Saves = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
+
   const saves = useSelector((state) => state.fetchSaves);
 
+  // Extract page number from URL query params or default to 1
+  const queryParams = new URLSearchParams(location.search);
+  const initialPage = parseInt(queryParams.get("page")) || 1;
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [triggeredByPagination, setTriggeredByPagination] = useState(false);
+
   useEffect(() => {
+    const page = triggeredByPagination ? currentPage : initialPage;
     dispatch(
       fetchSaves({
-        page: "1",
-        limit: "20",
+        page: page.toString(),
+        limit: `${limitOfProducts(limits)}`,
         fields: `productId`,
       })
     );
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, currentPage, initialPage]);
+
+  // Scroll to top on page change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
+  // Reset pagination trigger after successful fetch
+  useEffect(() => {
+    if (saves?.status === "succeeded") {
+      setTriggeredByPagination(false);
+    }
+  }, [saves]);
+
+  const handlePageChange = (_, value) => {
+    setTriggeredByPagination(true);
+    setCurrentPage(value);
+    navigate(`${SAVES}?page=${value}`);
+  };
 
   let products = [];
   if (saves.status === "succeeded" && Array.isArray(saves.data?.data)) {
     products = saves.data.data.map((item) => item.productId);
   }
 
-  const noProductsFound =
-    saves.data?.data?.length === 0 && saves.status === "succeeded";
-
   return (
     <>
       <NavBar />
-      {noProductsFound ? (
+      {saves.data?.data?.length === 0 && saves.status === "succeeded" ? (
         <div className="noFound">
           <div className="container">
             <div className="ab">
@@ -49,7 +82,15 @@ const Saves = () => {
           </div>
         </div>
       ) : (
-        <Products title="" status={saves.status} data={{ data: products }} />
+        <Products
+          title=""
+          status={saves.status}
+          data={{ data: products }}
+          limitOfProducts={limitOfProducts(limits)}
+          paginationResults={saves?.data?.paginationResults}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       )}
       <Footer />
     </>

@@ -81,7 +81,7 @@ export default function NavBar() {
     event.preventDefault();
     const query = event.target.search.value;
     if (query.length > 0) {
-      navigate(`/search/${query}?page=${1}`);
+      navigate(`/search/${query}`);
     }
   };
 
