@@ -39,11 +39,6 @@ const Saves = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentPage, initialPage]);
 
-  // Scroll to top on page change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
-
   // Reset pagination trigger after successful fetch
   useEffect(() => {
     if (saves?.status === "succeeded") {
@@ -83,7 +78,7 @@ const Saves = () => {
         </div>
       ) : (
         <Products
-          title=""
+        title={"FAVORITES"}
           status={saves.status}
           data={{ data: products }}
           limitOfProducts={limitOfProducts(limits)}

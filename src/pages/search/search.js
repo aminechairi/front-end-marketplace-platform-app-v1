@@ -58,11 +58,6 @@ function Search() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, currentPage, searchValue, initialPage]);
 
-  // Scroll to top on page change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
-
   // Reset pagination trigger after successful fetch
   useEffect(() => {
     if (products[0]?.status === "succeeded") {

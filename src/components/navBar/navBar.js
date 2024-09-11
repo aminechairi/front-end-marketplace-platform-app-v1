@@ -175,7 +175,7 @@ export default function NavBar() {
                     <li>
                       <ScrollToTop>
                         <Link to={SAVES}>
-                          <FavoriteBorderIcon /> saves
+                          <FavoriteBorderIcon /> favorites
                         </Link>
                       </ScrollToTop>
                     </li>

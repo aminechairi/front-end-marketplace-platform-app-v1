@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
 import "./products.css";
@@ -33,6 +34,11 @@ export default function Products({
       gap: 15px;
     }
   `;
+
+  // Scroll to top on page change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   return (
     <>
