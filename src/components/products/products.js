@@ -25,13 +25,23 @@ export default function Products({
       grid-template-columns: repeat(${gridTemplateColumns.sm || 3}, 1fr);
     }
     /* md	*/
-    @media (min-width: 1024px) {
-      grid-template-columns: repeat(${gridTemplateColumns.md || 4}, 1fr);
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(${gridTemplateColumns.md || 3}, 1fr);
     }
     /* lg	*/
     @media (min-width: 1024px) {
-      grid-template-columns: repeat(${gridTemplateColumns.lg || 5}, 1fr);
+      grid-template-columns: repeat(${gridTemplateColumns.lg || 4}, 1fr);
+    }
+    /* xlg	*/
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(${gridTemplateColumns.xlg || 5}, 1fr);
       gap: 15px;
+    }
+    /* 2xl	*/
+    @media (min-width: 1536px) {
+      @media (min-width: 1024px) {
+        grid-template-columns: repeat(${gridTemplateColumns["2xl"] || 5}, 1fr);
+      }
     }
   `;
 

@@ -1,0 +1,90 @@
+.search_compoent {
+  background-color: var(--backgrounds-color-2);
+}
+.search_compoent > .container {
+  padding: 0;
+}
+.search_compoent > .container > .ab {
+  display: flex;
+}
+.search_compoent > .container > .ab .lists_of_search {
+  background-color: var(--backgrounds-color-2);
+  padding: 30px 15px;
+  display: none;
+  width: 240px;
+}
+/* lg	*/
+@media (min-width: 1024px) {
+  .search_compoent > .container > .ab .lists_of_search {
+    display: block;
+  }
+}
+.search_compoent > .container > .ab .lists_of_search .title_of_lists {
+  padding-bottom: calc(15px);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.search_compoent > .container > .ab .lists_of_search .ratings ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 7.5px;
+  padding-bottom: 15px;
+}
+.search_compoent > .container > .ab .lists_of_search .ratings ul li {
+  display: flex;
+  column-gap: 7.5px;
+}
+.search_compoent > .container > .ab .lists_of_search .ratings ul span {
+  padding: 0;
+}
+.search_compoent > .container > .ab .lists_of_search .ratings ul li .starts {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  column-gap: 7.5px;
+}
+.search_compoent
+  > .container
+  > .ab
+  .lists_of_search
+  .ratings
+  ul
+  li
+  .starts
+  .icon {
+  color: var(--text-color);
+  font-size: 22px;
+}
+.search_compoent
+  > .container
+  > .ab
+  .lists_of_search
+  .ratings
+  ul
+  li
+  .starts
+  .active {
+  color: #daa520;
+  font-size: 22px;
+}
+.search_compoent > .container > .ab .lists_of_search .price .ab {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  row-gap: 15px;
+}
+.search_compoent > .container > .ab .lists_of_search .price .ab .input {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  padding: 4px 8px;
+  border: 1px solid #3867df79;
+  border-radius: 7.5px;
+  caret-color: var(--main-color);
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
+}
+.search_compoent > .container > .ab .lists_of_search .price .ab .input:focus {
+  outline: none;
+}

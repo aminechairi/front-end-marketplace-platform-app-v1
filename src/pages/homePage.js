@@ -13,8 +13,8 @@ import { fetchProducts } from "../redux/productsSlice";
 import { fetchBrands } from "../redux/brandsSlice";
 import limitOfProducts from "../utils/limitOfProducts";
 
-// Limits according to media queries
-const limits = [10, 10, 9, 10, 10, 10];
+// Set product limits based on screen size
+const productLimits = [8, 6, 6, 8, 10, 10];
 
 function HomePage() {
   const categories = useSelector((state) => state.categories);
@@ -43,7 +43,7 @@ function HomePage() {
         item: "0",
         queryParams: {
           page: "1",
-          limit: `${limitOfProducts(limits)}`,
+          limit: `${limitOfProducts(productLimits)}`,
           sort: `-priceAfterDiscount`,
           fields: `
             _id,
@@ -67,7 +67,7 @@ function HomePage() {
         item: "1",
         queryParams: {
           page: "1",
-          limit: `${limitOfProducts(limits)}`,
+          limit: `${limitOfProducts(productLimits)}`,
           fields: `
             _id,
             title,
@@ -90,7 +90,7 @@ function HomePage() {
         item: "2",
         queryParams: {
           page: "1",
-          limit: `${limitOfProducts(limits)}`,
+          limit: `${limitOfProducts(productLimits)}`,
           sort: `-sold`,
           fields: `
             _id,
@@ -133,19 +133,19 @@ function HomePage() {
         title={"OUR OFFERS"}
         status={products["0"].status}
         data={products["0"].data}
-        limitOfProducts={limitOfProducts(limits)}
+        limitOfProducts={limitOfProducts(productLimits)}
       />
       <Products
         title={"MEW PRODUCTS"}
         status={products["1"].status}
         data={products["1"].data}
-        limitOfProducts={limitOfProducts(limits)}
+        limitOfProducts={limitOfProducts(productLimits)}
       />
       <Products
         title={"OUR BEST SELLERS"}
         status={products["2"].status}
         data={products["2"].data}
-        limitOfProducts={limitOfProducts(limits)}
+        limitOfProducts={limitOfProducts(productLimits)}
       />
       <Brands status={brands.status} data={brands.data} />
       <Footer />

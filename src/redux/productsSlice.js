@@ -10,7 +10,12 @@ export const fetchProducts = createAsyncThunk(
     const productId = requestInformations.id || "";
     const url = new URL(`${baseUrl}/products/${productId}`);
     url.search = new URLSearchParams(
-      requestInformations.queryParams
+      // Filter out properties with null or undefined values
+      Object.fromEntries(
+        Object.entries(requestInformations.queryParams).filter(
+          ([key, value]) => value !== null && value !== undefined
+        )
+      )
     ).toString();
 
     const state = getState();

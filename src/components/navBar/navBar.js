@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
@@ -13,6 +13,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import "./navBar.css";
+
 import ScrollToTop from "../scrollToTop/scrollToTop";
 import { authLogOut } from "../../redux/authSlice";
 import { HOME, LOGIN, SIGNUP, SAVES } from "../../routes";
@@ -33,6 +34,7 @@ export default function NavBar() {
   const auth = useSelector((state) => state.cookies.JWTToken);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { searchValue } = useParams();
 
   useEffect(() => {
@@ -79,9 +81,11 @@ export default function NavBar() {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    const query = event.target.search.value;
-    if (query.length > 0) {
-      navigate(`/search/${query}`);
+    const searchValue = event.target.search.value;
+    if (searchValue.length > 0) {
+      const queryParams = new URLSearchParams(location.search);
+      queryParams.set("page", 1);
+      navigate(`/search/${searchValue}?${queryParams.toString()}`);
     }
   };
 

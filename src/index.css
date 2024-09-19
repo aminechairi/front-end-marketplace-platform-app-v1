@@ -189,6 +189,7 @@
 /* start not found */
 .noFound {
   background-color: var(--backgrounds-color-2);
+  width: 100%;
 }
 .noFound .container {
   height: calc(100vh - 70px);
