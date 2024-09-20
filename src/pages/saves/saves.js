@@ -11,7 +11,7 @@ import limitOfProducts from "../../utils/limitOfProducts";
 import { SAVES } from "../../routes";
 
 // Limits according to media queries
-const limits = [10, 10, 9, 10, 10, 10];
+const limits = [12, 12, 12, 19, 20, 20];
 
 const Saves = () => {
   const navigate = useNavigate();
@@ -54,7 +54,14 @@ const Saves = () => {
 
   let products = [];
   if (saves.status === "succeeded" && Array.isArray(saves.data?.data)) {
-    products = saves.data.data.map((item) => item.productId);
+    for (let i = 0; i < saves.data.data.length; i++) {
+      if (
+        JSON.stringify(saves.data.data[i].productId) !==
+        JSON.stringify({ save: true })
+      ) {
+        products.push(saves.data.data[i].productId);
+      }
+    }
   }
 
   return (
@@ -78,7 +85,7 @@ const Saves = () => {
         </div>
       ) : (
         <Products
-        title={"FAVORITES"}
+          title={"FAVORITES"}
           status={saves.status}
           data={{ data: products }}
           limitOfProducts={limitOfProducts(limits)}
