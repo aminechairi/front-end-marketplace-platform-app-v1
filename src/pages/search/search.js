@@ -155,7 +155,7 @@ function Search() {
                   <input
                     className="input"
                     type="number"
-                    placeholder="MIN"
+                    placeholder="FROM"
                     ref={minPriceInputRef}
                     min={0}
                     onChange={() => debouncedHandlePriceChange()} // Handle price input changes with debounce

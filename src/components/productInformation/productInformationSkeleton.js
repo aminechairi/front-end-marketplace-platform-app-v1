@@ -12,8 +12,7 @@ function ProductInformationSkeleton() {
       </p>
 
       <h1 className="title">
-        High-Power Blender 1500W Motor with 8 Speed Settings & 2L BPA-Free
-        Pitcher
+        High-Power Blender 1500W Motor
       </h1>
 
       <p className="description">
