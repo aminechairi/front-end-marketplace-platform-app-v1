@@ -84,14 +84,14 @@ export default function Products({
                       key={i + 1}
                       _id={items._id}
                       title={items.title}
-                      price={items.price ?? items?.sizes[minPriceIndex]?.price}
-                      priceAfterDiscount={
-                        items.priceAfterDiscount ??
-                        items?.sizes[minPriceIndex]?.priceAfterDiscount
+                      price={items.price ?? items.sizes[minPriceIndex].price}
+                      priceBeforeDiscount={
+                        items.priceBeforeDiscount ??
+                        items.sizes[minPriceIndex]?.priceBeforeDiscount
                       }
                       imageCover={items.imageCover}
                       quantity={
-                        items.quantity ?? items?.sizes[minPriceIndex]?.quantity
+                        items.quantity ?? items.sizes[minPriceIndex]?.quantity
                       }
                       sold={items.sold}
                       ratingsAverage={items.ratingsAverage}

@@ -39,12 +39,12 @@ function ProductInformation({ productInfo }) {
         size: minPriceSize.size,
         quantity: minPriceSize.quantity,
         price: minPriceSize.price,
-        priceAfterDiscount: minPriceSize.priceAfterDiscount,
+        priceBeforeDiscount: minPriceSize.priceBeforeDiscount,
       });
     } else {
       setSizeInfo({
         price: productInfo.price,
-        priceAfterDiscount: productInfo.priceAfterDiscount,
+        priceBeforeDiscount: productInfo.priceBeforeDiscount,
       });
     }
   }, [productInfo]);
@@ -55,7 +55,7 @@ function ProductInformation({ productInfo }) {
       size: size.size,
       quantity: size.quantity,
       price: size.price,
-      priceAfterDiscount: size.priceAfterDiscount,
+      priceBeforeDiscount: size.priceBeforeDiscount,
     });
     setQuantity(1);
   };
@@ -93,40 +93,32 @@ function ProductInformation({ productInfo }) {
       </div>
 
       <div className="prices">
-        {sizeInfo.priceAfterDiscount !== undefined &&
-        sizeInfo.priceAfterDiscount !== null ? (
-          <>
-            <p className="price_1">
-              {sizeInfo.price !== undefined && sizeInfo.price !== null
-                ? sizeInfo.price.toFixed(2).replace(".", ",")
-                : "N/A"}{" "}
-              UDS
-            </p>
-            <p className="price_2">
-              <span className="price">
-                {sizeInfo.priceAfterDiscount.toFixed(2).replace(".", ",")} USD
-              </span>
+        {sizeInfo.priceBeforeDiscount ? (
+          <p className="price_1">
+            {sizeInfo?.priceBeforeDiscount.toFixed(2).replace(".", ",")} USD
+          </p>
+        ) : null}
+        <p className="price_2">
+          <span className="price">
+            {sizeInfo.price
+              ? sizeInfo?.price.toFixed(2).replace(".", ",")
+              : null}{" "}
+            USD
+          </span>
+          {sizeInfo.priceBeforeDiscount ? (
+            <>
               &nbsp;/&nbsp;
               <span className="discount">
                 -
                 {calculateDiscountPercentage(
-                  sizeInfo.price,
-                  sizeInfo.priceAfterDiscount
-                )}{" "}
+                  sizeInfo.priceBeforeDiscount,
+                  sizeInfo.price
+                )}
                 %
               </span>
-            </p>
-          </>
-        ) : (
-          <p className="price_2">
-            <span className="price">
-              {sizeInfo.price !== undefined && sizeInfo.price !== null
-                ? sizeInfo.price.toFixed(2).replace(".", ",")
-                : "N/A"}{" "}
-              USD
-            </span>
-          </p>
-        )}
+            </>
+          ) : null}
+        </p>
       </div>
 
       <div className="r_rq_s_q">
@@ -192,22 +184,25 @@ function ProductInformation({ productInfo }) {
 
       {productInfo.group ? (
         <div className="group">
-          {productInfo.group.productsIDs.map((item) => {
+          {productInfo.group.productsIDs.map((item, i) => {
             return (
               <Link
                 to={`/product/${item._id}`}
-                key={item._id}
+                key={i}
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               >
                 <div
                   className={`img ${
                     item._id === productInfo._id ? "selected" : ""
                   }`}
-                  onError={(e) => {
-                    e.target.src = require("../../imgs/Product image on error.png");
-                  }}
                 >
-                  <img src={item.imageCover} alt="" />
+                  <img
+                    src={item.imageCover}
+                    alt=""
+                    onError={(e) => {
+                      e.target.src = require("../../imgs/Product image on error.png");
+                    }}
+                  />
                 </div>
               </Link>
             );

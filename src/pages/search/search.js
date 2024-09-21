@@ -63,7 +63,7 @@ function Search() {
           _id,
           title,
           price,
-          priceAfterDiscount,
+          priceBeforeDiscount,
           imageCover,
           quantity,
           sizes,

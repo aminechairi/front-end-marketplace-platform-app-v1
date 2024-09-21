@@ -96,7 +96,7 @@ function Product() {
               _id,
               title,
               price,
-              priceAfterDiscount,
+              priceBeforeDiscount,
               imageCover,
               quantity,
               sizes,

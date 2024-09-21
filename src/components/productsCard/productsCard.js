@@ -10,7 +10,7 @@ export default function ProductsCard({
   _id,
   title,
   price,
-  priceAfterDiscount,
+  priceBeforeDiscount,
   imageCover,
   quantity,
   sold,
@@ -58,16 +58,15 @@ export default function ProductsCard({
           <h1 className="product_title">{title}</h1>
           <div className="price">
             <p className="currency">usd</p>
-            <p className="number">
-              {priceAfterDiscount?.toFixed(2).replace(".", ",") ??
-                price.toFixed(2).replace(".", ",")}
-            </p>
+            <p className="number">{price.toFixed(2).replace(".", ",")}</p>
           </div>
-          {priceAfterDiscount ? (
+          {priceBeforeDiscount ? (
             <div className="ab_discount">
-              <p className="price">{price.toFixed(2).replace(".", ",")} USD</p>
+              <p className="price">
+                {priceBeforeDiscount.toFixed(2).replace(".", ",")} USD
+              </p>
               <p className="discount">
-                {`-${calculateDiscountPercentage(price, priceAfterDiscount)}%`}
+                {`-${calculateDiscountPercentage(priceBeforeDiscount, price)}%`}
               </p>
             </div>
           ) : null}
