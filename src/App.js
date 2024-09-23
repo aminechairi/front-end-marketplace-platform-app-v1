@@ -16,6 +16,7 @@ import NoFound from "./pages/noFound/noFound";
 import {
   HOME,
   SEARCH,
+  SEARCH_VALUE,
   PRODUCT,
   LOGIN,
   SIGNUP,
@@ -32,6 +33,7 @@ function App() {
     <Routes>
       <Route path={HOME} element={<HomePage />} />
       <Route path={SEARCH} element={<Search />} />
+      <Route path={SEARCH_VALUE} element={<Search />} />
       <Route path={PRODUCT} element={<Product />} />
 
       <Route

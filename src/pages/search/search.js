@@ -19,7 +19,7 @@ const productLimits = [12, 12, 12, 12, 16, 16];
 
 // Search Component
 function Search() {
-  const { searchValue } = useParams();
+  const { searchValue = "" } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -37,6 +37,8 @@ function Search() {
   const currentMaxPrice = queryParams.get("maxPrice")
     ? +queryParams.get("maxPrice")
     : undefined;
+  const currentcategory = queryParams.get("category") || undefined;
+  const currentBrand = queryParams.get("brand") || undefined;
 
   // Refs for minimum and maximum price inputs
   const minPriceInputRef = useRef(null);
@@ -64,6 +66,8 @@ function Search() {
           "ratingsAverage[gte]": currentMinRating,
           "price[gte]": currentMinPrice,
           "price[lte]": currentMaxPrice,
+          category: currentcategory,
+          brand: currentBrand,
         },
       })
     );
@@ -76,6 +80,8 @@ function Search() {
     currentMinRating,
     currentMinPrice,
     currentMaxPrice,
+    currentcategory,
+    currentBrand,
   ]);
 
   // Debounced function to handle price changes (delay added to avoid excessive updates)
@@ -216,7 +222,11 @@ function Search() {
               </div>
             ) : (
               <Products
-                title={`SEARCH RESULTS FOR: "${searchValue}"`}
+                title={
+                  searchValue
+                    ? `SEARCH RESULTS FOR: "${searchValue}"`
+                    : "SEARCH RESULTS:"
+                }
                 status={products[0]?.status}
                 data={products[0]?.data}
                 gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products

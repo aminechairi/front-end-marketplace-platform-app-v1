@@ -70,20 +70,12 @@ function Product() {
   useEffect(() => {
     if (productData?.data) {
       // The same relations.
-      const theSameRelations = {};
-      if (productData.data.category) {
-        theSameRelations.category = productData.data.category._id;
-      }
-      if (productData.data.subCategories.length > 0) {
-        theSameRelations.subCategories = productData.data.subCategories;
-      }
-      if (productData.data.underSubCategories.length > 0) {
-        theSameRelations.underSubCategories =
-          productData.data.underSubCategories;
-      }
-      if (productData.data.brand) {
-        theSameRelations.brand = productData.data.brand._id;
-      }
+      const theSameRelations = {
+        category: productData.data.category?._id,
+        subCategories: productData.data.subCategories,
+        underSubCategories: productData.data.underSubCategories,
+        brand: productData.data.brand?._id,
+      };
 
       dispatch(
         fetchProducts({
@@ -91,9 +83,9 @@ function Product() {
           queryParams: {
             page: "1",
             limit: `${limitOfProducts(limits)}`,
-            ...theSameRelations,
             sort: `-sold,-ratingsAverage`,
             fields: productsFields,
+            ...theSameRelations,
           },
         })
       );

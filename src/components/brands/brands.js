@@ -64,7 +64,6 @@ export default function Brands({ status, data }) {
       <div className="container">
         <div className="ab">
           <h1 className="title">BRANDS</h1>
-
           <Swiper
             pagination={true}
             navigation={true}
@@ -77,7 +76,7 @@ export default function Brands({ status, data }) {
                   <div className="ab_cards">
                     {item.map((item, i) => {
                       return (
-                        <Link to={`/brands/${item._id}`} key={i + 1}>
+                        <Link to={`/search/?page=1&brand=${item._id}`} key={i + 1}>
                           <div className="card">
                             <img
                               className="img"

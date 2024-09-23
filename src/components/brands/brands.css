@@ -12,7 +12,6 @@
   display: grid;
   grid-template-columns: repeat(2 , 1fr);
   gap: 15px;
-  padding: 0px calc(15px / 2);
 }
 .brands .container .ab .ab_cards .card {
   display: flex;

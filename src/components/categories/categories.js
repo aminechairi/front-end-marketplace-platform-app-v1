@@ -76,7 +76,7 @@ export default function Categories({ status, data }) {
                   <div className="ab_cards">
                     {item.map((item, i) => {
                       return (
-                        <Link to={`/categories/${item._id}`} key={i + 1}>
+                        <Link to={`/search/?page=1&category=${item._id}`} key={i + 1}>
                           <div className="card">
                             <img
                               className="img"
