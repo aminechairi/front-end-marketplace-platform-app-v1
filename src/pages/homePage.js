@@ -11,6 +11,7 @@ import Footer from "../components/footer/footer";
 import { fetchCategories } from "../redux/categoriesSlice";
 import { fetchProducts } from "../redux/productsSlice";
 import { fetchBrands } from "../redux/brandsSlice";
+import { productsFields } from "../utils/specificFields";
 import limitOfProducts from "../utils/limitOfProducts";
 
 // Set product limits based on screen size
@@ -44,20 +45,8 @@ function HomePage() {
         queryParams: {
           page: "1",
           limit: `${limitOfProducts(productLimits)}`,
-          sort: `-priceBeforeDiscount`,
-          fields: `
-            _id,
-            title,
-            price,
-            priceBeforeDiscount,
-            imageCover,
-            quantity,
-            sizes,
-            sold,
-            ratingsAverage,
-            ratingsQuantity,
-            save
-          `,
+          fields: productsFields,
+          "discountPercent[lte]": 59,
         },
       })
     );
@@ -68,19 +57,7 @@ function HomePage() {
         queryParams: {
           page: "1",
           limit: `${limitOfProducts(productLimits)}`,
-          fields: `
-            _id,
-            title,
-            price,
-            priceBeforeDiscount,
-            imageCover,
-            quantity,
-            sizes,
-            sold,
-            ratingsAverage,
-            ratingsQuantity,
-            save
-          `,
+          fields: productsFields,
         },
       })
     );
@@ -92,19 +69,7 @@ function HomePage() {
           page: "1",
           limit: `${limitOfProducts(productLimits)}`,
           sort: `-sold`,
-          fields: `
-            _id,
-            title,
-            price,
-            priceBeforeDiscount,
-            imageCover,
-            quantity,
-            sizes,
-            sold,
-            ratingsAverage,
-            ratingsQuantity,
-            save
-          `,
+          fields: productsFields,
         },
       })
     );

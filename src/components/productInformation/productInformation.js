@@ -10,8 +10,6 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
-
 function ProductInformation({ productInfo }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -40,11 +38,13 @@ function ProductInformation({ productInfo }) {
         quantity: minPriceSize.quantity,
         price: minPriceSize.price,
         priceBeforeDiscount: minPriceSize.priceBeforeDiscount,
+        discountPercent: minPriceSize.discountPercent,
       });
     } else {
       setSizeInfo({
         price: productInfo.price,
         priceBeforeDiscount: productInfo.priceBeforeDiscount,
+        discountPercent: productInfo.discountPercent,
       });
     }
   }, [productInfo]);
@@ -56,6 +56,7 @@ function ProductInformation({ productInfo }) {
       quantity: size.quantity,
       price: size.price,
       priceBeforeDiscount: size.priceBeforeDiscount,
+      discountPercent: size.discountPercent,
     });
     setQuantity(1);
   };
@@ -105,17 +106,10 @@ function ProductInformation({ productInfo }) {
               : null}{" "}
             USD
           </span>
-          {sizeInfo.priceBeforeDiscount ? (
+          {sizeInfo.discountPercent ? (
             <>
               &nbsp;/&nbsp;
-              <span className="discount">
-                -
-                {calculateDiscountPercentage(
-                  sizeInfo.priceBeforeDiscount,
-                  sizeInfo.price
-                )}
-                %
-              </span>
+              <span className="discount">-{sizeInfo.discountPercent}%</span>
             </>
           ) : null}
         </p>

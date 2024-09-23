@@ -89,6 +89,10 @@ export default function Products({
                         items.priceBeforeDiscount ??
                         items.sizes[minPriceIndex]?.priceBeforeDiscount
                       }
+                      discountPercent={
+                        items.discountPercent ??
+                        items.sizes[minPriceIndex]?.discountPercent
+                      }
                       imageCover={items.imageCover}
                       quantity={
                         items.quantity ?? items.sizes[minPriceIndex]?.quantity

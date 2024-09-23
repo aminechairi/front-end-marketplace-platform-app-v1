@@ -11,6 +11,7 @@ import NavBar from "../../components/navBar/navBar";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 import { fetchProducts } from "../../redux/productsSlice";
+import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
 
 // Set product limits based on screen size
@@ -59,19 +60,7 @@ function Search() {
             currentMinRating || currentMinPrice || currentMaxPrice
               ? undefined
               : `-sold,-ratingsAverage`,
-          fields: ` 
-          _id,
-          title,
-          price,
-          priceBeforeDiscount,
-          imageCover,
-          quantity,
-          sizes,
-          sold,
-          ratingsAverage,
-          ratingsQuantity,
-          save
-        `,
+          fields: productsFields,
           "ratingsAverage[gte]": currentMinRating,
           "price[gte]": currentMinPrice,
           "price[lte]": currentMaxPrice,

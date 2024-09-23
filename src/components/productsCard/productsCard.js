@@ -4,13 +4,13 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
 import ButtinSave from "../buttinSave/buttinSave";
-import calculateDiscountPercentage from "../../utils/calculateDiscountPercentage";
 
 export default function ProductsCard({
   _id,
   title,
   price,
   priceBeforeDiscount,
+  discountPercent,
   imageCover,
   quantity,
   sold,
@@ -60,13 +60,13 @@ export default function ProductsCard({
             <p className="currency">usd</p>
             <p className="number">{price.toFixed(2).replace(".", ",")}</p>
           </div>
-          {priceBeforeDiscount ? (
+          {priceBeforeDiscount && discountPercent ? (
             <div className="ab_discount">
               <p className="price">
                 {priceBeforeDiscount.toFixed(2).replace(".", ",")} USD
               </p>
               <p className="discount">
-                {`-${calculateDiscountPercentage(priceBeforeDiscount, price)}%`}
+                {`-${discountPercent}%`}
               </p>
             </div>
           ) : null}

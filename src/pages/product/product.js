@@ -17,6 +17,7 @@ import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { HOME } from "../../routes";
 import { fetchProducts } from "../../redux/productsSlice";
+import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
 
 // Limits according to media queries
@@ -92,19 +93,7 @@ function Product() {
             limit: `${limitOfProducts(limits)}`,
             ...theSameRelations,
             sort: `-sold,-ratingsAverage`,
-            fields: `
-              _id,
-              title,
-              price,
-              priceBeforeDiscount,
-              imageCover,
-              quantity,
-              sizes,
-              sold,
-              ratingsAverage,
-              ratingsQuantity,
-              save
-            `,
+            fields: productsFields,
           },
         })
       );
