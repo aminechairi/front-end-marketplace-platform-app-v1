@@ -26,6 +26,7 @@ function Search() {
 
   // Get products state from Redux store
   const products = useSelector((state) => state.products);
+  const reduxState = useSelector((state) => state);
 
   // Parse query parameters from the URL
   const queryParams = new URLSearchParams(location.search);
@@ -47,6 +48,7 @@ function Search() {
   // State to track pagination and current page
   const [triggeredByPagination, setTriggeredByPagination] = useState(false);
   const [currentPage, setCurrentPage] = useState(initialPage);
+  const [category, setCategory] = useState(null);
 
   // useEffect hook to fetch products
   useEffect(() => {
@@ -136,77 +138,103 @@ function Search() {
   // Function to go back to the previous page
   const goBack = () => navigate(-1);
 
+  useEffect(() => {
+    if (currentcategory && reduxState.categories.data?.data) {
+      const categories = reduxState.categories.data?.data;
+      const idOfCategory = currentcategory;
+      const item = categories.find((item) => item._id === idOfCategory);
+      if (item) setCategory(item);
+    }
+  }, [currentcategory, reduxState.categories.data?.data]);
+
   return (
     <>
       <NavBar />
-      <div className="search_compoent">
-        <div className="container">
-          <div className="ab">
-            <div className="lists_of_search">
-              {/* Price Filter */}
-              <div className="price">
-                <h1 className="title_of_lists">Pricing</h1>
-                <div className="ab">
-                  <input
-                    className="input"
-                    type="number"
-                    placeholder="FROM"
-                    ref={minPriceInputRef}
-                    min={0}
-                    onChange={() => debouncedHandlePriceChange()} // Handle price input changes with debounce
-                  />
-                  <input
-                    className="input"
-                    type="number"
-                    placeholder="TO"
-                    ref={maxPriceInputRef}
-                    min={0}
-                    onChange={() => debouncedHandlePriceChange()} // Handle price input changes with debounce
-                  />
-                </div>
-              </div>
-              {/* Ratings Filter */}
-              <div className="ratings">
-                <h1 className="title_of_lists">Ratings</h1>
-                <ul>
-                  {[5, 4, 3, 2, 1].map((rating) => (
-                    <li key={rating}>
-                      <Radio
-                        type="checkbox"
-                        id={`rating_radio_${rating}`}
-                        size="small"
-                        className="input"
-                        checked={currentMinRating === rating} // Highlight selected rating
-                        onChange={() => handleRatingChange(rating)} // Handle rating change
-                        sx={{
-                          color: "var(--text-color)",
-                          "&.Mui-checked": {
-                            color: "var(--main-color)",
-                          },
-                        }}
-                      />
-                      <label
-                        className="starts"
-                        htmlFor={`rating_radio_${rating}`}
-                      >
-                        {/* Display rating with stars */}
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <StarIcon
-                            className={`icon ${index < rating ? "active" : ""}`} // Highlight active stars
-                            key={index}
-                          />
-                        ))}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
+      <div className="filter_products">
+        {category && (
+          <div
+            className="header_of_category"
+            style={{
+              backgroundImage: `url(${category?.image})`,
+            }}
+          >
+            <div className="bg">
+              <div className="container">
+                <h1 className="title">{category?.name}</h1>
               </div>
             </div>
-            {/* Display search results or "No Results" message */}
-            {products[0]?.data?.data?.length === 0 &&
-            products[0].status === "succeeded" ? (
-              <div className="noFound">
-                <div className="container">
+          </div>
+        )}
+
+        <div className="main_of_products">
+          <div className="container">
+            <div className="ab">
+              <div className="lists_of_search">
+                {/* Price Filter */}
+                <div className="price">
+                  <h1 className="title_of_lists">Pricing</h1>
+                  <div className="ab">
+                    <input
+                      className="input"
+                      type="number"
+                      placeholder="FROM"
+                      ref={minPriceInputRef}
+                      min={0}
+                      onChange={() => debouncedHandlePriceChange()} // Handle price input changes with debounce
+                    />
+                    <input
+                      className="input"
+                      type="number"
+                      placeholder="TO"
+                      ref={maxPriceInputRef}
+                      min={0}
+                      onChange={() => debouncedHandlePriceChange()} // Handle price input changes with debounce
+                    />
+                  </div>
+                </div>
+                {/* Ratings Filter */}
+                <div className="ratings">
+                  <h1 className="title_of_lists">Ratings</h1>
+                  <ul>
+                    {[5, 4, 3, 2, 1].map((rating) => (
+                      <li key={rating}>
+                        <Radio
+                          type="checkbox"
+                          id={`rating_radio_${rating}`}
+                          size="small"
+                          className="input"
+                          checked={currentMinRating === rating} // Highlight selected rating
+                          onChange={() => handleRatingChange(rating)} // Handle rating change
+                          sx={{
+                            color: "var(--text-color)",
+                            "&.Mui-checked": {
+                              color: "var(--main-color)",
+                            },
+                          }}
+                        />
+                        <label
+                          className="starts"
+                          htmlFor={`rating_radio_${rating}`}
+                        >
+                          {/* Display rating with stars */}
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <StarIcon
+                              className={`icon ${
+                                index < rating ? "active" : ""
+                              }`} // Highlight active stars
+                              key={index}
+                            />
+                          ))}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              {/* Display search results or "No Results" message */}
+              {products[0]?.data?.data?.length === 0 &&
+              products[0].status === "succeeded" ? (
+                <div className="not_Found_filter_products">
                   <div className="ab">
                     <img src={require("../../imgs/search.png")} alt="" />{" "}
                     <h1>We couldn't find what you were looking for</h1>{" "}
@@ -219,23 +247,23 @@ function Search() {
                     </button>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <Products
-                title={
-                  searchValue
-                    ? `SEARCH RESULTS FOR: "${searchValue}"`
-                    : "SEARCH RESULTS:"
-                }
-                status={products[0]?.status}
-                data={products[0]?.data}
-                gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
-                limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
-                paginationResults={products[0]?.data?.paginationResults}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            )}
+              ) : (
+                <Products
+                  title={
+                    searchValue
+                      ? `SEARCH RESULTS FOR: "${searchValue}"`
+                      : "SEARCH RESULTS:"
+                  }
+                  status={products[0]?.status}
+                  data={products[0]?.data}
+                  gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
+                  limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
+                  paginationResults={products[0]?.data?.paginationResults}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
