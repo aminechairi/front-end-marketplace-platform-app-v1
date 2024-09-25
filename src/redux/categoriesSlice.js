@@ -16,6 +16,19 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
+// Async Thunk for fetching sub categories from the API
+// export const fetchSubCategories = createAsyncThunk(
+//   "categories/fetchSubCategories",
+//   async (queryParams) => {
+//     const url = new URL(`${baseUrl}/subcategories`);
+//     url.search = new URLSearchParams(queryParams).toString();
+//     const response = await fetch(url);
+//     handleUnauthorized(response);
+//     const data = await response.json();
+//     return data;
+//   }
+// );
+
 const categoriesSlice = createSlice({
   name: "categories",
   initialState: {
@@ -37,17 +50,17 @@ const categoriesSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       });
-    // .addCase(addProductAsync.fulfilled, (state, action) => {
-    //   state.list.push(action.payload);
-    // })
-    // .addCase(updateProductAsync.fulfilled, (state, action) => {
-    //   const { id, updatedProduct } = action.payload;
-    //   const index = state.list.findIndex((product) => product.id === id);
-    //   state.list[index] = updatedProduct;
-    // })
-    // .addCase(removeProductAsync.fulfilled, (state, action) => {
-    //   state.list = state.list.filter((product) => product.id !== action.payload);
-    // });
+      // .addCase(fetchSubCategories.pending, (state) => {
+      //   state.status = "loading";
+      // })
+      // .addCase(fetchSubCategories.fulfilled, (state, action) => {
+      //   state.status = "succeeded";
+      //   state.data = action.payload;
+      // })
+      // .addCase(fetchSubCategories.rejected, (state, action) => {
+      //   state.status = "failed";
+      //   state.error = action.error.message;
+      // });
   },
 });
 

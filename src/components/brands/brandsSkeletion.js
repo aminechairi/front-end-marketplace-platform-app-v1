@@ -8,21 +8,21 @@ import "./brandsSkeletion.css";
 
 const checkWindowWidth = () => {
   if (window.innerWidth < 640) {
-    return 6;
+    return 2;
   } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
-    return 6;
+    return 3;
   } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
-    return 8;
+    return 3;
   } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
-    return 12;
+    return 4;
   } else {
-    return 12;
+    return 5;
   }
 };
 
 export default function BrandsSkeletion() {
   const data = [];
-  for (let i = 0; i < checkWindowWidth(); i++) {
+  for (let i = 0; i < checkWindowWidth() + 1; i++) {
     data.push(i);
   }
 
@@ -31,15 +31,15 @@ export default function BrandsSkeletion() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setColumnsNumver(6);
+        setColumnsNumver(2);
       } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
-        setColumnsNumver(6);
+        setColumnsNumver(3);
       } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
-        setColumnsNumver(8);
+        setColumnsNumver(3);
       } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
-        setColumnsNumver(12);
+        setColumnsNumver(4);
       } else {
-        setColumnsNumver(12);
+        setColumnsNumver(5);
       }
     };
 
@@ -50,33 +50,28 @@ export default function BrandsSkeletion() {
     };
   }, []);
 
-  const rankedData = [];
-  for (let i = 0; i < data.length; i += columnsNumber) {
-    const part = data.slice(i, i + columnsNumber);
-    rankedData.push(part);
-  }
-
   return (
     <div className="brands_skeletion">
       <div className="container">
         <div className="ab">
           <h1 className="title">
-            <span>BRANDS BRANDS</span>
+            <span>BRANDS</span>
           </h1>
-          <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-            {rankedData.map((item, i) => {
+          <Swiper
+            spaceBetween={15}
+            slidesPerView={columnsNumber + 0.5}
+            slidesPerGroup={columnsNumber}
+            navigation={true}
+            modules={[Navigation]}
+            className="mySwiper"
+          >
+            {data.map((_, i) => {
               return (
                 <SwiperSlide key={i + 1}>
-                  <div className="ab_cards">
-                    {item.map((_, i) => {
-                      return (
-                        <div className="card" key={i + 1}>
-                          <div className="ab_img">
-                            <div className="img"></div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div className="card" key={i + 1}>
+                    <div className="ab_img">
+                      <div className="img"></div>
+                    </div>
                   </div>
                 </SwiperSlide>
               );

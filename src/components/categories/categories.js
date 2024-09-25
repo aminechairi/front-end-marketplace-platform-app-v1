@@ -11,7 +11,7 @@ import CategoriesSkeletion from "./categoriesSkeleton";
 
 const checkWindowWidth = () => {
   if (window.innerWidth < 640) {
-    return 6;
+    return 4;
   } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
     return 5;
   } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
@@ -29,7 +29,7 @@ export default function Categories({ status, data }) {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setColumnsNumver(6);
+        setColumnsNumver(4);
       } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
         setColumnsNumver(5);
       } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
@@ -48,56 +48,48 @@ export default function Categories({ status, data }) {
     };
   }, []);
 
-  const rankedData = [];
-  if (Array.isArray(data?.data)) {
-    const list = data.data;
-    for (let i = 0; i < list.length; i += columnsNumber) {
-      const part = list.slice(i, i + columnsNumber);
-      rankedData.push(part);
-    }
-  }
-
   return status === "idle" || status === "loading" ? (
     <CategoriesSkeletion />
   ) : status === "succeeded" && Array.isArray(data?.data) ? (
-    <div className="categories">
-      <div className="container">
-        <div className="ab">
-          <h1 className="title">CATEGORIES</h1>
-          <Swiper
-            navigation={true}
-            pagination={true}
-            modules={[Navigation, Pagination]}
-            className="mySwiper"
-          >
-            {rankedData.map((item, i) => {
-              return (
-                <SwiperSlide key={i + 1}>
-                  <div className="ab_cards">
-                    {item.map((item, i) => {
-                      return (
-                        <Link to={`/search/?page=1&category=${item._id}`} key={i + 1}>
-                          <div className="card">
-                            <img
-                              className="img"
-                              src={item.image}
-                              alt=""
-                              onError={(e) => {
-                                e.target.src = require("../../imgs/Category image on error.png");
-                              }}
-                            />
-                            <h1 className="h1">{item.name}</h1>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+    <>
+      <div className="categories">
+        <div className="container">
+          <div className="ab">
+            <h1 className="title">CATEGORIES</h1>
+            <Swiper
+              spaceBetween={15}
+              slidesPerView={columnsNumber + 0.5}
+              slidesPerGroup={columnsNumber}
+              navigation={true}
+              modules={[Navigation, Pagination]}
+              className="mySwiper"
+            >
+              {data.data.map((item, i) => {
+                return (
+                  <SwiperSlide key={i + 1}>
+                    <Link
+                      to={`/search/?page=1&category=${item._id}`}
+                      key={i + 1}
+                    >
+                      <div className="card">
+                        <img
+                          className="img"
+                          src={item.image}
+                          alt=""
+                          onError={(e) => {
+                            e.target.src = require("../../imgs/Category image on error.png");
+                          }}
+                        />
+                        <h1 className="h1">{item.name}</h1>
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   ) : null;
 }

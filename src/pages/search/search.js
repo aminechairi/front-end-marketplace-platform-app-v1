@@ -8,14 +8,16 @@ import "./search.css";
 import Radio from "@mui/material/Radio";
 import StarIcon from "@mui/icons-material/Star";
 import NavBar from "../../components/navBar/navBar";
+// import Categories from "../../components/categories/categories";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 import { fetchProducts } from "../../redux/productsSlice";
+// import { fetchSubCategories } from "../../redux/categoriesSlice";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
 
 // Set product limits based on screen size
-const productLimits = [12, 12, 12, 12, 16, 16];
+const productLimits = [12, 12, 12, 12, 16, 15];
 
 // Search Component
 function Search() {
@@ -24,9 +26,10 @@ function Search() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // Get products state from Redux store
+  // Redux store
   const products = useSelector((state) => state.products);
   const reduxState = useSelector((state) => state);
+  // const subCategories = useSelector((state) => state.categories);
 
   // Parse query parameters from the URL
   const queryParams = new URLSearchParams(location.search);
@@ -147,6 +150,24 @@ function Search() {
     }
   }, [currentcategory, reduxState.categories.data?.data]);
 
+  // useEffect(() => {
+  //   if (currentcategory) {
+  //     dispatch(
+  //       fetchSubCategories({
+  //         page: "1",
+  //         limit: "40",
+  //         category: currentcategory,
+  //         fields: `
+  //         _id,
+  //         name,
+  //         image,
+  //       `,
+  //         sort: "createdAt",
+  //       })
+  //     );
+  //   }
+  // }, [currentcategory, dispatch]);
+
   return (
     <>
       <NavBar />
@@ -165,7 +186,6 @@ function Search() {
             </div>
           </div>
         )}
-
         <div className="main_of_products">
           <div className="container">
             <div className="ab">
@@ -248,20 +268,26 @@ function Search() {
                   </div>
                 </div>
               ) : (
-                <Products
-                  title={
-                    searchValue
-                      ? `SEARCH RESULTS FOR: "${searchValue}"`
-                      : "SEARCH RESULTS:"
-                  }
-                  status={products[0]?.status}
-                  data={products[0]?.data}
-                  gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
-                  limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
-                  paginationResults={products[0]?.data?.paginationResults}
-                  currentPage={currentPage}
-                  onPageChange={handlePageChange}
-                />
+                <>
+                  {/* <Categories
+                    status={subCategories.status}
+                    data={subCategories.data}
+                  /> */}
+                  <Products
+                    title={
+                      searchValue
+                        ? `SEARCH RESULTS FOR: "${searchValue}"`
+                        : "SEARCH RESULTS:"
+                    }
+                    status={products[0]?.status}
+                    data={products[0]?.data}
+                    gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
+                    limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
+                    paginationResults={products[0]?.data?.paginationResults}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                  />
+                </>
               )}
             </div>
           </div>

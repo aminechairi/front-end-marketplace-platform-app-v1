@@ -11,15 +11,15 @@ import BrandsSkeletion from "./brandsSkeletion";
 
 const checkWindowWidth = () => {
   if (window.innerWidth < 640) {
-    return 6;
+    return 2;
   } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
-    return 6;
+    return 3;
   } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
-    return 8;
+    return 3;
   } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
-    return 12;
+    return 4;
   } else {
-    return 12;
+    return 5;
   }
 };
 
@@ -29,15 +29,15 @@ export default function Brands({ status, data }) {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setColumnsNumver(6);
+        setColumnsNumver(2);
       } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
-        setColumnsNumver(6);
+        setColumnsNumver(3);
       } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
-        setColumnsNumver(8);
+        setColumnsNumver(3);
       } else if (window.innerWidth >= 1024 && window.innerWidth < 1280) {
-        setColumnsNumver(12);
+        setColumnsNumver(4);
       } else {
-        setColumnsNumver(12);
+        setColumnsNumver(5);
       }
     };
 
@@ -48,55 +48,44 @@ export default function Brands({ status, data }) {
     };
   }, []);
 
-  const rankedData = [];
-  if (Array.isArray(data?.data)) {
-    const list = data.data;
-    for (let i = 0; i < list.length; i += columnsNumber) {
-      const part = list.slice(i, i + columnsNumber);
-      rankedData.push(part);
-    }
-  }
-
   return status === "idle" || status === "loading" ? (
     <BrandsSkeletion />
   ) : status === "succeeded" && Array.isArray(data?.data) ? (
-    <div className="brands">
-      <div className="container">
-        <div className="ab">
-          <h1 className="title">BRANDS</h1>
-          <Swiper
-            pagination={true}
-            navigation={true}
-            modules={[Pagination, Navigation]}
-            className="mySwiper"
-          >
-            {rankedData.map((item, i) => {
-              return (
-                <SwiperSlide key={i + 1}>
-                  <div className="ab_cards">
-                    {item.map((item, i) => {
-                      return (
-                        <Link to={`/search/?page=1&brand=${item._id}`} key={i + 1}>
-                          <div className="card">
-                            <img
-                              className="img"
-                              src={item.image}
-                              alt=""
-                              onError={(e) => {
-                                e.target.src = require("../../imgs/Brand image on error.png");
-                              }}
-                            />
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+    <>
+      <div className="brands">
+        <div className="container">
+          <div className="ab">
+            <h1 className="title">BRANDS</h1>
+            <Swiper
+              spaceBetween={15}
+              slidesPerView={columnsNumber + 0.5}
+              slidesPerGroup={columnsNumber}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              className="mySwiper"
+            >
+              {data.data.map((item, i) => {
+                return (
+                  <SwiperSlide key={i + 1}>
+                    <Link to={`/search/?page=1&brand=${item._id}`} key={i + 1}>
+                      <div className="card">
+                        <img
+                          className="img"
+                          src={item.image}
+                          alt=""
+                          onError={(e) => {
+                            e.target.src = require("../../imgs/Brand image on error.png");
+                          }}
+                        />
+                      </div>
+                    </Link>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   ) : null;
 }

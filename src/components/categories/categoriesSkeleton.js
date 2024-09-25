@@ -8,7 +8,7 @@ import "./categoriesSkeleton.css";
 
 const checkWindowWidth = () => {
   if (window.innerWidth < 640) {
-    return 6;
+    return 4;
   } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
     return 5;
   } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
@@ -22,7 +22,7 @@ const checkWindowWidth = () => {
 
 export default function CategoriesSkeletion() {
   const data = [];
-  for (let i = 0; i < checkWindowWidth(); i++) {
+  for (let i = 0; i < checkWindowWidth() + 1; i++) {
     data.push({
       name: "full category name & sub",
     });
@@ -33,7 +33,7 @@ export default function CategoriesSkeletion() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setColumnsNumver(6);
+        setColumnsNumver(4);
       } else if (window.innerWidth >= 640 && window.innerWidth < 768) {
         setColumnsNumver(5);
       } else if (window.innerWidth >= 768 && window.innerWidth < 1024) {
@@ -52,34 +52,29 @@ export default function CategoriesSkeletion() {
     };
   }, []);
 
-  const rankedData = [];
-  for (let i = 0; i < data.length; i += columnsNumber) {
-    const part = data.slice(i, i + columnsNumber);
-    rankedData.push(part);
-  }
-
   return (
     <div className="categories_skeletion">
       <div className="container">
         <div className="ab">
           <h1 className="title">
-            <span>CATEGORIES CATEGORIES</span>
+            <span>CATEGORIES</span>
           </h1>
-          <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
-            {rankedData.map((item, i) => {
+          <Swiper
+            spaceBetween={15}
+            slidesPerView={columnsNumber + 0.5}
+            slidesPerGroup={columnsNumber}
+            navigation={true}
+            modules={[Navigation]}
+            className="mySwiper"
+          >
+            {data.map((item, i) => {
               return (
                 <SwiperSlide key={i + 1}>
-                  <div className="ab_cards">
-                    {item.map((item, i) => {
-                      return (
-                        <div className="card" key={i + 1}>
-                          <div className="ab_img">
-                            <div className="img"></div>
-                          </div>
-                          <h1 className="h1">{item.name}</h1>
-                        </div>
-                      );
-                    })}
+                  <div className="card" key={i + 1}>
+                    <div className="ab_img">
+                      <div className="img"></div>
+                    </div>
+                    <h1 className="h1">{item.name}</h1>
                   </div>
                 </SwiperSlide>
               );
