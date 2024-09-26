@@ -52,7 +52,7 @@ export default function Products({
 
   return (
     <>
-      {status === "idle" || status === "loading" ? (
+      {status === "loading" ? (
         <div className="products">
           <div className="container">
             <div className="ab">

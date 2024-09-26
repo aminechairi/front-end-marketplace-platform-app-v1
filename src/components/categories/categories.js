@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 
 import "./categories.css";
 
@@ -23,7 +21,7 @@ const checkWindowWidth = () => {
   }
 };
 
-export default function Categories({ status, data }) {
+export default function Categories({ title, status, data, queryParam }) {
   const [columnsNumber, setColumnsNumver] = useState(checkWindowWidth());
 
   useEffect(() => {
@@ -48,14 +46,14 @@ export default function Categories({ status, data }) {
     };
   }, []);
 
-  return status === "idle" || status === "loading" ? (
+  return status === "loading" ? (
     <CategoriesSkeletion />
   ) : status === "succeeded" && Array.isArray(data?.data) ? (
     <>
       <div className="categories">
         <div className="container">
           <div className="ab">
-            <h1 className="title">CATEGORIES</h1>
+            <h1 className="title">{title}</h1>
             <Swiper
               spaceBetween={15}
               slidesPerView={columnsNumber + 0.5}
@@ -68,7 +66,7 @@ export default function Categories({ status, data }) {
                 return (
                   <SwiperSlide key={i + 1}>
                     <Link
-                      to={`/search/?page=1&category=${item._id}`}
+                      to={`/search/?page=1&${queryParam}=${item._id}`}
                       key={i + 1}
                     >
                       <div className="card">

@@ -2,19 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import _ from "lodash";
+import axios from "axios";
 
 import "./search.css";
 
 import Radio from "@mui/material/Radio";
 import StarIcon from "@mui/icons-material/Star";
 import NavBar from "../../components/navBar/navBar";
-// import Categories from "../../components/categories/categories";
+import Categories from "../../components/categories/categories";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 import { fetchProducts } from "../../redux/productsSlice";
-// import { fetchSubCategories } from "../../redux/categoriesSlice";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
+import baseUrl from "../../config/config";
 
 // Set product limits based on screen size
 const productLimits = [12, 12, 12, 12, 16, 15];
@@ -29,7 +30,17 @@ function Search() {
   // Redux store
   const products = useSelector((state) => state.products);
   const reduxState = useSelector((state) => state);
-  // const subCategories = useSelector((state) => state.categories);
+
+  const [subCategories, setSubCategories] = useState({
+    data: [],
+    status: "idle",
+    error: null,
+  });
+  const [underSubCategories, setUnderSubCategories] = useState({
+    data: [],
+    status: "idle",
+    error: null,
+  });
 
   // Parse query parameters from the URL
   const queryParams = new URLSearchParams(location.search);
@@ -41,7 +52,10 @@ function Search() {
   const currentMaxPrice = queryParams.get("maxPrice")
     ? +queryParams.get("maxPrice")
     : undefined;
-  const currentcategory = queryParams.get("category") || undefined;
+  const currentCategory = queryParams.get("category") || undefined;
+  const currentSubCategory = queryParams.get("subcategory") || undefined;
+  const currentUnderSubCategory =
+    queryParams.get("undersubcategory") || undefined;
   const currentBrand = queryParams.get("brand") || undefined;
 
   // Refs for minimum and maximum price inputs
@@ -71,7 +85,9 @@ function Search() {
           "ratingsAverage[gte]": currentMinRating,
           "price[gte]": currentMinPrice,
           "price[lte]": currentMaxPrice,
-          category: currentcategory,
+          category: currentCategory,
+          subCategories: currentSubCategory,
+          underSubCategories: currentUnderSubCategory,
           brand: currentBrand,
         },
       })
@@ -85,7 +101,9 @@ function Search() {
     currentMinRating,
     currentMinPrice,
     currentMaxPrice,
-    currentcategory,
+    currentCategory,
+    currentSubCategory,
+    currentUnderSubCategory,
     currentBrand,
   ]);
 
@@ -141,32 +159,104 @@ function Search() {
   // Function to go back to the previous page
   const goBack = () => navigate(-1);
 
+  // Hook to update image of header of category
   useEffect(() => {
-    if (currentcategory && reduxState.categories.data?.data) {
-      const categories = reduxState.categories.data?.data;
-      const idOfCategory = currentcategory;
-      const item = categories.find((item) => item._id === idOfCategory);
+    if (currentCategory && reduxState.categories.data?.data) {
+      const idOfCategory = currentCategory;
+      const item = reduxState.categories.data?.data.find(
+        (item) => item._id === idOfCategory
+      );
+      if (item) setCategory(item);
+    } else if (currentSubCategory && subCategories.data?.data) {
+      const idOfSubCategory = currentSubCategory;
+      const item = subCategories.data?.data.find(
+        (item) => item._id === idOfSubCategory
+      );
+      if (item) setCategory(item);
+    } else if (currentUnderSubCategory && underSubCategories.data?.data) {
+      const idOfUnderSubCategory = currentUnderSubCategory;
+      const item = underSubCategories.data?.data.find(
+        (item) => item._id === idOfUnderSubCategory
+      );
       if (item) setCategory(item);
     }
-  }, [currentcategory, reduxState.categories.data?.data]);
+  }, [
+    currentCategory,
+    currentSubCategory,
+    currentUnderSubCategory,
+    reduxState.categories.data?.data,
+    subCategories.data?.data,
+    underSubCategories.data?.data,
+  ]);
 
-  // useEffect(() => {
-  //   if (currentcategory) {
-  //     dispatch(
-  //       fetchSubCategories({
-  //         page: "1",
-  //         limit: "40",
-  //         category: currentcategory,
-  //         fields: `
-  //         _id,
-  //         name,
-  //         image,
-  //       `,
-  //         sort: "createdAt",
-  //       })
-  //     );
-  //   }
-  // }, [currentcategory, dispatch]);
+  // Hook to fetch subcategories or under subcategories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      if (currentCategory) {
+        setSubCategories((prevState) => ({
+          ...prevState,
+          status: "loading",
+          error: null,
+        }));
+
+        try {
+          const response = await axios.get(`${baseUrl}/subcategories`, {
+            params: {
+              page: 1,
+              limit: 40,
+              category: currentCategory,
+              fields: "_id,name,image",
+              sort: "createdAt",
+            },
+          });
+
+          setSubCategories({
+            data: response.data,
+            status: "succeeded",
+            error: null,
+          });
+        } catch (err) {
+          setSubCategories({
+            data: undefined,
+            status: "failed",
+            error: err.message,
+          });
+        }
+      } else if (currentSubCategory) {
+        setUnderSubCategories((prevState) => ({
+          ...prevState,
+          status: "loading",
+          error: null,
+        }));
+
+        try {
+          const response = await axios.get(`${baseUrl}/undersubcategories`, {
+            params: {
+              page: 1,
+              limit: 40,
+              category: currentCategory,
+              fields: "_id,name,image",
+              sort: "createdAt",
+            },
+          });
+
+          setUnderSubCategories({
+            data: response.data,
+            status: "succeeded",
+            error: null,
+          });
+        } catch (err) {
+          setUnderSubCategories({
+            data: undefined,
+            status: "failed",
+            error: err.message,
+          });
+        }
+      } else return;
+    };
+
+    fetchCategories();
+  }, [currentCategory, currentSubCategory]);
 
   return (
     <>
@@ -186,6 +276,25 @@ function Search() {
             </div>
           </div>
         )}
+        
+        {/* DIiplay sub categories or under sub categories */}
+        {currentCategory && (
+          <Categories
+            title={"SUB CATEGORIES"}
+            status={subCategories.status}
+            data={subCategories.data}
+            queryParam={"subcategory"}
+          />
+        )}
+        {currentSubCategory && (
+          <Categories
+            title={"UNDER SUB CATEGORIES"}
+            status={underSubCategories.status}
+            data={underSubCategories.data}
+            queryParam={"undersubcategory"}
+          />
+        )}
+
         <div className="main_of_products">
           <div className="container">
             <div className="ab">
@@ -252,7 +361,8 @@ function Search() {
                 </div>
               </div>
               {/* Display search results or "No Results" message */}
-              {products[0]?.data?.data?.length === 0 &&
+              {(products[0]?.data?.data?.length === 0 ||
+                products[0]?.data?.status) &&
               products[0].status === "succeeded" ? (
                 <div className="not_Found_filter_products">
                   <div className="ab">
@@ -268,26 +378,20 @@ function Search() {
                   </div>
                 </div>
               ) : (
-                <>
-                  {/* <Categories
-                    status={subCategories.status}
-                    data={subCategories.data}
-                  /> */}
-                  <Products
-                    title={
-                      searchValue
-                        ? `SEARCH RESULTS FOR: "${searchValue}"`
-                        : "SEARCH RESULTS:"
-                    }
-                    status={products[0]?.status}
-                    data={products[0]?.data}
-                    gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
-                    limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
-                    paginationResults={products[0]?.data?.paginationResults}
-                    currentPage={currentPage}
-                    onPageChange={handlePageChange}
-                  />
-                </>
+                <Products
+                  title={
+                    searchValue
+                      ? `SEARCH RESULTS FOR: "${searchValue}"`
+                      : "SEARCH RESULTS:"
+                  }
+                  status={products[0]?.status}
+                  data={products[0]?.data}
+                  gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
+                  limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
+                  paginationResults={products[0]?.data?.paginationResults}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                />
               )}
             </div>
           </div>

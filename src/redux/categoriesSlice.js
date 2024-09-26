@@ -16,19 +16,6 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-// Async Thunk for fetching sub categories from the API
-// export const fetchSubCategories = createAsyncThunk(
-//   "categories/fetchSubCategories",
-//   async (queryParams) => {
-//     const url = new URL(`${baseUrl}/subcategories`);
-//     url.search = new URLSearchParams(queryParams).toString();
-//     const response = await fetch(url);
-//     handleUnauthorized(response);
-//     const data = await response.json();
-//     return data;
-//   }
-// );
-
 const categoriesSlice = createSlice({
   name: "categories",
   initialState: {
@@ -50,17 +37,6 @@ const categoriesSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       });
-      // .addCase(fetchSubCategories.pending, (state) => {
-      //   state.status = "loading";
-      // })
-      // .addCase(fetchSubCategories.fulfilled, (state, action) => {
-      //   state.status = "succeeded";
-      //   state.data = action.payload;
-      // })
-      // .addCase(fetchSubCategories.rejected, (state, action) => {
-      //   state.status = "failed";
-      //   state.error = action.error.message;
-      // });
   },
 });
 

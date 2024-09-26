@@ -85,6 +85,10 @@ export default function NavBar() {
     if (searchValue.length > 0) {
       const queryParams = new URLSearchParams(location.search);
       queryParams.set("page", 1);
+      queryParams.delete("category");
+      queryParams.delete("subcategory");
+      queryParams.delete("undersubcategory");
+      queryParams.delete("brand");
       navigate(`/search/${searchValue}?${queryParams.toString()}`);
     }
   };

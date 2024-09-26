@@ -20,8 +20,14 @@
 .categories_skeletion .container .ab .card .ab_img .img {
   display: block;
   width: 100%;
-  height: calc(15px * 7);
+  height: calc(15px * 6);
   animation: var(--animation-skeletion);
+}
+/* sm	*/
+@media (min-width: 640px) {
+  .categories_skeletion .container .ab .card .ab_img .img {
+    height: calc(15px * 7);
+  }
 }
 .categories_skeletion .container .ab .card .h1 {
   text-align: center;
@@ -30,9 +36,15 @@
   font-weight: 500;
   text-transform: capitalize;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+/* sm	*/
+@media (min-width: 640px) {
+  .categories_skeletion .container .ab .card .h1 {
+    -webkit-line-clamp: 2;
+  }
 }
 .categories_skeletion .container .ab .mySwiper .swiper-button-prev::after {
   color: var(--main-color);

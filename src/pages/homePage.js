@@ -93,7 +93,12 @@ function HomePage() {
     <>
       <NavBar />
       <Advertisements />
-      <Categories status={categories.status} data={categories.data} />
+      <Categories
+        title={"CATEGORIES"}
+        status={categories.status}
+        data={categories.data}
+        queryParam={"category"}
+      />
       <Products
         title={"OUR OFFERS"}
         status={products["0"].status}

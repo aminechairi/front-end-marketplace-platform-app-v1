@@ -48,7 +48,7 @@ export default function Brands({ status, data }) {
     };
   }, []);
 
-  return status === "idle" || status === "loading" ? (
+  return status === "loading" ? (
     <BrandsSkeletion />
   ) : status === "succeeded" && Array.isArray(data?.data) ? (
     <>
