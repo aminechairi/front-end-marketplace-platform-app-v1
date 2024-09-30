@@ -32,14 +32,12 @@ function Search() {
   const reduxState = useSelector((state) => state);
 
   const [subCategories, setSubCategories] = useState({
-    data: [],
+    data: null,
     status: "idle",
-    error: null,
   });
   const [underSubCategories, setUnderSubCategories] = useState({
-    data: [],
+    data: null,
     status: "idle",
-    error: null,
   });
 
   // Parse query parameters from the URL
@@ -193,11 +191,10 @@ function Search() {
   useEffect(() => {
     const fetchCategories = async () => {
       if (currentCategory) {
-        setSubCategories((prevState) => ({
-          ...prevState,
+        setSubCategories({
+          data: null,
           status: "loading",
-          error: null,
-        }));
+        });
 
         try {
           const response = await axios.get(`${baseUrl}/subcategories`, {
@@ -213,28 +210,32 @@ function Search() {
           setSubCategories({
             data: response.data,
             status: "succeeded",
-            error: null,
           });
         } catch (err) {
-          setSubCategories({
-            data: undefined,
-            status: "failed",
-            error: err.message,
-          });
+          if (err.response?.data) {
+            setSubCategories({
+              data: err.response?.data,
+              status: "succeeded",
+            });
+          } else {
+            setSubCategories({
+              data: null,
+              status: "failed",
+            });
+          }
         }
       } else if (currentSubCategory) {
-        setUnderSubCategories((prevState) => ({
-          ...prevState,
+        setUnderSubCategories({
+          data: null,
           status: "loading",
-          error: null,
-        }));
+        });
 
         try {
           const response = await axios.get(`${baseUrl}/undersubcategories`, {
             params: {
               page: 1,
               limit: 40,
-              category: currentCategory,
+              subCategory: [currentSubCategory],
               fields: "_id,name,image",
               sort: "createdAt",
             },
@@ -243,14 +244,19 @@ function Search() {
           setUnderSubCategories({
             data: response.data,
             status: "succeeded",
-            error: null,
           });
         } catch (err) {
-          setUnderSubCategories({
-            data: undefined,
-            status: "failed",
-            error: err.message,
-          });
+          if (err.response?.data) {
+            setUnderSubCategories({
+              data: err.response?.data,
+              status: "succeeded",
+            });
+          } else {
+            setUnderSubCategories({
+              data: null,
+              status: "failed",
+            });
+          }
         }
       } else return;
     };
@@ -276,7 +282,7 @@ function Search() {
             </div>
           </div>
         )}
-        
+
         {/* DIiplay sub categories or under sub categories */}
         {currentCategory && (
           <Categories

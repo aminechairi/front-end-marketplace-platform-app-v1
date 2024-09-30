@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 
 import "./product.css";
 
@@ -25,56 +26,64 @@ const limits = [6, 6, 6, 5, 5, 5];
 
 function Product() {
   const { productId } = useParams();
-  const [productData, setProductData] = useState(null);
+  const [product, setProduct] = useState({
+    data: null,
+    status: "idle",
+  });
   const [productImages, setProductImages] = useState([]);
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
-      try {
-        setProductData(null);
+      setProduct({
+        data: null,
+        status: "loading",
+      });
 
-        const response = await fetch(`${baseUrl}/products/${productId}`, {
-          method: "GET",
+      try {
+        const response = await axios.get(`${baseUrl}/products/${productId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch: ${response.status} ${response.statusText}`
-          );
-        }
+        const productImages = [
+          response.data.data.imageCover,
+          ...response.data.data.images,
+        ];
+        setProductImages(productImages);
 
-        const data = await response.json();
-
-        if (data.data) {
-          setProductData(data);
-          const images = [data.data.imageCover, ...data.data.images];
-          setProductImages(images);
+        setProduct({
+          data: response.data,
+          status: "succeeded",
+        });
+      } catch (err) {
+        if (err.response?.data) {
+          setProduct({
+            data: err.response?.data,
+            status: "succeeded",
+          });
         } else {
-          setProductData(data);
+          setProduct({
+            data: null,
+            status: "failed",
+          });
         }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-        setProductData({ error: error.message });
       }
     };
-
     fetchProduct();
   }, [productId]);
 
   useEffect(() => {
-    if (productData?.data) {
+    if (product.status === "succeeded" && product.data?.data) {
       // The same relations.
       const theSameRelations = {
-        category: productData.data.category?._id,
-        subCategories: productData.data.subCategories,
-        underSubCategories: productData.data.underSubCategories,
-        brand: productData.data.brand?._id,
+        category: product.data.data.category?._id,
+        subCategories: product.data.data.subCategories,
+        underSubCategories: product.data.data.underSubCategories,
+        brand: product.data.data.brand?._id,
       };
 
       dispatch(
@@ -90,12 +99,12 @@ function Product() {
         })
       );
     }
-  }, [productData, dispatch]);
+  }, [dispatch, product.data?.data, product.status]);
 
   return (
     <>
       <NavBar />
-      {productData === null ? (
+      {product.status === "loading" ? (
         <div className="product_page">
           <div className="container">
             <div className="ab">
@@ -108,7 +117,7 @@ function Product() {
             </div>
           </div>
         </div>
-      ) : productData?.data ? (
+      ) : product.status === "succeeded" && product.data?.data ? (
         <div className="product_page">
           <div className="container">
             <div className="ab">
@@ -116,10 +125,10 @@ function Product() {
                 <>
                   <ProductSlider
                     productImages={productImages}
-                    _id={productData.data._id}
-                    save={productData.data.save}
+                    _id={product.data.data._id}
+                    save={product.data.data.save}
                   />
-                  <ProductInformation productInfo={productData.data} />
+                  <ProductInformation productInfo={product.data.data} />
                 </>
               </section>
             </div>

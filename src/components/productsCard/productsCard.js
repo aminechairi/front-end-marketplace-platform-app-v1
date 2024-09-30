@@ -81,7 +81,9 @@ export default function ProductsCard({
               <div className="ab_icon">
                 <Inventory2Icon className="icon" />
               </div>
-              <p className="number">{`only ${quantity} left in stock`}</p>
+              <p className="number">
+                {quantity === 0 ? `out of stock` : `only ${quantity} left in stock`}
+              </p>
             </div>
           </div>
         </section>

@@ -48,7 +48,9 @@ export default function Categories({ title, status, data, queryParam }) {
 
   return status === "loading" ? (
     <CategoriesSkeletion />
-  ) : status === "succeeded" && Array.isArray(data?.data) ? (
+  ) : status === "succeeded" &&
+    Array.isArray(data?.data) &&
+    data?.data.length > 0 ? (
     <>
       <div className="categories">
         <div className="container">

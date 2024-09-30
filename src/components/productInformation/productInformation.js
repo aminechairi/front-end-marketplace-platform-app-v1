@@ -10,17 +10,15 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
+import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
+
 function ProductInformation({ productInfo }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeInfo, setSizeInfo] = useState({});
-  const [quantity, setQuantity] = useState(
-    productInfo.quantity === 0 || sizeInfo.quantity === 0 ? 0 : 1
-  );
+  const [quantity, setQuantity] = useState();
 
-  const toggleDescription = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const toggleDescription = () => setIsExpanded(!isExpanded);
 
   const getShortDescription = () => {
     const words = productInfo.description.split(" ");
@@ -28,10 +26,8 @@ function ProductInformation({ productInfo }) {
   };
 
   useEffect(() => {
-    if (productInfo.sizes && productInfo.sizes.length > 0) {
-      const minPriceSize = productInfo.sizes.reduce((min, size) =>
-        size.price < min.price ? size : min
-      );
+    if (productInfo.sizes?.length > 0) {
+      const minPriceSize = findSmallestPriceSize(productInfo.sizes);
       setSelectedSize(minPriceSize);
       setSizeInfo({
         size: minPriceSize.size,
@@ -40,12 +36,14 @@ function ProductInformation({ productInfo }) {
         priceBeforeDiscount: minPriceSize.priceBeforeDiscount,
         discountPercent: minPriceSize.discountPercent,
       });
+      setQuantity(minPriceSize.quantity === 0 ? 0 : 1);
     } else {
       setSizeInfo({
         price: productInfo.price,
         priceBeforeDiscount: productInfo.priceBeforeDiscount,
         discountPercent: productInfo.discountPercent,
       });
+      setQuantity(productInfo.quantity === 0 ? 0 : 1);
     }
   }, [productInfo]);
 
@@ -58,7 +56,7 @@ function ProductInformation({ productInfo }) {
       priceBeforeDiscount: size.priceBeforeDiscount,
       discountPercent: size.discountPercent,
     });
-    setQuantity(1);
+    setQuantity(size.quantity === 0 ? 0 : 1);
   };
 
   const incrementQuantity = () => {
@@ -137,7 +135,17 @@ function ProductInformation({ productInfo }) {
             <p className="value">{productInfo.sold}</p>
           </section>
         </div>
-        <div className="box">
+        <div
+          className="box"
+          style={
+            productInfo.quantity === 0 || sizeInfo.quantity === 0
+              ? {
+                  outline: "1px solid var(--color-of-error)",
+                  color: "var(--color-of-error)",
+                }
+              : {}
+          }
+        >
           <h1 className="title">Quantity</h1>
           <section className="section_of_values">
             <Inventory2Icon className="quantity_icon" />
@@ -214,7 +222,19 @@ function ProductInformation({ productInfo }) {
             <AddIcon className="icon" />
           </button>
         </div>
-        <button className="add_to_cart">Add to cart</button>
+        <button
+          className="add_to_cart"
+          style={
+            productInfo.quantity === 0 || sizeInfo.quantity === 0
+              ? {
+                  backgroundColor: "gray",
+                  cursor: "default",
+                }
+              : {}
+          }
+        >
+          Add to cart
+        </button>
       </div>
     </div>
   );

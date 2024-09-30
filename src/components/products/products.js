@@ -5,6 +5,7 @@ import "./products.css";
 
 import ProductsCard from "../productsCard/productsCard";
 import ProductsCardSkeletion from "../productsCard/productsCardSkeletion";
+import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
 
 export default function Products({
   title,
@@ -72,31 +73,22 @@ export default function Products({
               {title.length > 0 ? <h1 className="title">{title}</h1> : null}
               <AbCards>
                 {data.data.map((items, i) => {
-                  // Get index of object that has the smallest price from sizes array.
-                  let minPriceIndex = 0;
-                  items.sizes.forEach((item, index) => {
-                    if (item.price < items.sizes[minPriceIndex].price) {
-                      minPriceIndex = index;
-                    }
-                  });
+                  const minPriceSize = findSmallestPriceSize(items.sizes);
                   return (
                     <ProductsCard
                       key={i + 1}
                       _id={items._id}
                       title={items.title}
-                      price={items.price ?? items.sizes[minPriceIndex].price}
+                      price={items.price ?? minPriceSize.price}
                       priceBeforeDiscount={
                         items.priceBeforeDiscount ??
-                        items.sizes[minPriceIndex]?.priceBeforeDiscount
+                        minPriceSize.priceBeforeDiscount
                       }
                       discountPercent={
-                        items.discountPercent ??
-                        items.sizes[minPriceIndex]?.discountPercent
+                        items.discountPercent ?? minPriceSize.discountPercent
                       }
                       imageCover={items.imageCover}
-                      quantity={
-                        items.quantity ?? items.sizes[minPriceIndex]?.quantity
-                      }
+                      quantity={items.quantity ?? minPriceSize.quantity}
                       sold={items.sold}
                       ratingsAverage={items.ratingsAverage}
                       ratingsQuantity={items.ratingsQuantity}
