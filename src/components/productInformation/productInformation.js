@@ -115,24 +115,24 @@ function ProductInformation({ productInfo }) {
 
       <div className="r_rq_s_q">
         <div className="box">
-          <h1 className="title">Ratings</h1>
+          <h1 className="title">Average Rating</h1>
           <section className="section_of_values">
             <p className="value">{productInfo.ratingsAverage}</p>
             <StarIcon className="ratings_icon" />
           </section>
         </div>
         <div className="box">
-          <h1 className="title">Ratings quantity</h1>
+          <h1 className="title">Ratings Quantity</h1>
           <section className="section_of_values">
             <PeopleIcon className="ratings_quantity_icon" />
             <p className="value">{productInfo.ratingsQuantity}</p>
           </section>
         </div>
         <div className="box">
-          <h1 className="title">Sold</h1>
+          <h1 className="title">Units Sold</h1>
           <section className="section_of_values">
             <ShoppingCartCheckoutIcon className="sold_icon" />
-            <p className="value">{productInfo.sold}</p>
+            <p className="value">+{productInfo.sold}</p>
           </section>
         </div>
         <div
@@ -146,10 +146,14 @@ function ProductInformation({ productInfo }) {
               : {}
           }
         >
-          <h1 className="title">Quantity</h1>
+          <h1 className="title">In Stock</h1>
           <section className="section_of_values">
             <Inventory2Icon className="quantity_icon" />
-            <p className="value">{productInfo.quantity ?? sizeInfo.quantity}</p>
+            <p className="value">
+              {(productInfo.quantity ?? sizeInfo.quantity) === 0
+                ? "Out of the stock."
+                : productInfo.quantity ?? sizeInfo.quantity}
+            </p>
           </section>
         </div>
       </div>

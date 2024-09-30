@@ -22,7 +22,7 @@ import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
 
 // Limits according to media queries
-const limits = [6, 6, 6, 5, 5, 5];
+const limits = [6, 6, 6, 4, 5, 5];
 
 function Product() {
   const { productId } = useParams();
