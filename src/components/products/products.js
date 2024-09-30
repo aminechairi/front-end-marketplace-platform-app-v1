@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import Pagination from "@mui/material/Pagination";
+
 import "./products.css";
 
 import ProductsCard from "../productsCard/productsCard";

@@ -5,6 +5,7 @@ import NavBar from "../components/navBar/navBar";
 import Advertisements from "../components/advertisements/advertisements";
 import Categories from "../components/categories/categories";
 import Products from "../components/products/products";
+import ProductsSlider from "../components/productsSlider/productsSlider";
 import Brands from "../components/brands/brands";
 import Footer from "../components/footer/footer";
 
@@ -44,9 +45,9 @@ function HomePage() {
         item: "0",
         queryParams: {
           page: "1",
-          limit: `${limitOfProducts(productLimits)}`,
+          limit: `20`,
+          sort: `-sold`,
           fields: productsFields,
-          "discountPercent[lte]": 59,
         },
       })
     );
@@ -58,6 +59,7 @@ function HomePage() {
           page: "1",
           limit: `${limitOfProducts(productLimits)}`,
           fields: productsFields,
+          "discountPercent[lte]": 59,
         },
       })
     );
@@ -67,9 +69,20 @@ function HomePage() {
         item: "2",
         queryParams: {
           page: "1",
-          limit: `${limitOfProducts(productLimits)}`,
-          sort: `-sold`,
+          limit: "20",
           fields: productsFields,
+        },
+      })
+    );
+
+    dispatch(
+      fetchProducts({
+        item: "3",
+        queryParams: {
+          page: "1",
+          limit: `${limitOfProducts(productLimits)}`,
+          fields: productsFields,
+          "price[lte]": 500,
         },
       })
     );
@@ -99,25 +112,29 @@ function HomePage() {
         data={categories.data}
         queryParam={"category"}
       />
-      <Products
-        title={"OUR OFFERS"}
+      <ProductsSlider
+        title={"THE BEST SELLERS"}
         status={products["0"].status}
         data={products["0"].data}
-        limitOfProducts={limitOfProducts(productLimits)}
       />
       <Products
-        title={"MEW PRODUCTS"}
+        title={"OFFERS"}
         status={products["1"].status}
         data={products["1"].data}
         limitOfProducts={limitOfProducts(productLimits)}
       />
-      <Products
-        title={"OUR BEST SELLERS"}
+      <Brands status={brands.status} data={brands.data} />
+      <ProductsSlider
+        title={"NES PRODUCTS"}
         status={products["2"].status}
         data={products["2"].data}
+      />
+      <Products
+        title={"CHEAP PRODUCTS"}
+        status={products["3"].status}
+        data={products["3"].data}
         limitOfProducts={limitOfProducts(productLimits)}
       />
-      <Brands status={brands.status} data={brands.data} />
       <Footer />
     </>
   );

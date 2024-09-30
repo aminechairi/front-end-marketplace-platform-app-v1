@@ -57,6 +57,10 @@ const procutsSlice = createSlice({
       data: null,
       status: "idle",
     },
+    3: {
+      data: null,
+      status: "idle",
+    },
     error: null,
   },
   reducers: {},
