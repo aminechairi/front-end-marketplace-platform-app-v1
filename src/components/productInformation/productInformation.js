@@ -9,7 +9,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
+import { currency } from "../../constens/constens";
 import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
 
 function ProductInformation({ productInfo }) {
@@ -94,15 +94,14 @@ function ProductInformation({ productInfo }) {
       <div className="prices">
         {sizeInfo.priceBeforeDiscount ? (
           <p className="price_1">
-            {sizeInfo?.priceBeforeDiscount.toFixed(2).replace(".", ",")} USD
+            {sizeInfo?.priceBeforeDiscount.toFixed(2).replace(".", ",") + " " + currency}
           </p>
         ) : null}
         <p className="price_2">
           <span className="price">
             {sizeInfo.price
-              ? sizeInfo?.price.toFixed(2).replace(".", ",")
+              ? sizeInfo?.price.toFixed(2).replace(".", ",") + " " + currency
               : null}{" "}
-            USD
           </span>
           {sizeInfo.discountPercent ? (
             <>

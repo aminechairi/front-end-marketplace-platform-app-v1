@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
+
 import "./productsCard.css";
+
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
 import ButtinSave from "../buttinSave/buttinSave";
+import { currency } from "../../constens/constens";
 
 export default function ProductsCard({
   _id,
@@ -57,13 +60,13 @@ export default function ProductsCard({
         <section className="sec_2">
           <h1 className="product_title">{title}</h1>
           <div className="price">
-            <p className="currency">usd</p>
+            <p className="currency">{currency}</p>
             <p className="number">{price.toFixed(2).replace(".", ",")}</p>
           </div>
           {priceBeforeDiscount && discountPercent ? (
             <div className="ab_discount">
               <p className="price">
-                {priceBeforeDiscount.toFixed(2).replace(".", ",")} USD
+                {priceBeforeDiscount.toFixed(2).replace(".", ",") + " " + currency}
               </p>
               <p className="discount">
                 {`-${discountPercent}%`}
