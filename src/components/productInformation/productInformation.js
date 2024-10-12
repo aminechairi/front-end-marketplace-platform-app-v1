@@ -42,6 +42,7 @@ function ProductInformation({ productInfo }) {
         price: productInfo.price,
         priceBeforeDiscount: productInfo.priceBeforeDiscount,
         discountPercent: productInfo.discountPercent,
+        quantity: productInfo.quantity,
       });
       setQuantity(productInfo.quantity === 0 ? 0 : 1);
     }
@@ -94,7 +95,9 @@ function ProductInformation({ productInfo }) {
       <div className="prices">
         {sizeInfo.priceBeforeDiscount ? (
           <p className="price_1">
-            {sizeInfo?.priceBeforeDiscount.toFixed(2).replace(".", ",") + " " + currency}
+            {sizeInfo?.priceBeforeDiscount.toFixed(2).replace(".", ",") +
+              " " +
+              currency}
           </p>
         ) : null}
         <p className="price_2">
@@ -149,9 +152,9 @@ function ProductInformation({ productInfo }) {
           <section className="section_of_values">
             <Inventory2Icon className="quantity_icon" />
             <p className="value">
-              {(productInfo.quantity ?? sizeInfo.quantity) === 0
+              {sizeInfo.quantity === 0
                 ? "Out of the stock."
-                : productInfo.quantity ?? sizeInfo.quantity}
+                : sizeInfo.quantity}
             </p>
           </section>
         </div>

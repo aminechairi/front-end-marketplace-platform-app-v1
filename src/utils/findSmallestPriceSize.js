@@ -6,12 +6,10 @@ export const findSmallestPriceSize = (sizes) => {
 
   let smallestPriceSize;
   if (availableSizes.length > 0) {
-    // Finding the size with the smallest price among available sizes.
     smallestPriceSize = availableSizes.reduce((min, size) =>
       size.price < min.price ? size : min
     );
   } else {
-    // Finding the size with the smallest price if no sizes are available.
     smallestPriceSize = sizes.reduce((min, size) =>
       size.price < min.price ? size : min
     );
