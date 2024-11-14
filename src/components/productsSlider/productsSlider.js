@@ -64,8 +64,8 @@ export default function ProductsSlider({ title, status, data }) {
               >
                 {Array.from(new Array(columnsNumber + 1)).map((_, i) => {
                   return (
-                    <SwiperSlide>
-                      <ProductsCardSkeletion key={i + 1} />
+                    <SwiperSlide key={i + 1}>
+                      <ProductsCardSkeletion />
                     </SwiperSlide>
                   );
                 })}
@@ -89,9 +89,8 @@ export default function ProductsSlider({ title, status, data }) {
                 {data.data.map((items, i) => {
                   const minPriceSize = findSmallestPriceSize(items.sizes);
                   return (
-                    <SwiperSlide>
+                    <SwiperSlide key={i + 1}>
                       <ProductsCard
-                        key={i + 1}
                         _id={items._id}
                         title={items.title}
                         price={items.price ?? minPriceSize.price}

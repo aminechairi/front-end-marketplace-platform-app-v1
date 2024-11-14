@@ -61,7 +61,7 @@ function ProductInformation({ productInfo }) {
   };
 
   const incrementQuantity = () => {
-    if (quantity < (productInfo.quantity ?? sizeInfo.quantity)) {
+    if (quantity < (productInfo.sizes.length === 0 ? productInfo.quantity :  sizeInfo.quantity)) {
       setQuantity((prevQuantity) => prevQuantity + 1);
     }
   };
