@@ -3,7 +3,8 @@
 }
 .filter_products .header_of_category {
   height: 80px;
-  background-position: center center;
+  background-size: cover;
+  background-position: center;
   box-shadow: var(--shadow-1);
   position: relative;
   z-index: 1;
