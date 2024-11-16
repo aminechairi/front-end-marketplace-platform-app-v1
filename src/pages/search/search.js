@@ -29,7 +29,7 @@ function Search() {
 
   // Redux store
   const products = useSelector((state) => state.products);
-  const reduxState = useSelector((state) => state);
+  const categories = useSelector((state) => state.categories);
 
   const [subCategories, setSubCategories] = useState({
     data: null,
@@ -159,9 +159,9 @@ function Search() {
 
   // Hook to update image of header of category
   useEffect(() => {
-    if (currentCategory && reduxState.categories.data?.data) {
+    if (currentCategory && categories.data?.data) {
       const idOfCategory = currentCategory;
-      const item = reduxState.categories.data?.data.find(
+      const item = categories.data?.data.find(
         (item) => item._id === idOfCategory
       );
       if (item) setCategory(item);
@@ -182,7 +182,7 @@ function Search() {
     currentCategory,
     currentSubCategory,
     currentUnderSubCategory,
-    reduxState.categories.data?.data,
+    categories.data?.data,
     subCategories.data?.data,
     underSubCategories.data?.data,
   ]);

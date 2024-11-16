@@ -73,6 +73,7 @@ export default function Brands({ status, data }) {
                           className="img"
                           src={item.image}
                           alt=""
+                          loading="lazy"
                           onError={(e) => {
                             e.target.src = require("../../imgs/Brand image on error.png");
                           }}

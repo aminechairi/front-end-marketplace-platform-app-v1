@@ -76,6 +76,7 @@ export default function Categories({ title, status, data, queryParam }) {
                           className="img"
                           src={item.image}
                           alt=""
+                          loading="lazy"
                           onError={(e) => {
                             e.target.src = require("../../imgs/Category image on error.png");
                           }}

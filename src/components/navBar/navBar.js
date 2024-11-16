@@ -105,6 +105,7 @@ export default function NavBar() {
                   width={80}
                   height={80}
                   alt=""
+                  loading="lazy"
                 />
                 <h1 className="title">e shop app</h1>
               </div>
