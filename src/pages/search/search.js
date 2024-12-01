@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import _ from "lodash";
-import axios from "axios";
 
 import "./search.css";
 
@@ -12,10 +11,12 @@ import NavBar from "../../components/navBar/navBar";
 import Categories from "../../components/categories/categories";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
-import { fetchProducts } from "../../redux/productsSlice";
+
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../config/config";
+import cookieManager from "../../utils/cookieManager";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
-import baseUrl from "../../config/config";
 
 // Set product limits based on screen size
 const productLimits = [12, 12, 12, 12, 16, 15];
@@ -25,35 +26,23 @@ function Search() {
   const { searchValue = "" } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
 
   // Redux store
-  const products = useSelector((state) => state.products);
+  const { data: products, fetchData: fetchProducts } = useFetch();
   const categories = useSelector((state) => state.categories);
 
-  const [subCategories, setSubCategories] = useState({
-    data: null,
-    status: "idle",
-  });
-  const [underSubCategories, setUnderSubCategories] = useState({
-    data: null,
-    status: "idle",
-  });
+  const { data: subCategories, fetchData: fetchSubCategories } = useFetch();
+  const { data: underSubCategories, fetchData: fetchUnderSubCategories } = useFetch();
 
   // Parse query parameters from the URL
   const queryParams = new URLSearchParams(location.search);
   const initialPage = parseInt(queryParams.get("page")) || 1;
   const currentMinRating = parseInt(queryParams.get("minRating")) || 0;
-  const currentMinPrice = queryParams.get("minPrice")
-    ? +queryParams.get("minPrice")
-    : undefined;
-  const currentMaxPrice = queryParams.get("maxPrice")
-    ? +queryParams.get("maxPrice")
-    : undefined;
+  const currentMinPrice = queryParams.get("minPrice") ? +queryParams.get("minPrice") : undefined;
+  const currentMaxPrice = queryParams.get("maxPrice") ? +queryParams.get("maxPrice") : undefined;
   const currentCategory = queryParams.get("category") || undefined;
   const currentSubCategory = queryParams.get("subcategory") || undefined;
-  const currentUnderSubCategory =
-    queryParams.get("undersubcategory") || undefined;
+  const currentUnderSubCategory = queryParams.get("undersubcategory") || undefined;
   const currentBrand = queryParams.get("brand") || undefined;
 
   // Refs for minimum and maximum price inputs
@@ -68,31 +57,32 @@ function Search() {
   // useEffect hook to fetch products
   useEffect(() => {
     const page = triggeredByPagination ? currentPage : initialPage; // Determine the correct page
-    dispatch(
-      fetchProducts({
-        item: "0",
-        queryParams: {
-          page: page.toString(),
-          limit: `${limitOfProducts(productLimits)}`,
-          search: searchValue,
-          sort:
-            currentMinRating || currentMinPrice || currentMaxPrice
-              ? undefined
-              : `-sold,-ratingsAverage`,
-          fields: productsFields,
-          "ratingsAverage[gte]": currentMinRating,
-          "price[gte]": currentMinPrice,
-          "price[lte]": currentMaxPrice,
-          category: currentCategory,
-          subCategories: currentSubCategory,
-          underSubCategories: currentUnderSubCategory,
-          brand: currentBrand,
-        },
-      })
-    );
+    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
+
+    fetchProducts({
+      url: `${baseUrl}/products`,
+      method: "get",
+      params: {
+        page: page.toString(),
+        limit: `${limitOfProducts(productLimits)}`,
+        search: searchValue,
+        sort: currentMinRating || currentMinPrice || currentMaxPrice ? undefined : `-sold,-ratingsAverage`,
+        fields: productsFields,
+        "ratingsAverage[gte]": currentMinRating,
+        "price[gte]": currentMinPrice,
+        "price[lte]": currentMaxPrice,
+        category: currentCategory,
+        subCategories: currentSubCategory,
+        underSubCategories: currentUnderSubCategory,
+        brand: currentBrand,
+      },
+      headers: {
+        Authorization: JWTToken,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    dispatch,
+    fetchProducts,
     currentPage,
     searchValue,
     initialPage,
@@ -124,7 +114,7 @@ function Search() {
 
     queryParams.set("page", 1);
     navigate(`/search/${searchValue}?${queryParams.toString()}`);
-  }, 300);
+  }, 500);
 
   // useEffect hook to initialize price input values based on current URL parameters
   useEffect(() => {
@@ -149,7 +139,7 @@ function Search() {
 
   // useEffect hook to reset pagination flag when products have loaded
   useEffect(() => {
-    if (products[0]?.status === "succeeded") {
+    if (products?.status === "succeeded") {
       setTriggeredByPagination(false); // Reset pagination trigger once products are successfully loaded
     }
   }, [products]);
@@ -189,80 +179,37 @@ function Search() {
 
   // Hook to fetch subcategories or under subcategories
   useEffect(() => {
-    const fetchCategories = async () => {
-      if (currentCategory) {
-        setSubCategories({
-          data: null,
-          status: "loading",
-        });
-
-        try {
-          const response = await axios.get(`${baseUrl}/subcategories`, {
-            params: {
-              page: 1,
-              limit: 40,
-              category: currentCategory,
-              fields: "_id,name,image",
-              sort: "createdAt",
-            },
-          });
-
-          setSubCategories({
-            data: response.data,
-            status: "succeeded",
-          });
-        } catch (err) {
-          if (err.response?.data) {
-            setSubCategories({
-              data: err.response?.data,
-              status: "succeeded",
-            });
-          } else {
-            setSubCategories({
-              data: null,
-              status: "failed",
-            });
-          }
-        }
-      } else if (currentSubCategory) {
-        setUnderSubCategories({
-          data: null,
-          status: "loading",
-        });
-
-        try {
-          const response = await axios.get(`${baseUrl}/undersubcategories`, {
-            params: {
-              page: 1,
-              limit: 40,
-              subCategory: [currentSubCategory],
-              fields: "_id,name,image",
-              sort: "createdAt",
-            },
-          });
-
-          setUnderSubCategories({
-            data: response.data,
-            status: "succeeded",
-          });
-        } catch (err) {
-          if (err.response?.data) {
-            setUnderSubCategories({
-              data: err.response?.data,
-              status: "succeeded",
-            });
-          } else {
-            setUnderSubCategories({
-              data: null,
-              status: "failed",
-            });
-          }
-        }
-      } else return;
-    };
-
-    fetchCategories();
-  }, [currentCategory, currentSubCategory]);
+    if (currentCategory) {
+      fetchSubCategories({
+        url: `${baseUrl}/subcategories`,
+        method: "get",
+        params: {
+          page: 1,
+          limit: 40,
+          category: currentCategory,
+          fields: "_id,name,image",
+          sort: "createdAt",
+        },
+      });
+    } else if (currentSubCategory) {
+      fetchUnderSubCategories({
+        url: `${baseUrl}/undersubcategories`,
+        method: "get",
+        params: {
+          page: 1,
+          limit: 40,
+          subCategory: [currentSubCategory],
+          fields: "_id,name,image",
+          sort: "createdAt",
+        },
+      });
+    } else return;
+  }, [
+    currentCategory,    
+    fetchSubCategories,
+    currentSubCategory,
+    fetchUnderSubCategories,
+  ]);
 
   return (
     <>
@@ -367,9 +314,9 @@ function Search() {
                 </div>
               </div>
               {/* Display search results or "No Results" message */}
-              {(products[0]?.data?.data?.length === 0 ||
-                products[0]?.data?.status) &&
-              products[0].status === "succeeded" ? (
+              {(products?.data?.data?.length === 0 ||
+                products?.data?.status) &&
+              products.status === "succeeded" ? (
                 <div className="not_Found_filter_products">
                   <div className="ab">
                     <img src={require("../../imgs/search.png")} alt="" />{" "}
@@ -390,11 +337,11 @@ function Search() {
                       ? `SEARCH RESULTS FOR: "${searchValue}"`
                       : "SEARCH RESULTS:"
                   }
-                  status={products[0]?.status}
-                  data={products[0]?.data}
+                  status={products?.status}
+                  data={products?.data}
                   gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
                   limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
-                  paginationResults={products[0]?.data?.paginationResults}
+                  paginationResults={products?.data?.paginationResults}
                   currentPage={currentPage}
                   onPageChange={handlePageChange}
                 />

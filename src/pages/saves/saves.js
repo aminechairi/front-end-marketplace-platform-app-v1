@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import NavBar from "../../components/navBar/navBar";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 
-import { fetchSaves } from "../../redux/savesSlice";
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../config/config";
+import cookieManager from "../../utils/cookieManager";
 import limitOfProducts from "../../utils/limitOfProducts";
 import { SAVES } from "../../routes";
 
@@ -16,9 +17,8 @@ const limits = [12, 12, 12, 19, 20, 20];
 const Saves = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
 
-  const saves = useSelector((state) => state.fetchSaves);
+  const { data: saves, fetchData: fetchSaves } = useFetch();
 
   // Extract page number from URL query params or default to 1
   const queryParams = new URLSearchParams(location.search);
@@ -29,15 +29,22 @@ const Saves = () => {
 
   useEffect(() => {
     const page = triggeredByPagination ? currentPage : initialPage;
-    dispatch(
-      fetchSaves({
+    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
+
+    fetchSaves({
+      url: `${baseUrl}/saves`,
+      method: "get",
+      params: {
         page: page.toString(),
         limit: `${limitOfProducts(limits)}`,
         fields: `productId`,
-      })
-    );
+      },
+      headers: {
+        Authorization: JWTToken,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, currentPage, initialPage]);
+  }, [fetchSaves, currentPage, initialPage]);
 
   // Reset pagination trigger after successful fetch
   useEffect(() => {

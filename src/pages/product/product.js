@@ -1,7 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 
 import "./product.css";
 
@@ -14,10 +12,10 @@ import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 import ScrollToTop from "../../components/scrollToTop/scrollToTop";
 
+import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { HOME } from "../../routes";
-import { fetchProducts } from "../../redux/productsSlice";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
 
@@ -26,80 +24,60 @@ const limits = [6, 6, 6, 4, 5, 5];
 
 function Product() {
   const { productId } = useParams();
-  const [product, setProduct] = useState({
-    data: null,
-    status: "idle",
-  });
+  const { data: product, fetchData: fetchProduct } = useFetch();
   const [productImages, setProductImages] = useState([]);
-  const products = useSelector((state) => state.products);
-  const dispatch = useDispatch();
+  const { data: products, fetchData: fetchProducts } = useFetch();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      setProduct({
-        data: null,
-        status: "loading",
-      });
+    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
-      try {
-        const response = await axios.get(`${baseUrl}/products/${productId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-          },
-        });
+    fetchProduct({
+      url: `${baseUrl}/products/${productId}`,
+      headers: {
+        Authorization: JWTToken,
+      },
+    });
+  }, [fetchProduct, productId]);
 
-        const productImages = [
-          response.data.data.imageCover,
-          ...response.data.data.images,
-        ];
-        setProductImages(productImages);
-
-        setProduct({
-          data: response.data,
-          status: "succeeded",
-        });
-      } catch (err) {
-        if (err.response?.data) {
-          setProduct({
-            data: err.response?.data,
-            status: "succeeded",
-          });
-        } else {
-          setProduct({
-            data: null,
-            status: "failed",
-          });
-        }
-      }
-    };
-    fetchProduct();
-  }, [productId]);
+  useEffect(() => {
+    if (product.status === "succeeded" && product.data?.data) {
+      setProductImages([
+        product.data?.data.imageCover,
+        ...product.data?.data.images,
+      ]);
+    } else {
+      setProductImages([]);
+    }
+  }, [product.status, product.data?.data]);
 
   useEffect(() => {
     if (product.status === "succeeded" && product.data?.data) {
       // The same relations.
       const theSameRelations = {
-        category: product.data.data.category?._id,
-        subCategories: product.data.data.subCategories,
-        underSubCategories: product.data.data.underSubCategories,
-        brand: product.data.data.brand?._id,
+        category: product.data?.data.category?._id,
+        subCategories: product.data?.data.subCategories,
+        underSubCategories: product.data?.data.underSubCategories,
+        brand: product.data?.data.brand?._id
       };
 
-      dispatch(
-        fetchProducts({
-          item: "0",
-          queryParams: {
-            page: "1",
-            limit: `${limitOfProducts(limits)}`,
-            sort: `-sold,-ratingsAverage`,
-            fields: productsFields,
-            ...theSameRelations,
-          },
-        })
-      );
+      const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
+
+      fetchProducts({
+        url: `${baseUrl}/products`,
+        method: "get",
+        params: {
+          page: "1",
+          limit: `${limitOfProducts(limits)}`,
+          sort: `-sold,-ratingsAverage`,
+          fields: productsFields,
+          ...theSameRelations,
+        },
+        headers: {
+          Authorization: JWTToken,
+        },
+      });
     }
-  }, [dispatch, product.data?.data, product.status]);
+  }, [fetchProducts, product.data?.data, product.status]);
 
   return (
     <>
@@ -125,18 +103,18 @@ function Product() {
                 <>
                   <ProductSlider
                     productImages={productImages}
-                    _id={product.data.data._id}
-                    save={product.data.data.save}
+                    _id={product.data?.data._id}
+                    save={product.data?.data.save}
                   />
-                  <ProductInformation productInfo={product.data.data} />
+                  <ProductInformation productInfo={product.data?.data} />
                 </>
               </section>
             </div>
           </div>
           <Products
             title={"PRODUCTS RELATED TO THIS ITEM"}
-            status={products["0"].status}
-            data={products["0"].data}
+            status={products.status}
+            data={products.data}
             limitOfProducts={limitOfProducts(limits)}
           />
         </div>

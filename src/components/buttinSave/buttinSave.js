@@ -1,32 +1,42 @@
-import "./buttinSave.css";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 
-import {
-  addProductToSaves,
-  removeProductFromSaves,
-} from "../../redux/savesSlice";
+import "./buttinSave.css";
+
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../config/config";
+import cookieManager from "../../utils/cookieManager";
 import { LOGIN } from "./../../routes";
 
 function ButtinSave({ _id, save }) {
   const [isSaved, setIsSaved] = useState(Boolean(save));
-  const JWTToken = useSelector((state) => state.cookies.JWTToken);
-  const dispatch = useDispatch();
+  const { fetchData: addProductToSaves } = useFetch();
+  const { fetchData: removeProductFromSaves } = useFetch();
   const navigate = useNavigate();
 
   const handleSaveChange = (e, productId) => {
     setIsSaved(e.target.checked);
-    if (JWTToken) {
+
+    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
+
+    if (cookieManager("get", "JWTToken")) {
       if (e.target.checked) {
-        dispatch(
-          addProductToSaves({
-            productId: productId,
-          })
-        );
+        addProductToSaves({
+          url: `${baseUrl}/saves`,
+          method: "post",
+          data: { productId },
+          headers: {
+            Authorization: JWTToken,
+          },
+        });
       } else {
-        dispatch(removeProductFromSaves(productId));
+        removeProductFromSaves({
+          url: `${baseUrl}/saves/${productId}`,
+          method: "delete",
+          headers: {
+            Authorization: JWTToken,
+          },
+        });
       }
     } else {
       navigate(LOGIN);
