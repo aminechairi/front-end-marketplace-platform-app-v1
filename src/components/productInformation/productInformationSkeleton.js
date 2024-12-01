@@ -21,6 +21,10 @@ function ProductInformationSkeleton() {
         smoothies, soups, and more.
       </p>
 
+      <p className="relations">
+        <span>Brand</span>&nbsp;:&nbsp;<span>BlendMaster</span>
+      </p>
+
       <div className="prices">
         <p className="price_2">
           <span className="price">250.00 USD</span>
@@ -55,10 +59,6 @@ function ProductInformationSkeleton() {
           </section>
         </div>
       </div>
-
-      <p className="relations">
-        <span>Brand</span>&nbsp;:&nbsp;<span>BlendMaster</span>
-      </p>
 
       <p className="relations">
         <span>Color</span>&nbsp;:&nbsp;<span>Red</span>

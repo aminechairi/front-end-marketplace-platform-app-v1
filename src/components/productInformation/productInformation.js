@@ -92,6 +92,12 @@ function ProductInformation({ productInfo }) {
         )}
       </div>
 
+      {productInfo.brand && (
+        <p className="relations">
+          <span>Brand</span>&nbsp;:&nbsp;<span>{productInfo.brand.name}</span>
+        </p>
+      )}
+
       <div className="prices">
         {sizeInfo.priceBeforeDiscount ? (
           <p className="price_1">
@@ -160,33 +166,30 @@ function ProductInformation({ productInfo }) {
         </div>
       </div>
 
-      {productInfo.brand && (
-        <p className="relations">
-          <span>Brand</span>&nbsp;:&nbsp;<span>{productInfo.brand.name}</span>
-        </p>
-      )}
-
-      {productInfo.color && (
+      {/* {productInfo.color && (
         <p className="relations">
           <span>Color</span>&nbsp;:&nbsp;<span>{productInfo.color}</span>
         </p>
-      )}
+      )} */}
 
-      {productInfo.sizes && (
+      {productInfo.sizes?.length > 0 && (
         <div className="sizes">
-          {productInfo.sizes.map((item) => (
-            <button
-              key={item._id}
-              onClick={() => handleSizeClick(item)}
-              className={
-                selectedSize && selectedSize.size === item.size
-                  ? "selected"
-                  : ""
-              }
-            >
-              {item.size}
-            </button>
-          ))}
+          <h1 className="title">Sizes</h1>
+          <siv className="size">
+            {productInfo.sizes.map((item) => (
+              <button
+                key={item._id}
+                onClick={() => handleSizeClick(item)}
+                className={
+                  selectedSize && selectedSize.size === item.size
+                    ? "selected"
+                    : ""
+                }
+              >
+                {item.size}
+              </button>
+            ))}
+          </siv>
         </div>
       )}
 
