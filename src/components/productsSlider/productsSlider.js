@@ -6,7 +6,6 @@ import "./productsSlider.css";
 
 import ProductsCard from "../productsCard/productsCard";
 import ProductsCardSkeletion from "../productsCard/productsCardSkeletion";
-import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
 
 const checkWindowWidth = () => {
   if (window.innerWidth < 640) {
@@ -87,22 +86,16 @@ export default function ProductsSlider({ title, status, data }) {
                 className="mySwiper"
               >
                 {data.data.map((items, i) => {
-                  const minPriceSize = findSmallestPriceSize(items.sizes);
                   return (
                     <SwiperSlide key={i + 1}>
                       <ProductsCard
                         _id={items._id}
                         title={items.title}
-                        price={items.price ?? minPriceSize.price}
-                        priceBeforeDiscount={
-                          items.priceBeforeDiscount ??
-                          minPriceSize.priceBeforeDiscount
-                        }
-                        discountPercent={
-                          items.discountPercent ?? minPriceSize.discountPercent
-                        }
+                        price={items.price}
+                        priceBeforeDiscount={items.priceBeforeDiscount}
+                        discountPercent={items.discountPercent}
                         imageCover={items.imageCover}
-                        quantity={items.quantity ?? minPriceSize.quantity}
+                        quantity={items.quantity}
                         sold={items.sold}
                         ratingsAverage={items.ratingsAverage}
                         ratingsQuantity={items.ratingsQuantity}

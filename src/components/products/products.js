@@ -6,7 +6,6 @@ import "./products.css";
 
 import ProductsCard from "../productsCard/productsCard";
 import ProductsCardSkeletion from "../productsCard/productsCardSkeletion";
-import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
 
 const AbCards = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "gridTemplateColumns",
@@ -75,22 +74,16 @@ export default function Products({
               {title.length > 0 ? <h1 className="title">{title}</h1> : null}
               <AbCards gridTemplateColumns={gridTemplateColumns}>
                 {data.data.map((items, i) => {
-                  const minPriceSize = findSmallestPriceSize(items.sizes);
                   return (
                     <ProductsCard
                       key={i + 1}
                       _id={items._id}
                       title={items.title}
-                      price={items.price ?? minPriceSize.price}
-                      priceBeforeDiscount={
-                        items.priceBeforeDiscount ??
-                        minPriceSize.priceBeforeDiscount
-                      }
-                      discountPercent={
-                        items.discountPercent ?? minPriceSize.discountPercent
-                      }
+                      price={items.price}
+                      priceBeforeDiscount={items.priceBeforeDiscount}
+                      discountPercent={items.discountPercent}
                       imageCover={items.imageCover}
-                      quantity={items.quantity ?? minPriceSize.quantity}
+                      quantity={items.quantity}
                       sold={items.sold}
                       ratingsAverage={items.ratingsAverage}
                       ratingsQuantity={items.ratingsQuantity}
