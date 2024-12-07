@@ -79,7 +79,7 @@
   width: 100%;
   height: calc(100%);
   background-color: var(--bg-color-forms-loading);
-  cursor: not-allowed;
+  cursor: wait;
   color: var(--main-color);
   z-index: 1;
   left: 0;

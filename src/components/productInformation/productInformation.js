@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./productInformation.css";
 
@@ -9,14 +9,22 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import useFetch from "../../hooks/useFetch";
+import baseUrl from "../../config/config";
+import cookieManager from "../../utils/cookieManager";
 import { currency } from "../../constens/constens";
 import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
+import { LOGIN } from "./../../routes";
 
 function ProductInformation({ productInfo }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeInfo, setSizeInfo] = useState({});
   const [quantity, setQuantity] = useState();
+  const { data: cart, fetchData: addProductToCart } = useFetch();
+  const navigate = useNavigate();
 
   const toggleDescription = () => setIsExpanded(!isExpanded);
 
@@ -61,7 +69,7 @@ function ProductInformation({ productInfo }) {
   };
 
   const incrementQuantity = () => {
-    if (quantity < (productInfo.sizes.length === 0 ? productInfo.quantity :  sizeInfo.quantity)) {
+    if (quantity < (productInfo.sizes.length === 0 ? productInfo.quantity : sizeInfo.quantity)) {
       setQuantity((prevQuantity) => prevQuantity + 1);
     }
   };
@@ -71,6 +79,29 @@ function ProductInformation({ productInfo }) {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
+
+  const addProductToShoppingCart = () => {
+    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
+
+    if (cookieManager("get", "JWTToken")) {
+      if (quantity && cart.status !== "loading") {
+        addProductToCart({
+          url: `${baseUrl}/cart`,
+          method: "post",
+          data: {
+            productId: productInfo._id,
+            quantity,
+            size: sizeInfo.size,
+          },
+          headers: {
+            Authorization: JWTToken,
+          },
+        });
+      }      
+    } else {
+      navigate(LOGIN);
+    }
+  };  
 
   return (
     <div className="product_information">
@@ -166,16 +197,10 @@ function ProductInformation({ productInfo }) {
         </div>
       </div>
 
-      {/* {productInfo.color && (
-        <p className="relations">
-          <span>Color</span>&nbsp;:&nbsp;<span>{productInfo.color}</span>
-        </p>
-      )} */}
-
       {productInfo.sizes?.length > 0 && (
         <div className="sizes">
           <h1 className="title">Sizes</h1>
-          <siv className="size">
+          <div className="size">
             {productInfo.sizes.map((item) => (
               <button
                 key={item._id}
@@ -189,7 +214,7 @@ function ProductInformation({ productInfo }) {
                 {item.size}
               </button>
             ))}
-          </siv>
+          </div>
         </div>
       )}
 
@@ -221,6 +246,10 @@ function ProductInformation({ productInfo }) {
         </div>
       ) : null}
 
+      {cart.data?.status === "fail" ? (
+        <p className="error_message">{cart.data?.message}</p>
+      ) : null}
+
       <div className="q_a_s">
         <div className="quantity">
           <button className="button" onClick={decrementQuantity}>
@@ -237,12 +266,17 @@ function ProductInformation({ productInfo }) {
             productInfo.quantity === 0 || sizeInfo.quantity === 0
               ? {
                   backgroundColor: "gray",
-                  cursor: "default",
+                  cursor: "not-allowed",
                 }
               : {}
           }
+          onClick={addProductToShoppingCart}
         >
-          Add to cart
+          {cart.status === "loading" ? (
+            <CircularProgress size="27px" color="inherit" />
+          ) : (
+            "Add to cart"
+          )}
         </button>
       </div>
     </div>

@@ -151,6 +151,11 @@
   width: 100%;
   border-radius: 7px;
 }
+.product_information .error_message {
+  color: var( --color-of-error);
+  font-size: 16px;
+  font-weight: 500;
+}
 .product_information .q_a_s {
   display: flex;
   column-gap: calc(15px / 2);
@@ -193,4 +198,7 @@
   border-radius: 7px;
   box-shadow: var(--shadow-1);
   border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
