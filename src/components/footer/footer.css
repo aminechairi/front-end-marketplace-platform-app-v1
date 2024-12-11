@@ -35,7 +35,6 @@
     .footer .container .sec_1 .part_1 h1 {
         font-size: 22px;
     }
-
     .footer .container .sec_1 .part_1 p {
         font-size: 16px;
     }
@@ -76,4 +75,9 @@
     .footer .container .sec_1 .part_2 .box .texts {
         font-size: 16px;
     }
+}
+.footer .container .sec_1 .part_2 .box .texts p {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }

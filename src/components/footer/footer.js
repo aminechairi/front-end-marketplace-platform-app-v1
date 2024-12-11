@@ -20,7 +20,7 @@ function Footer() {
                 </div>
                 <div className="texts">
                   <p>
-                    Customer Happiness Center
+                    Customer happiness center
                   </p>
                   <p>
                     help.eshopapp.com
@@ -33,7 +33,7 @@ function Footer() {
                 </div>
                 <div className="texts">
                   <p>
-                    Email Support
+                    Email support
                   </p>
                   <p>
                     care@eshopapp.com
