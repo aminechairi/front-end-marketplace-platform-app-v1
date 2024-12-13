@@ -44,7 +44,6 @@ function ProductInformation({ productInfo }) {
         priceBeforeDiscount: minPriceSize.priceBeforeDiscount,
         discountPercent: minPriceSize.discountPercent,
       });
-      setQuantity(minPriceSize.quantity === 0 ? 0 : 1);
     } else {
       setSizeInfo({
         price: productInfo.price,
@@ -52,7 +51,6 @@ function ProductInformation({ productInfo }) {
         discountPercent: productInfo.discountPercent,
         quantity: productInfo.quantity,
       });
-      setQuantity(productInfo.quantity === 0 ? 0 : 1);
     }
   }, [productInfo]);
 
@@ -65,11 +63,10 @@ function ProductInformation({ productInfo }) {
       priceBeforeDiscount: size.priceBeforeDiscount,
       discountPercent: size.discountPercent,
     });
-    setQuantity(size.quantity === 0 ? 0 : 1);
   };
 
   const incrementQuantity = () => {
-    if (quantity < (productInfo.sizes.length === 0 ? productInfo.quantity : sizeInfo.quantity)) {
+    if (quantity < sizeInfo.quantity) {
       setQuantity((prevQuantity) => prevQuantity + 1);
     }
   };
@@ -84,7 +81,7 @@ function ProductInformation({ productInfo }) {
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     if (cookieManager("get", "JWTToken")) {
-      if (quantity && cart.status !== "loading") {
+      if (sizeInfo.quantity && cart.status !== "loading") {
         addProductToCart({
           url: `${baseUrl}/cart`,
           method: "post",
@@ -101,7 +98,29 @@ function ProductInformation({ productInfo }) {
     } else {
       navigate(LOGIN);
     }
-  };  
+  };
+
+  useEffect(() => {
+    if (cart.status === "succeeded" && cart.data?.data) {
+      if (productInfo.sizes.length > 0) {
+        productInfo.sizes = productInfo.sizes.map((item) => {
+          return {
+            ...item,
+            quantity: item.size === sizeInfo.size ? sizeInfo.quantity - quantity : item.quantity
+          }
+        });
+      }
+      setSizeInfo({
+        ...sizeInfo,
+        quantity: sizeInfo.quantity - quantity
+      });
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart.data?.data, cart.status]);
+
+  useEffect(() => {
+    setQuantity(sizeInfo.quantity === 0 ? 0 : 1);
+  }, [sizeInfo.quantity]);
 
   return (
     <div className="product_information">
@@ -177,7 +196,7 @@ function ProductInformation({ productInfo }) {
         <div
           className="box"
           style={
-            productInfo.quantity === 0 || sizeInfo.quantity === 0
+            sizeInfo.quantity === 0
               ? {
                   outline: "1px solid var(--color-of-error)",
                   color: "var(--color-of-error)",
@@ -263,7 +282,7 @@ function ProductInformation({ productInfo }) {
         <button
           className="add_to_cart"
           style={
-            productInfo.quantity === 0 || sizeInfo.quantity === 0
+            sizeInfo.quantity === 0
               ? {
                   backgroundColor: "gray",
                   cursor: "not-allowed",
