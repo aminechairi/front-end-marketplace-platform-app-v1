@@ -81,7 +81,7 @@ function ProductInformation({ productInfo }) {
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     if (cookieManager("get", "JWTToken")) {
-      if (sizeInfo.quantity && cart.status !== "loading") {
+      if (cart.status !== "loading") {
         addProductToCart({
           url: `${baseUrl}/cart`,
           method: "post",
@@ -223,7 +223,9 @@ function ProductInformation({ productInfo }) {
             {productInfo.sizes.map((item) => (
               <button
                 key={item._id}
-                onClick={() => handleSizeClick(item)}
+                onClick={() =>
+                  cart.status !== "loading" ? handleSizeClick(item) : null
+                }
                 className={
                   selectedSize && selectedSize.size === item.size
                     ? "selected"
@@ -289,7 +291,9 @@ function ProductInformation({ productInfo }) {
                 }
               : {}
           }
-          onClick={addProductToShoppingCart}
+          onClick={() => {
+            if (sizeInfo.quantity > 0) addProductToShoppingCart();
+          }}
         >
           {cart.status === "loading" ? (
             <CircularProgress size="27px" color="inherit" />

@@ -10,6 +10,7 @@ import ForgotPassword from "./pages/forgotPassword/forgotPassword";
 import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
 import EmailVerification from "./pages/emailVerification/emailVerification";
 import Saves from "./pages/saves/saves";
+import ShoppingCart from "./pages/shoppingCart/shoppingCart";
 import TooManyRequests from "./pages/tooManyRequests/tooManyRequests";
 import NoFound from "./pages/noFound/noFound";
 
@@ -24,6 +25,7 @@ import {
   PASSWORD_RESET_CODE,
   EMAIL_VERIFICATION,
   SAVES,
+  SHOPPING_CART,
   TOO_MANY_REQUESTS,
   NO_FOUND,
 } from "./routes";
@@ -82,6 +84,14 @@ function App() {
         element={
           <ProtectedRoute isProtected={true} redirectTo={HOME}>
             <Saves />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={SHOPPING_CART}
+        element={
+          <ProtectedRoute isProtected={true} redirectTo={HOME}>
+            <ShoppingCart />
           </ProtectedRoute>
         }
       />

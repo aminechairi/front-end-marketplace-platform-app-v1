@@ -1,0 +1,88 @@
+.shopping_cart_card_skeletion {
+  background-color: var(--backgrounds-color-1);
+  border-radius: 7.4px;
+  overflow: hidden;
+  padding: 7.5px;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0px 15px;
+  position: relative;
+}
+.shopping_cart_card_skeletion .product_image_section .product_image_wrapper {
+  border-radius: 7px;
+  animation: var(--animation-skeletion);
+  height: 100%;
+}
+.shopping_cart_card_skeletion .product_details_section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(7.5px);
+}
+.shopping_cart_card_skeletion .product_details_section .product_title {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: var(--transition);
+  line-height: 24px;
+  width: calc(100% - 20px - 7.5px);
+  animation: var(--animation-skeletion);
+}
+@media (min-width: 1024px) {
+  .shopping_cart_card_skeletion .product_details_section .product_title {
+    font-size: 16px;
+  }
+}
+.shopping_cart_card_skeletion .product_details_section .product_info {
+  font-size: 14px;
+  line-height: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  animation: var(--animation-skeletion);
+}
+.shopping_cart_card_skeletion .product_details_section .product_price {
+  font-size: 14px;
+  animation: var(--animation-skeletion);
+  width: fit-content;
+}
+@media (min-width: 1024px) {
+  .shopping_cart_card_skeletion .product_details_section .product_price {
+    font-size: 16px;
+  }
+}
+.shopping_cart_card_skeletion .product_details_section .quantity_control {
+  display: flex;
+  width: fit-content;
+  margin-left: auto;
+  border-radius: 7px;
+  margin-top: auto;
+  animation: var(--animation-skeletion);
+  overflow: hidden;
+}
+.shopping_cart_card_skeletion .product_details_section .quantity_control .quantity_value {
+  font-size: 14px;
+  padding: 7.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: var(--animation-skeletion);
+}
+.shopping_cart_card_skeletion .product_details_section .quantity_control .quantity_button {
+  font-size: 14px;
+  padding: 7.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: var(--animation-skeletion);
+  cursor: default;
+}
+.shopping_cart_card_skeletion .product_details_section .quantity_control .quantity_icon {
+  font-size: 16px;
+  animation: var(--animation-skeletion);
+}

@@ -16,7 +16,7 @@ import "./navBar.css";
 
 import ScrollToTop from "../scrollToTop/scrollToTop";
 import { authLogOut } from "../../redux/authSlice";
-import { HOME, LOGIN, SIGNUP, SAVES } from "../../routes";
+import { HOME, LOGIN, SIGNUP, SAVES, SHOPPING_CART } from "../../routes";
 
 export default function NavBar() {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -135,15 +135,15 @@ export default function NavBar() {
                 </button>
                 <button className="button">
                   <ScrollToTop>
-                    <Link to={SAVES}>
-                      <FavoriteBorderIcon />
+                    <Link to={SHOPPING_CART}>
+                      <ShoppingCartCheckoutIcon />
                     </Link>
                   </ScrollToTop>
                 </button>
                 <button className="button">
                   <ScrollToTop>
-                    <Link to="/">
-                      <ShoppingCartCheckoutIcon />
+                    <Link to={SAVES}>
+                      <FavoriteBorderIcon />
                     </Link>
                   </ScrollToTop>
                 </button>
@@ -190,7 +190,7 @@ export default function NavBar() {
                     </li>
                     <li>
                       <ScrollToTop>
-                        <Link to="/">
+                        <Link to={SHOPPING_CART}>
                           <ShoppingCartCheckoutIcon /> shopping cart
                         </Link>
                       </ScrollToTop>
