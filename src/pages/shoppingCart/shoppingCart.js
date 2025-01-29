@@ -122,53 +122,53 @@ const ShoppingCart = () => {
     <>
       <NavBar />
       {shoppingCart.status === "loading" ? (
-        <div className="shopping-cart">
+        <div className="shopping_cart">
           <div className="container">
-            <div className="cart-wrapper">
-              <h1 className="cart-title">{"SHOPPING CART"}</h1>
+            <div className="cart_wrapper">
+              <h1 className="cart_title">{"SHOPPING CART"}</h1>
 
-              <div className="cart-details">
-                <div className="cart-info">
-                  <div className="checkout-summary">
-                    <h1 className="summary-title">Order Summary</h1>
+              <div className="cart_details">
+                <div className="cart_info">
+                  <div className="checkout_summary">
+                    <h1 className="summary_title">Order Summary</h1>
 
-                    <div className="summary-details">
-                      <div className="summary-row">
-                        <div className="summary-property">Tax Price:</div>
-                        <div className="summary-value-skeletion">
+                    <div className="summary_details">
+                      <div className="summary_row">
+                        <div className="summary_property">Tax Price:</div>
+                        <div className="summary_value_skeletion">
                           0.00 {currency}
                         </div>
                       </div>
-                      <div className="summary-row">
-                        <div className="summary-property">Shipping Price:</div>
-                        <div className="summary-value-skeletion">
+                      <div className="summary_row">
+                        <div className="summary_property">Shipping Price:</div>
+                        <div className="summary_value_skeletion">
                           00.00 {currency}
                         </div>
                       </div>
-                      <div className="summary-row">
-                        <div className="summary-property">Total Price:</div>
-                        <div className="summary-value-skeletion">
+                      <div className="summary_row">
+                        <div className="summary_property">Total Price:</div>
+                        <div className="summary_value_skeletion">
                           00.00 {currency}
                         </div>
                       </div>
 
                       <div className="line"></div>
 
-                      <div className="summary-row">
-                        <div className="summary-property">Coupon Name:</div>
-                        <div className="summary-value-skeletion">
+                      <div className="summary_row">
+                        <div className="summary_property">Coupon Name:</div>
+                        <div className="summary_value_skeletion">
                           RAMADAN KAREEM
                         </div>
                       </div>
-                      <div className="summary-row">
-                        <div className="summary-property">Coupon Discount:</div>
-                        <div className="summary-value-skeletion">30%</div>
+                      <div className="summary_row">
+                        <div className="summary_property">Coupon Discount:</div>
+                        <div className="summary_value_skeletion">30%</div>
                       </div>
-                      <div className="summary-row">
-                        <div className="summary-property">
+                      <div className="summary_row">
+                        <div className="summary_property">
                           Total Price After Discount::
                         </div>
-                        <div className="summary-value-skeletion">
+                        <div className="summary_value_skeletion">
                           0000.00 {currency}
                         </div>
                       </div>
@@ -176,7 +176,7 @@ const ShoppingCart = () => {
                   </div>
                 </div>
 
-                <div className="product-cards">
+                <div className="product_cards">
                   {Array.from(new Array(limitOfProducts(productLimits))).map(
                     (_, i) => {
                       return (
@@ -189,41 +189,41 @@ const ShoppingCart = () => {
             </div>
           </div>
         </div>
-      ) : shoppingCart.status === "succeeded" && products.data.length > 0 ? (
-        <div className="shopping-cart">
+      ) : shoppingCart.status === "succeeded" && products.data?.length > 0 ? (
+        <div className="shopping_cart">
           <div className="container">
-            <div className="cart-wrapper">
-              <h1 className="cart-title">SHOPPING CART</h1>
+            <div className="cart_wrapper">
+              <h1 className="cart_title">SHOPPING CART</h1>
 
-              <div className="cart-details">
-                <div className="cart-info">
+              <div className="cart_details">
+                <div className="cart_info">
                   {/* Order Summary */}
-                  <div className="checkout-summary">
-                    <h1 className="summary-title">Order Summary</h1>
+                  <div className="checkout_summary">
+                    <h1 className="summary_title">Order Summary</h1>
 
-                    <div className="summary-details">
-                      <div className="summary-row">
-                        <div className="summary-property">Tax Price:</div>
-                        <div className="summary-value">
+                    <div className="summary_details">
+                      <div className="summary_row">
+                        <div className="summary_property">Tax Price:</div>
+                        <div className="summary_value">
                           {shoppingCart.data?.data.taxPrice
                             .toFixed(2)
                             .replace(".", ",")}{" "}
                           {currency}
                         </div>
                       </div>
-                      <div className="summary-row">
-                        <div className="summary-property">Shipping Price:</div>
-                        <div className="summary-value">
+                      <div className="summary_row">
+                        <div className="summary_property">Shipping Price:</div>
+                        <div className="summary_value">
                           {shoppingCart.data?.data.shippingPrice
                             .toFixed(2)
                             .replace(".", ",")}{" "}
                           {currency}
                         </div>
                       </div>
-                      <div className="summary-row">
-                        <div className="summary-property">Total Price:</div>
+                      <div className="summary_row">
+                        <div className="summary_property">Total Price:</div>
                         <div
-                          className="summary-value"
+                          className="summary_value"
                           style={
                             shoppingCart.data?.data.couponName
                               ? {
@@ -243,25 +243,25 @@ const ShoppingCart = () => {
                         <>
                           <div className="line"></div>
 
-                          <div className="summary-row">
-                            <div className="summary-property">Coupon Name:</div>
-                            <div className="summary-value">
+                          <div className="summary_row">
+                            <div className="summary_property">Coupon Name:</div>
+                            <div className="summary_value">
                               {shoppingCart.data?.data.couponName}
                             </div>
                           </div>
-                          <div className="summary-row">
-                            <div className="summary-property">
+                          <div className="summary_row">
+                            <div className="summary_property">
                               Coupon Discount:
                             </div>
-                            <div className="summary-value">
+                            <div className="summary_value">
                               {shoppingCart.data?.data.couponDiscount}%
                             </div>
                           </div>
-                          <div className="summary-row">
-                            <div className="summary-property">
+                          <div className="summary_row">
+                            <div className="summary_property">
                               Total Price After Discount:
                             </div>
-                            <div className="summary-value">
+                            <div className="summary_value">
                               {shoppingCart.data?.data.totalPriceAfterDiscount
                                 .toFixed(2)
                                 .replace(".", ",")}{" "}
@@ -272,17 +272,17 @@ const ShoppingCart = () => {
                       ) : null}
                     </div>
 
-                    <button className="checkout-button">Checkout</button>
+                    <button className="checkout_button">Checkout</button>
                   </div>
 
                   {!shoppingCart.data?.data.couponName ? (
                     <form
-                      className="coupon-form"
+                      className="coupon_form"
                       onSubmit={formik.handleSubmit}
                     >
-                      <div className="form-inputs">
+                      <div className="form_inputs">
                         <input
-                          className="coupon-input"
+                          className="coupon_input"
                           type="text"
                           placeholder="Coupon code"
                           name="couponCode"
@@ -307,7 +307,7 @@ const ShoppingCart = () => {
                       </div>
 
                       <input
-                        className="submit-button"
+                        className="submit_button"
                         type="submit"
                         value="Apply"
                       />
@@ -315,7 +315,7 @@ const ShoppingCart = () => {
                   ) : null}
                 </div>
 
-                <div className="product-cards">
+                <div className="product_cards">
                   {products.data.map((item, index) => (
                     <ProductsCardOfShoppingCart
                       key={index}
@@ -337,7 +337,7 @@ const ShoppingCart = () => {
             </div>
           </div>
         </div>
-      ) : shoppingCart.status === "succeeded" && products.data.length === 0 ? (
+      ) : shoppingCart.status === "succeeded" && products.data?.length === 0 ? (
         <div className="noFound">
           <div className="container">
             <div className="ab">
