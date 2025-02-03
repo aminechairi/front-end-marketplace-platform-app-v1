@@ -31,7 +31,7 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     fetchShoppingCart({
-      url: `${baseUrl}/cart`,
+      url: `${baseUrl}/shoppingcart`,
       method: "get",
       headers: {
         Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
@@ -80,7 +80,7 @@ const ShoppingCart = () => {
       setProducts({ data: [] });
 
       fetchShoppingCart({
-        url: `${baseUrl}/cart/applycoupon`,
+        url: `${baseUrl}/shoppingcart/applycoupon`,
         method: "put",
         data: {
           couponCode: values.couponCode,
@@ -96,7 +96,7 @@ const ShoppingCart = () => {
     setProducts({ data: [] });
 
     fetchShoppingCart({
-      url: `${baseUrl}/cart`,
+      url: `${baseUrl}/shoppingcart`,
       method: "delete",
       data,
       headers: {
@@ -109,7 +109,7 @@ const ShoppingCart = () => {
     setProducts({ data: [] });
 
     fetchShoppingCart({
-      url: `${baseUrl}/cart`,
+      url: `${baseUrl}/shoppingcart`,
       method: "put",
       data,
       headers: {
@@ -300,7 +300,7 @@ const ShoppingCart = () => {
                         />
                         {formik.touched.couponCode &&
                           formik.errors.couponCode && (
-                            <p className="input-error">
+                            <p className="input_error">
                               {formik.errors.couponCode}
                             </p>
                           )}
