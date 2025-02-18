@@ -62,7 +62,7 @@ const ShoppingCart = () => {
           itemQuantity: item.quantity,
           size: item.size,
           color: item.color,
-          price: item.product.price,
+          price: item.price,
           totalPrice: item.totalPrice,
         };
       });
@@ -205,7 +205,7 @@ const ShoppingCart = () => {
                       <div className="summary_row">
                         <div className="summary_property">Tax Price:</div>
                         <div className="summary_value">
-                          {shoppingCart.data?.data.taxPrice
+                          {shoppingCart.data?.data.pricing.taxPrice
                             .toFixed(2)
                             .replace(".", ",")}{" "}
                           {currency}
@@ -214,7 +214,7 @@ const ShoppingCart = () => {
                       <div className="summary_row">
                         <div className="summary_property">Shipping Price:</div>
                         <div className="summary_value">
-                          {shoppingCart.data?.data.shippingPrice
+                          {shoppingCart.data?.data.pricing.shippingPrice
                             .toFixed(2)
                             .replace(".", ",")}{" "}
                           {currency}
@@ -225,7 +225,7 @@ const ShoppingCart = () => {
                         <div
                           className="summary_value"
                           style={
-                            shoppingCart.data?.data.couponName
+                            shoppingCart.data?.data.coupon
                               ? {
                                   textDecoration: "line-through",
                                   color: "var(--color-of-error)",
@@ -233,20 +233,20 @@ const ShoppingCart = () => {
                               : null
                           }
                         >
-                          {shoppingCart.data?.data.totalPrice
+                          {shoppingCart.data?.data.pricing.totalPrice
                             .toFixed(2)
                             .replace(".", ",")}{" "}
                           {currency}
                         </div>
                       </div>
-                      {shoppingCart.data?.data.couponName ? (
+                      {shoppingCart.data?.data.coupon ? (
                         <>
                           <div className="line"></div>
 
                           <div className="summary_row">
                             <div className="summary_property">Coupon Name:</div>
                             <div className="summary_value">
-                              {shoppingCart.data?.data.couponName}
+                              {shoppingCart.data?.data.coupon.couponCode}
                             </div>
                           </div>
                           <div className="summary_row">
@@ -254,7 +254,7 @@ const ShoppingCart = () => {
                               Coupon Discount:
                             </div>
                             <div className="summary_value">
-                              {shoppingCart.data?.data.couponDiscount}%
+                              {shoppingCart.data?.data.coupon.couponDiscount}%
                             </div>
                           </div>
                           <div className="summary_row">
@@ -262,7 +262,7 @@ const ShoppingCart = () => {
                               Total Price After Discount:
                             </div>
                             <div className="summary_value">
-                              {shoppingCart.data?.data.totalPriceAfterDiscount
+                              {shoppingCart.data?.data.pricing.totalPriceAfterDiscount
                                 .toFixed(2)
                                 .replace(".", ",")}{" "}
                               {currency}
@@ -275,7 +275,7 @@ const ShoppingCart = () => {
                     <button className="checkout_button">Checkout</button>
                   </div>
 
-                  {!shoppingCart.data?.data.couponName ? (
+                  {!shoppingCart.data?.data.coupon ? (
                     <form
                       className="coupon_form"
                       onSubmit={formik.handleSubmit}
