@@ -142,22 +142,30 @@ const ShoppingCart = () => {
                       <div className="summary_row">
                         <div className="summary_property">Shipping Price:</div>
                         <div className="summary_value_skeletion">
-                          00.00 {currency}
+                          0.00 {currency}
                         </div>
                       </div>
                       <div className="summary_row">
                         <div className="summary_property">Total Price:</div>
                         <div className="summary_value_skeletion">
-                          00.00 {currency}
+                          0.00 {currency}
+                        </div>
+                      </div>
+                      <div className="summary_row">
+                        <div className="summary_property">
+                          Total Price After Discount:
+                        </div>
+                        <div className="summary_value_skeletion">
+                          0.00 {currency}
                         </div>
                       </div>
 
                       <div className="line"></div>
 
                       <div className="summary_row">
-                        <div className="summary_property">Coupon Name:</div>
+                        <div className="summary_property">Coupon Code:</div>
                         <div className="summary_value_skeletion">
-                          RAMADAN KAREEM
+                          COUPON CODE
                         </div>
                       </div>
                       <div className="summary_row">
@@ -166,12 +174,13 @@ const ShoppingCart = () => {
                       </div>
                       <div className="summary_row">
                         <div className="summary_property">
-                          Total Price After Discount::
+                          Discount Amount:
                         </div>
                         <div className="summary_value_skeletion">
-                          0000.00 {currency}
+                          0.00 {currency}
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -240,11 +249,23 @@ const ShoppingCart = () => {
                         </div>
                       </div>
                       {shoppingCart.data?.data.coupon ? (
+                        <div className="summary_row">
+                          <div className="summary_property">
+                            Total Price After Discount:
+                          </div>
+                          <div className="summary_value">
+                            {shoppingCart.data?.data.pricing.totalPriceAfterDiscount
+                              .toFixed(2)
+                              .replace(".", ",")}{" "}
+                            {currency}
+                          </div>
+                        </div>
+                      ) : null}
+                      {shoppingCart.data?.data.coupon ? (
                         <>
                           <div className="line"></div>
-
                           <div className="summary_row">
-                            <div className="summary_property">Coupon Name:</div>
+                            <div className="summary_property">Coupon Code:</div>
                             <div className="summary_value">
                               {shoppingCart.data?.data.coupon.couponCode}
                             </div>
@@ -259,10 +280,10 @@ const ShoppingCart = () => {
                           </div>
                           <div className="summary_row">
                             <div className="summary_property">
-                              Total Price After Discount:
+                              Discounted Amount:
                             </div>
                             <div className="summary_value">
-                              {shoppingCart.data?.data.pricing.totalPriceAfterDiscount
+                              {shoppingCart.data?.data.coupon.discountedAmount
                                 .toFixed(2)
                                 .replace(".", ",")}{" "}
                               {currency}
