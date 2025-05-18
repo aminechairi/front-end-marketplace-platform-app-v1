@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import "./productInformation.css";
 
@@ -25,6 +25,7 @@ function ProductInformation({ productInfo }) {
   const [quantity, setQuantity] = useState();
   const { data: cart, fetchData: addProductToCart } = useFetch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleDescription = () => setIsExpanded(!isExpanded);
 
@@ -32,6 +33,22 @@ function ProductInformation({ productInfo }) {
     const words = productInfo.description.split(" ");
     return words.slice(0, 32).join(" ") + (words.length > 32 ? "..." : "");
   };
+
+  const handleSizeClick = useCallback((size) => {
+    setSelectedSize(size);
+    setSizeInfo({
+      size: size.size,
+      quantity: size.quantity,
+      price: size.price,
+      priceBeforeDiscount: size.priceBeforeDiscount,
+      discountPercent: size.discountPercent,
+    });
+
+    // Update URL with selected size
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('size', size.size);
+    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+  }, [location.pathname, location.search, navigate]);
 
   useEffect(() => {
     if (productInfo.sizes?.length > 0) {
@@ -44,6 +61,16 @@ function ProductInformation({ productInfo }) {
         priceBeforeDiscount: minPriceSize.priceBeforeDiscount,
         discountPercent: minPriceSize.discountPercent,
       });
+
+      // Check if there's a size in URL parameters
+      const searchParams = new URLSearchParams(location.search);
+      const sizeFromUrl = searchParams.get('size');
+      if (sizeFromUrl) {
+        const sizeFromUrlObj = productInfo.sizes.find(s => s.size === sizeFromUrl);
+        if (sizeFromUrlObj) {
+          handleSizeClick(sizeFromUrlObj);
+        }
+      }
     } else {
       setSizeInfo({
         price: productInfo.price,
@@ -52,18 +79,7 @@ function ProductInformation({ productInfo }) {
         quantity: productInfo.quantity,
       });
     }
-  }, [productInfo]);
-
-  const handleSizeClick = (size) => {
-    setSelectedSize(size);
-    setSizeInfo({
-      size: size.size,
-      quantity: size.quantity,
-      price: size.price,
-      priceBeforeDiscount: size.priceBeforeDiscount,
-      discountPercent: size.discountPercent,
-    });
-  };
+  }, [productInfo, location.search, handleSizeClick]);
 
   const incrementQuantity = () => {
     if (quantity < sizeInfo.quantity) {

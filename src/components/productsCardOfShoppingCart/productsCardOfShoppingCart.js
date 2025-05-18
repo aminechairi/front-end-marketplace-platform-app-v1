@@ -63,7 +63,7 @@ export default function ProductsCardOfShoppingCart({
       <section className="product_image_section">
         <div className="product_image_wrapper">
           <Link
-            to={`/product/${_id}`}
+            to={`/product/${_id}${size ? `?size=${size}` : ``}`}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <img
@@ -81,7 +81,7 @@ export default function ProductsCardOfShoppingCart({
 
       <section className="product_details_section">
         <Link
-          to={`/product/${_id}`}
+          to={`/product/${_id}${size ? `?size=${size}` : ``}`}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <h1 className="product_title">{title}</h1>
