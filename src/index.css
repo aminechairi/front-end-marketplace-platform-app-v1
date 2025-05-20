@@ -93,33 +93,33 @@
   text-align: center;
   text-transform: uppercase;
 }
-.forms .container .ab .alert_error {
+.alert_error {
   background-color: var(--backgrounds-color-2);
   padding: 8px;
   border-radius: 14px;
   border: 1px solid var(--color-of-error);
   margin-bottom: 6px;
 }
-.forms .container .ab .alert_error p {
+.alert_error p {
   color: var(--color-of-error);
   font-size: 14px;
 }
-.forms .container .ab .alert_success {
+.alert_success {
   background-color: #e6fffa;
   padding: 8px;
   border-radius: 14px;
   border: 1px solid #38b2ac;
   margin-bottom: 6px;
 }
-.forms .container .ab .alert_success p {
+.alert_success p {
   color: #294e52;
   font-size: 14px;
 }
-.forms .container .ab .error_of_input {
+.error_of_input {
   color: var(--color-of-error);
   font-size: 14px;
 }
-.forms .container .ab .form .label {
+.label {
   display: block;
   text-align: left;
   color: var(--text-color);
@@ -129,7 +129,7 @@
   margin-bottom: 6px;
   cursor: pointer;
 }
-.forms .container .ab .form .input {
+.input {
   display: block;
   width: 100%;
   font-size: 16px;
@@ -140,13 +140,13 @@
   background-color: var(--backgrounds-color-1);
   color: var(--text-color);
 }
-.forms .container .ab .form .input:focus {
+.input:focus {
   outline: none;
 }
-.forms .container .ab .form .input::placeholder {
+.input::placeholder {
   color: var(--imputs-placeholder);
 }
-.forms .container .ab .form .submit {
+.submit {
   display: block;
   width: 100%;
   font-size: 16px;
@@ -157,13 +157,13 @@
   background-color: var(--main-color);
   color: white;
 }
-.forms .container .ab .form .submit:focus {
+.submit:focus {
   outline: none;
 }
-.forms .container .ab .form .ab_inputs {
+.ab_inputs {
   padding-bottom: 12px;
 }
-.forms .container .ab .link {
+.link {
   display: block;
   width: 100%;
   color: var(--main-color);
@@ -173,7 +173,7 @@
   cursor: pointer;
   margin-top: 12px;
 }
-.forms .container .ab .link:hover {
+.link:hover {
   text-decoration: underline;
 }
 /* start media query  */
