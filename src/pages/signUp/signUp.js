@@ -90,7 +90,7 @@ function SignUp() {
         <div className="container">
           <div className="ab">
             {signUp.status === "loading" ? (
-              <div className="loading">
+              <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
             ) : null}
@@ -198,6 +198,9 @@ function SignUp() {
                   placeholder="phone number"
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
+                  inputProps={{
+                    className: "input input_phone",
+                  }}
                 />
               </div>
 

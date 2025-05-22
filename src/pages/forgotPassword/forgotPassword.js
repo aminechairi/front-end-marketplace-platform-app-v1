@@ -48,7 +48,7 @@ function ForgotPassword() {
         <div className="container">
           <div className="ab">
             {forgotPassword.status === "loading" ? (
-              <div className="loading">
+              <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
             ) : null}

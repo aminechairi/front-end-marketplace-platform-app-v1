@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 import "./shoppingCart.css";
 import "react-phone-input-2/lib/style.css";
 
-import CloseIcon from '@mui/icons-material/Close';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import AddCardIcon from '@mui/icons-material/AddCard';
+import CloseIcon from "@mui/icons-material/Close";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import AddCardIcon from "@mui/icons-material/AddCard";
 import PhoneInput from "react-phone-input-2";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import NavBar from "../../components/navBar/navBar";
 import ProductsCardOfShoppingCart from "../../components/productsCardOfShoppingCart/productsCardOfShoppingCart";
@@ -66,6 +68,11 @@ const ShoppingCart = () => {
     visibility: "hidden",
     transform: "translateY(-10px)",
   });
+
+  const { data: user, fetchData: fetchUser } = useFetch();
+  const { data: createCheckoutSession, fetchData: fetchCreateCheckoutSession } = useFetch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchShoppingCart({
@@ -176,8 +183,21 @@ const ShoppingCart = () => {
     setPopupVisible(!popupVisible);
   };
 
+  useEffect(() => {
+    fetchUser({
+      url: `${baseUrl}/users/mydata`,
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+      },
+    });
+  }, [fetchUser]);
+
+  const addresses = user.data?.data?.addressesList || [];
+
   const formikCheckout = useFormik({
     initialValues: {
+      paymentMethod: "credit_card",
       phone: "",
       country: "",
       state: "",
@@ -187,9 +207,56 @@ const ShoppingCart = () => {
     },
     validationSchema: checkoutValidationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      if (values.paymentMethod === "credit_card") {
+        fetchCreateCheckoutSession({
+          url: `${baseUrl}/orders/createcheckoutsession`,
+          method: "post",
+          data: {
+            phone: values.phone,
+            country: values.country,
+            state: values.state,
+            city: values.city,
+            street: values.street,
+            postalCode: values.postalCode,
+          },
+          headers: {
+            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+          },
+        });
+      } else if (values.paymentMethod === "cash_on_delivery") {
+        fetchCreateCheckoutSession({
+          url: `${baseUrl}/orders/createcashorder`,
+          method: "post",
+          data: {
+            phone: values.phone,
+            country: values.country,
+            state: values.state,
+            city: values.city,
+            street: values.street,
+            postalCode: values.postalCode,
+          },
+          headers: {
+            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+          },
+        });
+      }
     },
   });
+
+  useEffect(() => {
+    if (formikCheckout.values.paymentMethod === "credit_card") {
+      if (createCheckoutSession.status === "succeeded") {
+        window.location.href = createCheckoutSession.data?.sessionUrl;
+      }
+    } else if (createCheckoutSession.status === "succeeded") {
+      navigate("/orders");
+    }
+  }, [
+    createCheckoutSession.status,
+    createCheckoutSession.data?.sessionUrl,
+    formikCheckout.values.paymentMethod,
+    navigate,
+  ]);
 
   return (
     <>
@@ -434,37 +501,77 @@ const ShoppingCart = () => {
           <div className="ab_popup" style={popupStyle} onClick={toggleMenu}>
             <div className="popup" onClick={(e) => e.stopPropagation()}>
               <div className="popup_header">
-                <h1 className="title">CHECKOUT {`(${shoppingCart.data?.numOfCartItems})`}</h1>
+                <h1 className="title">
+                  CHECKOUT {`(${shoppingCart.data?.numOfCartItems})`}
+                </h1>
                 <CloseIcon className="icon" onClick={toggleMenu} />
               </div>
-              <div className="payment_methods">
-                <button className="button active">
-                  <CreditCardIcon className="icon" />
-                  <span>Credit Cart</span>
-                </button>
-                <button className="button">
-                  <AddCardIcon className="icon" />
-                  <span>Cash On Delivery</span>
-                </button>
-              </div>
+
               <form
                 className="checkout_form"
                 onSubmit={formikCheckout.handleSubmit}
               >
+                {createCheckoutSession.status === "loading" ||
+                createCheckoutSession.status === "succeeded" ? (
+                  <div className="form_loading">
+                    <LinearProgress color="inherit" />
+                  </div>
+                ) : null}
+
+                <div className="payment_methods">
+                  <label
+                    className={`check_payment ${
+                      formikCheckout.values.paymentMethod === "credit_card"
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="credit_card"
+                      onChange={formikCheckout.handleChange}
+                      hidden
+                    />
+                    <CreditCardIcon className="icon" />
+                    <span>Credit Card</span>
+                  </label>
+
+                  <label
+                    className={`check_payment ${
+                      formikCheckout.values.paymentMethod === "cash_on_delivery"
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="cash_on_delivery"
+                      onChange={formikCheckout.handleChange}
+                      hidden
+                    />
+                    <AddCardIcon className="icon" />
+                    <span>Cash On Delivery</span>
+                  </label>
+                </div>
+
                 {/* Phone number input */}
                 <div className="ab_inputs">
-                  <label className="label" htmlFor="phone_number">
+                  <label className="label" htmlFor="phone">
                     Phone Number
                   </label>
                   <PhoneInput
                     country={"ma"}
-                    name="phone"
-                    id="phone_number"
-                    value={formikCheckout.values.phone}
-                    onChange={(phone) => {
-                      formikCheckout.setFieldValue("phone", phone);
+                    onChange={(value) =>
+                      formikCheckout.setFieldValue("phone", value)
+                    }
+                    onBlur={() => formikCheckout.setFieldTouched("phone", true)}
+                    inputProps={{
+                      name: "phone",
+                      id: "phone",
+                      className: "input input_phone",
                     }}
-                    onBlur={formikCheckout.handleBlur}
                   />
                   {formikCheckout.touched.phone &&
                     formikCheckout.errors.phone && (
@@ -475,6 +582,53 @@ const ShoppingCart = () => {
                 </div>
 
                 <div className="grid">
+                  {/* Saved address input */}
+                  <div className="ab_inputs">
+                    <label className="label">Choose Saved Address</label>
+                    <select
+                      disabled={addresses.length === 0}
+                      className="input"
+                      onChange={(e) => {
+                        const id = e.target.value;
+
+                        if (id === "") {
+                          formikCheckout.setValues({
+                            ...formikCheckout.values,
+                            country: "",
+                            city: "",
+                            state: "",
+                            street: "",
+                            postalCode: "",
+                          });
+                        } else {
+                          const selected = addresses.find(
+                            (addr) => addr._id === id
+                          );
+
+                          formikCheckout.setValues({
+                            ...formikCheckout.values,
+                            country: selected.country,
+                            city: selected.city,
+                            state: selected.state,
+                            street: selected.street,
+                            postalCode: selected.postalCode,
+                          });
+                        }
+                      }}
+                    >
+                      <option value="">
+                        {addresses.length === 0
+                          ? "-- There no addresses saved --"
+                          : "-- Select an address --"}{" "}
+                      </option>
+                      {addresses.map((addr) => (
+                        <option key={addr._id} value={addr._id}>
+                          {`${addr.street}, ${addr.city}, ${addr.state}, ${addr.country}.`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   {/* Country input */}
                   <div className="ab_inputs">
                     <label className="label" htmlFor="country">
@@ -594,39 +748,43 @@ const ShoppingCart = () => {
                         </p>
                       )}
                   </div>
+
+                  {/* Postal code input */}
+                  <div className="ab_inputs">
+                    <label className="label" htmlFor="postal-code">
+                      Postal Code
+                    </label>
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder="EX: 90026"
+                      name="postalCode"
+                      id="postal-code"
+                      value={formikCheckout.values.postalCode}
+                      onChange={formikCheckout.handleChange}
+                      onBlur={formikCheckout.handleBlur}
+                      style={{
+                        borderColor:
+                          formikCheckout.touched.postalCode &&
+                          formikCheckout.errors.postalCode
+                            ? "var(--color-of-error)"
+                            : null,
+                      }}
+                    />
+                    {formikCheckout.touched.postalCode &&
+                      formikCheckout.errors.postalCode && (
+                        <p className="error_of_input">
+                          {formikCheckout.errors.postalCode}
+                        </p>
+                      )}
+                  </div>
                 </div>
 
-                {/* Postal code input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="postal-code">
-                    Postal Code
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="EX: 90026"
-                    name="postalCode"
-                    id="postal-code"
-                    value={formikCheckout.values.postalCode}
-                    onChange={formikCheckout.handleChange}
-                    onBlur={formikCheckout.handleBlur}
-                    style={{
-                      borderColor:
-                        formikCheckout.touched.postalCode &&
-                        formikCheckout.errors.postalCode
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikCheckout.touched.postalCode &&
-                    formikCheckout.errors.postalCode && (
-                      <p className="error_of_input">
-                        {formikCheckout.errors.postalCode}
-                      </p>
-                    )}
-                </div>
-
-                <input className="submit" type="submit" value="Checkout" />
+                <input
+                  className="submit"
+                  type="submit"
+                  value={`Checkout (${shoppingCart.data?.numOfCartItems})`}
+                />
               </form>
             </div>
           </div>

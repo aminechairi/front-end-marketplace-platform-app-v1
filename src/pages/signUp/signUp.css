@@ -9,19 +9,6 @@
 .sign_up .container .ab .form .ab_first_name_and_last_name > div {
   flex-grow: 1;
 }
-.sign_up .container .ab .form .form-control  {
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  border: 1px solid #3867df79;
-  border-radius: 14px;
-  caret-color: var(--main-color);
-  background-color: var(--backgrounds-color-1);
-  color: var(--text-color);
-}
-.sign_up .container .ab .form .form-control:focus {
-  outline: none;
-}
 .sign_up .container .ab .form .flag-dropdown {
   border: none;
 }

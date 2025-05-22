@@ -54,7 +54,7 @@ function EmailVerification() {
         <div className="container">
           <div className="ab">
             {emailVrf.status === "loading" ? (
-              <div className="loading">
+              <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
             ) : null}

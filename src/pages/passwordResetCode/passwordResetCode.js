@@ -67,7 +67,7 @@ function PasswordResetCode() {
         <div className="container">
           <div className="ab">
             {passwordResetCode.status === "loading" ? (
-              <div className="loading">
+              <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
             ) : null}

@@ -183,12 +183,17 @@
   color: var(--color-of-error);
   cursor: pointer;
 }
-.ab_popup .popup .payment_methods {
+.ab_popup .popup .checkout_form {
+  position: relative;
+  padding-top: 7.5px;
+}
+.ab_popup .popup .checkout_form .payment_methods {
   display: flex;
   border-radius: 7.4px;
   gap: 7.5px;
+  padding-bottom: 12px;
 }
-.ab_popup .popup .payment_methods .button {
+.ab_popup .popup .checkout_form .payment_methods .check_payment {
   width: 50%;
   padding: 7.5px;
   display: flex;
@@ -199,17 +204,22 @@
   border-radius: 7.4px;
   color: var(--text-color);
   background-color: var(--backgrounds-color-2);
+  cursor: pointer;
+  border: 1px solid transparent;
 }
-.ab_popup .popup .payment_methods .active {
+.ab_popup .popup .checkout_form .payment_methods .check_payment.active {
   border: 1px solid var(--main-color);
 }
-.ab_popup .popup .payment_methods .button .icon {
+.ab_popup .popup .checkout_form .payment_methods .check_payment .icon {
   font-size: 22px;
   color: var(--main-color);
 }
-.ab_popup .popup .payment_methods .button span {
+.ab_popup .popup .checkout_form .payment_methods .check_payment span {
   font-size: 16px;
   font-weight: 600;
+}
+.ab_popup .popup .checkout_form .payment_methods .check_payment input[type="radio"] {
+  display: none;
 }
 .ab_popup .popup .checkout_form .grid {
   gap: 0px 7.5px;
@@ -220,19 +230,6 @@
   .ab_popup .popup .checkout_form .grid {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-.ab_popup .popup .checkout_form .form-control  {
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  border: 1px solid #3867df79;
-  border-radius: 14px;
-  caret-color: var(--main-color);
-  background-color: var(--backgrounds-color-1);
-  color: var(--text-color);
-}
-.ab_popup .popup .checkout_form .form-control:focus {
-  outline: none;
 }
 .ab_popup .popup .checkout_form .flag-dropdown {
   border: none;
