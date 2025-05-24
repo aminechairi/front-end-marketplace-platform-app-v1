@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
 
 import "./shoppingCart.css";
 import "react-phone-input-2/lib/style.css";
@@ -58,6 +59,8 @@ const checkoutValidationSchema = Yup.object().shape({
     .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits."),
 });
 
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}`);
+
 const ShoppingCart = () => {
   const [products, setProducts] = useState({ data: [] });
   const { data: shoppingCart, fetchData: fetchShoppingCart } = useFetch();
@@ -70,7 +73,7 @@ const ShoppingCart = () => {
   });
 
   const { data: user, fetchData: fetchUser } = useFetch();
-  const { data: createCheckoutSession, fetchData: fetchCreateCheckoutSession } = useFetch();
+  const { data: createOrder, fetchData: fetchCreateOrder } = useFetch();
 
   const navigate = useNavigate();
 
@@ -208,7 +211,7 @@ const ShoppingCart = () => {
     validationSchema: checkoutValidationSchema,
     onSubmit: async (values) => {
       if (values.paymentMethod === "credit_card") {
-        fetchCreateCheckoutSession({
+        fetchCreateOrder({
           url: `${baseUrl}/orders/createcheckoutsession`,
           method: "post",
           data: {
@@ -224,7 +227,7 @@ const ShoppingCart = () => {
           },
         });
       } else if (values.paymentMethod === "cash_on_delivery") {
-        fetchCreateCheckoutSession({
+        fetchCreateOrder({
           url: `${baseUrl}/orders/createcashorder`,
           method: "post",
           data: {
@@ -244,18 +247,43 @@ const ShoppingCart = () => {
   });
 
   useEffect(() => {
-    if (formikCheckout.values.paymentMethod === "credit_card") {
-      if (createCheckoutSession.status === "succeeded") {
-        window.location.href = createCheckoutSession.data?.sessionUrl;
+    if (
+      createOrder.status === "succeeded" &&
+      createOrder.data?.status === "Success"
+    ) {
+      if (`${createOrder.data?.message}`.startsWith("Stripe")) {
+        (async function () {
+          const stripe = await stripePromise;
+
+          // Redirect to Stripe
+          await stripe.redirectToCheckout({
+            sessionId: createOrder.data?.sessionID,
+          });
+        })();
+      } else {
+        navigate("/orders");
       }
-    } else if (createCheckoutSession.status === "succeeded") {
-      navigate("/orders");
+    } else if (
+      createOrder.data?.status === "fail" ||
+      createOrder.data?.status === "error"
+    ) {
+      setPopupVisible(false);
+
+      fetchShoppingCart({
+        url: `${baseUrl}/shoppingcart`,
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+        },
+      });
     }
   }, [
-    createCheckoutSession.status,
-    createCheckoutSession.data?.sessionUrl,
-    formikCheckout.values.paymentMethod,
-    navigate,
+    createOrder.status,
+    createOrder.data?.status,
+    createOrder.data?.message,
+    createOrder.data?.sessionID,
+    fetchShoppingCart,
+    navigate
   ]);
 
   return (
@@ -506,13 +534,11 @@ const ShoppingCart = () => {
                 </h1>
                 <CloseIcon className="icon" onClick={toggleMenu} />
               </div>
-
               <form
                 className="checkout_form"
                 onSubmit={formikCheckout.handleSubmit}
               >
-                {createCheckoutSession.status === "loading" ||
-                createCheckoutSession.status === "succeeded" ? (
+                {createOrder.status === "loading" ? (
                   <div className="form_loading">
                     <LinearProgress color="inherit" />
                   </div>
@@ -571,6 +597,7 @@ const ShoppingCart = () => {
                       name: "phone",
                       id: "phone",
                       className: "input input_phone",
+                      value: `+${formikCheckout.values.phone || "212"}`
                     }}
                   />
                   {formikCheckout.touched.phone &&
@@ -623,7 +650,7 @@ const ShoppingCart = () => {
                       </option>
                       {addresses.map((addr) => (
                         <option key={addr._id} value={addr._id}>
-                          {`${addr.street}, ${addr.city}, ${addr.state}, ${addr.country}.`}
+                          {`${addr.street}, ${addr.city}, ${addr.country}`}
                         </option>
                       ))}
                     </select>
