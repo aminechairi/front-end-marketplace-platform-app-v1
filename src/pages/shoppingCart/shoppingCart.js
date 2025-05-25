@@ -74,6 +74,7 @@ const ShoppingCart = () => {
 
   const { data: user, fetchData: fetchUser } = useFetch();
   const { data: createOrder, fetchData: fetchCreateOrder } = useFetch();
+  const [redirectToCheckoutProssising, setRedirectToCheckoutProssising] = useState(false);
 
   const navigate = useNavigate();
 
@@ -253,6 +254,8 @@ const ShoppingCart = () => {
     ) {
       if (`${createOrder.data?.message}`.startsWith("Stripe")) {
         (async function () {
+          setRedirectToCheckoutProssising(true);
+
           const stripe = await stripePromise;
 
           // Redirect to Stripe
@@ -538,7 +541,8 @@ const ShoppingCart = () => {
                 className="checkout_form"
                 onSubmit={formikCheckout.handleSubmit}
               >
-                {createOrder.status === "loading" ? (
+                {createOrder.status === "loading" ||
+                redirectToCheckoutProssising ? (
                   <div className="form_loading">
                     <LinearProgress color="inherit" />
                   </div>
@@ -597,7 +601,7 @@ const ShoppingCart = () => {
                       name: "phone",
                       id: "phone",
                       className: "input input_phone",
-                      value: `+${formikCheckout.values.phone || "212"}`
+                      value: `+${formikCheckout.values.phone || "212"}`,
                     }}
                   />
                   {formikCheckout.touched.phone &&
