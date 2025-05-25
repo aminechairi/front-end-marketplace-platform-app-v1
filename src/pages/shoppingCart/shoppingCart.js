@@ -262,6 +262,8 @@ const ShoppingCart = () => {
           await stripe.redirectToCheckout({
             sessionId: createOrder.data?.sessionID,
           });
+
+          setRedirectToCheckoutProssising(false);
         })();
       } else {
         navigate("/orders");
