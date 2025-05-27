@@ -73,21 +73,22 @@ export default function Products({
             <div className="ab">
               {title.length > 0 ? <h1 className="title">{title}</h1> : null}
               <AbCards gridTemplateColumns={gridTemplateColumns}>
-                {data.data.map((items, i) => {
+                {data.data.map((item, i) => {
                   return (
                     <ProductsCard
                       key={i + 1}
-                      _id={items._id}
-                      title={items.title}
-                      price={items.price}
-                      priceBeforeDiscount={items.priceBeforeDiscount}
-                      discountPercent={items.discountPercent}
-                      imageCover={items.imageCover}
-                      quantity={items.quantity}
-                      sold={items.sold}
-                      ratingsAverage={items.ratingsAverage}
-                      ratingsQuantity={items.ratingsQuantity}
-                      save={items.save}
+                      _id={item._id}
+                      title={item.title}
+                      price={item.price}
+                      priceBeforeDiscount={item.priceBeforeDiscount}
+                      discountPercent={item.discountPercent}
+                      imageCover={item.imageCover}
+                      size={item.size}
+                      quantity={item.quantity}
+                      sold={item.sold}
+                      ratingsAverage={item.ratingsAverage}
+                      ratingsQuantity={item.ratingsQuantity}
+                      save={item.save}
                     />
                   );
                 })}

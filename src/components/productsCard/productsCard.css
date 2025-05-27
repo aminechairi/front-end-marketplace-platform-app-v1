@@ -216,3 +216,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.products_card .btn_add_to_cart {
+  opacity: 0.3;
+  transition: var(--transition);
+}
+.products_card:hover .btn_add_to_cart {
+  opacity: 1;
+}

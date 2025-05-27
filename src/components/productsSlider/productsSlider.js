@@ -85,21 +85,22 @@ export default function ProductsSlider({ title, status, data }) {
                 modules={[Navigation, Pagination]}
                 className="mySwiper"
               >
-                {data.data.map((items, i) => {
+                {data.data.map((item, i) => {
                   return (
                     <SwiperSlide key={i + 1}>
                       <ProductsCard
-                        _id={items._id}
-                        title={items.title}
-                        price={items.price}
-                        priceBeforeDiscount={items.priceBeforeDiscount}
-                        discountPercent={items.discountPercent}
-                        imageCover={items.imageCover}
-                        quantity={items.quantity}
-                        sold={items.sold}
-                        ratingsAverage={items.ratingsAverage}
-                        ratingsQuantity={items.ratingsQuantity}
-                        save={items.save}
+                        _id={item._id}
+                        title={item.title}
+                        price={item.price}
+                        priceBeforeDiscount={item.priceBeforeDiscount}
+                        discountPercent={item.discountPercent}
+                        imageCover={item.imageCover}
+                        size={item.size}
+                        quantity={item.quantity}
+                        sold={item.sold}
+                        ratingsAverage={item.ratingsAverage}
+                        ratingsQuantity={item.ratingsQuantity}
+                        save={item.save}
                       />
                     </SwiperSlide>
                   );

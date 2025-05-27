@@ -7,7 +7,7 @@ export const productsFields = `
   discountPercent,
   imageCover,
   quantity,
-  sizes,
+  size,
   sold,
   ratingsAverage,
   ratingsQuantity,

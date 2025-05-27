@@ -31,8 +31,6 @@
 
 /* Dark mode styles */
 [data-theme="dark"] {
-  --main-color: #3866df;
-  --main-color: #ff6a2f;
   --text-color: #f5f5f5;
   --backgrounds-color-1: #121212;
   --backgrounds-color-2: #1d1d1d;
@@ -159,6 +157,9 @@
   cursor: pointer;
   background-color: var(--main-color);
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .submit:focus {
   outline: none;
