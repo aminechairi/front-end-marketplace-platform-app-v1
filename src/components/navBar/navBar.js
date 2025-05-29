@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
@@ -16,7 +17,15 @@ import "./navBar.css";
 
 import ScrollToTop from "../scrollToTop/scrollToTop";
 import { authLogOut } from "../../redux/authSlice";
-import { HOME, LOGIN, SIGNUP, SAVES, SHOPPING_CART } from "../../routes";
+import {
+  HOME,
+  LOGIN,
+  SIGNUP,
+  SAVES,
+  SHOPPING_CART,
+  PROFILE,
+  ORDERS,
+} from "../../routes";
 
 export default function NavBar() {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -154,12 +163,19 @@ export default function NavBar() {
                       <ul className="menu">
                         <li>
                           <ScrollToTop>
-                            <Link to="/">
+                            <Link to={PROFILE}>
                               <AccountCircleIcon /> profile
                             </Link>
                           </ScrollToTop>
                         </li>
                         <li>
+                          <ScrollToTop>
+                            <Link to={ORDERS}>
+                              <ShoppingBasketIcon /> orders
+                            </Link>
+                          </ScrollToTop>
+                        </li>
+                        <li className="logout">
                           <Link onClick={logOutFunction}>
                             <LogoutIcon /> log out
                           </Link>
@@ -176,7 +192,7 @@ export default function NavBar() {
                   <ul className="menu">
                     <li>
                       <ScrollToTop>
-                        <Link to="/">
+                        <Link to={PROFILE}>
                           <AccountCircleIcon /> profile
                         </Link>
                       </ScrollToTop>
@@ -196,6 +212,13 @@ export default function NavBar() {
                       </ScrollToTop>
                     </li>
                     <li>
+                      <ScrollToTop>
+                        <Link to={ORDERS}>
+                          <ShoppingBasketIcon /> orders
+                        </Link>
+                      </ScrollToTop>
+                    </li>
+                    <li>
                       <Link onClick={toggleDarkMode}>
                         {darkMode ? (
                           <>
@@ -208,7 +231,7 @@ export default function NavBar() {
                         )}
                       </Link>
                     </li>
-                    <li>
+                    <li className="logout">
                       <Link onClick={logOutFunction}>
                         <LogoutIcon /> log out
                       </Link>

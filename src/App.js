@@ -8,9 +8,11 @@ import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
 import ForgotPassword from "./pages/forgotPassword/forgotPassword";
 import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
+import Profile from "./pages/profile/profile";
 import EmailVerification from "./pages/emailVerification/emailVerification";
 import Saves from "./pages/saves/saves";
 import ShoppingCart from "./pages/shoppingCart/shoppingCart";
+import Orders from "./pages/orders/orders";
 import TooManyRequests from "./pages/tooManyRequests/tooManyRequests";
 import NoFound from "./pages/noFound/noFound";
 
@@ -24,8 +26,10 @@ import {
   FORGOT_PASSWORD,
   PASSWORD_RESET_CODE,
   EMAIL_VERIFICATION,
+  PROFILE,
   SAVES,
   SHOPPING_CART,
+  ORDERS,
   TOO_MANY_REQUESTS,
   NO_FOUND,
 } from "./routes";
@@ -80,6 +84,14 @@ function App() {
         }
       />
       <Route
+        path={PROFILE}
+        element={
+          <ProtectedRoute isProtected={true} redirectTo={HOME}>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path={SAVES}
         element={
           <ProtectedRoute isProtected={true} redirectTo={HOME}>
@@ -92,6 +104,14 @@ function App() {
         element={
           <ProtectedRoute isProtected={true} redirectTo={HOME}>
             <ShoppingCart />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ORDERS}
+        element={
+          <ProtectedRoute isProtected={true} redirectTo={HOME}>
+            <Orders />
           </ProtectedRoute>
         }
       />

@@ -141,6 +141,13 @@
   font-size: 30px;
   padding-right: 7.5px;
 }
+.navBar .container .ab .ab_menu .menu .logout svg {
+  color: var(--color-of-error);
+}
+.navBar .container .ab .ab_menu .menu .logout a {
+  color: var(--color-of-error);
+  font-weight: 500;
+}
 /* start media query  */
 /* md */
 @media (min-width: 768px) {
@@ -220,6 +227,13 @@
   .navBar .container .ab .ab_menu .menu {
     width: 300px;
     margin-left: auto;
+  }
+  .navBar .container .ab .ab_menu .menu .logout svg {
+    color: var(--color-of-error);
+  }
+  .navBar .container .ab .ab_menu .menu .logout a {
+    color: var(--color-of-error);
+    font-weight: 500;
   }
 }
 @media (min-width: 1024px) {
