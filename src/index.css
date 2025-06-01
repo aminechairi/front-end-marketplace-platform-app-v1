@@ -50,10 +50,12 @@
   100% {
     background-color: var(--color-skeletion-1);
     color: var(--color-skeletion-1);
+    user-select: none;
   }
   50% {
     background-color: var(--color-skeletion-2);
     color: var(--color-skeletion-2);
+    user-select: none;
   }
 }
 /* End animation skeletion */
