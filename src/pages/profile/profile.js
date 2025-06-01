@@ -83,7 +83,9 @@ export default function Profile() {
                   <div className="info_item">
                     <div className="info_content">
                       <label>Phone Number</label>
-                      <p>{userData.data?.data.phoneNumber}</p>
+                      <p style={{
+                        color: !userData.data?.data.phoneNumber ? "var(--color-of-error)" : ""
+                      }}>{userData.data?.data.phoneNumber || "Phone number not found."}</p>
                     </div>
                   </div>
                 </div>

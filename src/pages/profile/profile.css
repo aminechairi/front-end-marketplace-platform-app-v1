@@ -126,6 +126,14 @@
   .profile_sections
   .personal_info
   .info_grid
+  .info_item:first-child {
+    text-transform: capitalize;
+  }
+.profile_container
+  .container
+  .profile_sections
+  .personal_info
+  .info_grid
   .info_item
   .info_content
   p {
