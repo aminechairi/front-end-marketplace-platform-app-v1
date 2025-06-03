@@ -82,6 +82,7 @@ function HomePage() {
           limit: "48",
           fields: `
             _id,
+            name,
             image,
           `,
           sort: "createdAt",

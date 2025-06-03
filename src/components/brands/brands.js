@@ -69,6 +69,7 @@ export default function Brands({ status, data }) {
                   <SwiperSlide key={i + 1}>
                     <Link to={`/search/?page=1&brand=${item._id}`} key={i + 1}>
                       <div className="card">
+                        <p>{item.name}</p>
                         <img
                           className="img"
                           src={item.image}

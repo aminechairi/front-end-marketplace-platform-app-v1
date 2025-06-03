@@ -69,6 +69,7 @@ export default function BrandsSkeletion() {
               return (
                 <SwiperSlide key={i + 1}>
                   <div className="card" key={i + 1}>
+                    <p>Loading...</p>
                     <div className="ab_img">
                       <div className="img"></div>
                     </div>

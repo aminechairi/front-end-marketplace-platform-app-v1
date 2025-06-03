@@ -13,6 +13,13 @@
 .brands_skeletion .container .ab .card {
   display: flex;
   flex-direction: column;
+  gap: calc(15px / 2);
+}
+.brands_skeletion .container .ab .card p {
+  display: block;
+  width: 100%;
+  animation: var(--animation-skeletion);
+  width: fit-content;
 }
 .brands_skeletion .container .ab .card .ab_img .img {
   display: block;
