@@ -16,8 +16,8 @@ function Footer() {
           </section>
 
           <section className="sec_2">
-            <div className="footer-links">
-              <div className="link-group">
+            <div className="footer_links">
+              <div className="link_group">
                 <h3>About Us</h3>
                 <ul>
                   <li>About EShop</li>
@@ -27,7 +27,7 @@ function Footer() {
                 </ul>
               </div>
 
-              <div className="link-group">
+              <div className="link_group">
                 <h3>Customer Service</h3>
                 <ul>
                   <li>Contact Us</li>
@@ -37,7 +37,7 @@ function Footer() {
                 </ul>
               </div>
 
-              <div className="link-group">
+              <div className="link_group">
                 <h3>Legal</h3>
                 <ul>
                   <li>Privacy Policy</li>
@@ -47,7 +47,7 @@ function Footer() {
                 </ul>
               </div>
 
-              <div className="link-group">
+              <div className="link_group">
                 <h3>Quick Links</h3>
                 <ul>
                   <li>My Account</li>
@@ -60,9 +60,9 @@ function Footer() {
           </section>
 
           <section className="sec_3">
-            <div className="social-links">
+            <div className="social_links">
               <h3>Follow Us</h3>
-              <div className="social-icons">
+              <div className="social_icons">
                 <a
                   href="https://facebook.com"
                   target="_blank"

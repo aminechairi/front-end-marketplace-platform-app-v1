@@ -178,12 +178,12 @@
   .navBar .container .ab .logIn_signIn .buttons .button {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 18px;
     border: 1px solid var(--main-color);
     border-radius: 22px;
-    padding: 0px 20px;
+    padding: 0px 15px;
     text-transform: capitalize;
-    font-family: 700;
+    font-weight: 500;
     cursor: pointer;
     color: var(--text-color);
   }

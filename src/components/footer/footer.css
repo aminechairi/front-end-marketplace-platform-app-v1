@@ -20,7 +20,7 @@
   color: var(--text-color);
 }
 
-.footer .container .sec_2 .footer-links {
+.footer .container .sec_2 .footer_links {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px 15px;
@@ -28,28 +28,28 @@
 }
 /* lg	*/
 @media (min-width: 1024px) {
-  .footer .container .sec_2 .footer-links {
+  .footer .container .sec_2 .footer_links {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
-.footer .container .sec_2 .footer-links .link-group {
+.footer .container .sec_2 .footer_links .link_group {
   display: flex;
   flex-direction: column;
   gap: 15px;
   text-align: center;
 }
-.footer .container .sec_2 .footer-links .link-group h3 {
+.footer .container .sec_2 .footer_links .link_group h3 {
   font-size: 18px;
   font-weight: 500;
   color: var(--text-color);
 }
-.footer .container .sec_2 .footer-links .link-group ul {
+.footer .container .sec_2 .footer_links .link_group ul {
   display: flex;
   flex-direction: column;
   gap: 15px;
   text-align: center;
 }
-.footer .container .sec_2 .footer-links .link-group ul li {
+.footer .container .sec_2 .footer_links .link_group ul li {
   font-size: 16px;
   color: var(--text-color);
   cursor: pointer;
@@ -58,7 +58,7 @@
   border-radius: 7.5px;
   transition: var(--transition);
 }
-.footer .container .sec_2 .footer-links .link-group ul li:hover {
+.footer .container .sec_2 .footer_links .link_group ul li:hover {
   color: var(--main-color);
 }
 
@@ -66,28 +66,28 @@
   padding: 15px 0px;
   border-bottom: 1px solid var(--color-skeletion-1);
 }
-.footer .container .sec_3 .social-links {
+.footer .container .sec_3 .social_links {
   display: flex;
   flex-direction: column;
   gap: 7.5px;
 }
-.footer .container .sec_3 .social-links h3 {
+.footer .container .sec_3 .social_links h3 {
   font-size: 18px;
   font-weight: 500;
   color: var(--text-color);
   text-align: center;
 }
-.footer .container .sec_3 .social-links .social-icons {
+.footer .container .sec_3 .social_links .social_icons {
   display: flex;
   gap: 15px;
   justify-content: center;
 }
-.footer .container .sec_3 .social-links .social-icons a svg {
+.footer .container .sec_3 .social_links .social_icons a svg {
   font-size: 24px;
   color: var(--text-color);
   transition: var(--transition);
 }
-.footer .container .sec_3 .social-links .social-icons a svg:hover {
+.footer .container .sec_3 .social_links .social_icons a svg:hover {
   color: var(--main-color);
 }
 
