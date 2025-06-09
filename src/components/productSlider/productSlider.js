@@ -4,9 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "./productSlider.css";
 
 import ImageMagnifier from "../../components/imageMagnifier/imageMagnifier";
-import ButtonSave from "../../components/buttinSave/buttinSave";
+import FavoriteButton from "../../components/favoriteButton/favoriteButton";
 
-function ProductSlider({ productImages, _id, save }) {
+function ProductSlider({ productImages, _id, isFavorite }) {
   const swiperRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -50,8 +50,8 @@ function ProductSlider({ productImages, _id, save }) {
           })}
         </Swiper>
       </div>
-      <div className="save">
-        <ButtonSave _id={_id} save={save} />
+      <div className="favorite">
+        <FavoriteButton _id={_id} isFavorite={isFavorite} />
       </div>
     </div>
   );

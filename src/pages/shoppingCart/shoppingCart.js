@@ -79,7 +79,7 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     fetchShoppingCart({
-      url: `${baseUrl}/shoppingcart`,
+      url: `${baseUrl}/customer/shopping-cart`,
       method: "get",
       headers: {
         Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
@@ -128,7 +128,7 @@ const ShoppingCart = () => {
       setProducts({ data: [] });
 
       fetchShoppingCart({
-        url: `${baseUrl}/shoppingcart/applycoupon`,
+        url: `${baseUrl}/customer/shopping-cart/apply-coupon`,
         method: "put",
         data: {
           couponCode: values.couponCode,
@@ -144,7 +144,7 @@ const ShoppingCart = () => {
     setProducts({ data: [] });
 
     fetchShoppingCart({
-      url: `${baseUrl}/shoppingcart`,
+      url: `${baseUrl}/customer/shopping-cart`,
       method: "delete",
       data,
       headers: {
@@ -157,7 +157,7 @@ const ShoppingCart = () => {
     setProducts({ data: [] });
 
     fetchShoppingCart({
-      url: `${baseUrl}/shoppingcart`,
+      url: `${baseUrl}/customer/shopping-cart`,
       method: "put",
       data,
       headers: {
@@ -188,7 +188,7 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     fetchUser({
-      url: `${baseUrl}/users/mydata`,
+      url: `${baseUrl}/customer`,
       method: "get",
       headers: {
         Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
@@ -212,7 +212,7 @@ const ShoppingCart = () => {
     onSubmit: async (values) => {
       if (values.paymentMethod === "credit_card") {
         fetchCreateOrder({
-          url: `${baseUrl}/orders/createcheckoutsession`,
+          url: `${baseUrl}/customer/orders/stripe-checkout-session`,
           method: "post",
           data: {
             phone: values.phone,
@@ -228,7 +228,7 @@ const ShoppingCart = () => {
         });
       } else if (values.paymentMethod === "cash_on_delivery") {
         fetchCreateOrder({
-          url: `${baseUrl}/orders/createcashorder`,
+          url: `${baseUrl}/customer/orders/cash-on-delivery`,
           method: "post",
           data: {
             phone: values.phone,
@@ -270,7 +270,7 @@ const ShoppingCart = () => {
       setPopupVisible(false);
 
       fetchShoppingCart({
-        url: `${baseUrl}/shoppingcart`,
+        url: `${baseUrl}/customer/shopping-cart`,
         method: "get",
         headers: {
           Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,

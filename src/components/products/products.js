@@ -88,7 +88,7 @@ export default function Products({
                       sold={item.sold}
                       ratingsAverage={item.ratingsAverage}
                       ratingsQuantity={item.ratingsQuantity}
-                      save={item.save}
+                      isFavorite={item.isFavorite}
                     />
                   );
                 })}

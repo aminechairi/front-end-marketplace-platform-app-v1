@@ -21,7 +21,7 @@ import {
   HOME,
   LOGIN,
   SIGNUP,
-  SAVES,
+  FAVORITES,
   SHOPPING_CART,
   PROFILE,
   ORDERS,
@@ -151,7 +151,7 @@ export default function NavBar() {
                 </button>
                 <button className="button">
                   <ScrollToTop>
-                    <Link to={SAVES}>
+                    <Link to={FAVORITES}>
                       <FavoriteBorderIcon />
                     </Link>
                   </ScrollToTop>
@@ -199,7 +199,7 @@ export default function NavBar() {
                     </li>
                     <li>
                       <ScrollToTop>
-                        <Link to={SAVES}>
+                        <Link to={FAVORITES}>
                           <FavoriteBorderIcon /> favorites
                         </Link>
                       </ScrollToTop>

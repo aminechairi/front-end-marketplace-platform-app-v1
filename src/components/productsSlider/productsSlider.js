@@ -100,7 +100,7 @@ export default function ProductsSlider({ title, status, data }) {
                         sold={item.sold}
                         ratingsAverage={item.ratingsAverage}
                         ratingsQuantity={item.ratingsQuantity}
-                        save={item.save}
+                        isFavorite={item.isFavorite}
                       />
                     </SwiperSlide>
                   );

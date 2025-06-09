@@ -9,12 +9,12 @@ import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import limitOfProducts from "../../utils/limitOfProducts";
-import { SAVES } from "../../routes";
+import { FAVORITES } from "../../routes";
 
 // Limits according to media queries
 const limits = [12, 12, 12, 19, 20, 20];
 
-const Saves = () => {
+const Favorites = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,7 +32,7 @@ const Saves = () => {
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     fetchSaves({
-      url: `${baseUrl}/saves`,
+      url: `${baseUrl}/customer/favorites`,
       method: "get",
       params: {
         page: page.toString(),
@@ -56,7 +56,7 @@ const Saves = () => {
   const handlePageChange = (_, value) => {
     setTriggeredByPagination(true);
     setCurrentPage(value);
-    navigate(`${SAVES}?page=${value}`);
+    navigate(`${FAVORITES}?page=${value}`);
   };
 
   let products = [];
@@ -106,4 +106,4 @@ const Saves = () => {
   );
 };
 
-export default Saves;
+export default Favorites;

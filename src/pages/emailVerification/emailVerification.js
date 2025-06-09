@@ -11,7 +11,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 
 import {
   emailVerification,
-  emailVerificationCode,
+  verifyEmail,
 } from "../../redux/emailVerificationSlice";
 import { HOME } from "../../routes";
 
@@ -37,7 +37,7 @@ function EmailVerification() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(emailVerificationCode(values));
+      dispatch(verifyEmail(values));
     },
   });
 

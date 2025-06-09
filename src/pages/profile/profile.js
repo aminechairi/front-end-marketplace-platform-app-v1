@@ -16,7 +16,7 @@ export default function Profile() {
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     fetchUserData({
-      url: `${baseUrl}/users/mydata`,
+      url: `${baseUrl}/customer`,
       method: "get",
       headers: {
         Authorization: JWTToken,

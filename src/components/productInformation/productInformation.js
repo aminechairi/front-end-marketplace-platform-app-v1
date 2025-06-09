@@ -99,7 +99,7 @@ function ProductInformation({ productInfo }) {
     if (cookieManager("get", "JWTToken")) {
       if (cart.status !== "loading") {
         addProductToCart({
-          url: `${baseUrl}/shoppingcart`,
+          url: `${baseUrl}/customer/shopping-cart`,
           method: "post",
           data: {
             productId: productInfo._id,

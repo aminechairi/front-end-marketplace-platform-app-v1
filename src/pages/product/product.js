@@ -104,7 +104,7 @@ function Product() {
                   <ProductSlider
                     productImages={productImages}
                     _id={product.data?.data._id}
-                    save={product.data?.data.save}
+                    isFavorite={product.data?.data.isFavorite}
                   />
                   <ProductInformation productInfo={product.data?.data} />
                 </>

@@ -10,7 +10,7 @@ export const emailVerification = createAsyncThunk(
     const state = getState();
     const JWTToken = state.cookies.JWTToken;
 
-    const response = await fetch(`${baseUrl}/users/emailVerification`, {
+    const response = await fetch(`${baseUrl}/customer/verify-email`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -26,14 +26,14 @@ export const emailVerification = createAsyncThunk(
   }
 );
 
-// Async Thunk for emailVerificationCode
-export const emailVerificationCode = createAsyncThunk(
-  "emailVerification/emailVerificationCode",
+// Async Thunk for verifyEmail
+export const verifyEmail = createAsyncThunk(
+  "emailVerification/verifyEmail",
   async (requestBody, { getState }) => {
     const state = getState();
     const JWTToken = state.cookies.JWTToken;
 
-    const response = await fetch(`${baseUrl}/users/emailverificationcode`, {
+    const response = await fetch(`${baseUrl}/customer/verify-email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,14 +73,14 @@ const emailVerificationSlice = createSlice({
         state.error = action.error.message;
       })
       // Email verification code
-      .addCase(emailVerificationCode.pending, (state) => {
+      .addCase(verifyEmail.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(emailVerificationCode.fulfilled, (state, action) => {
+      .addCase(verifyEmail.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.data = action.payload;
       })
-      .addCase(emailVerificationCode.rejected, (state, action) => {
+      .addCase(verifyEmail.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

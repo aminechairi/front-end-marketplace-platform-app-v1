@@ -1,28 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./buttinSave.css";
+import "./favoriteButton.css";
 
 import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
-import { LOGIN } from "./../../routes";
+import { LOGIN } from "../../routes";
 
-function ButtinSave({ _id, save }) {
-  const [isSaved, setIsSaved] = useState(Boolean(save));
+function FavoriteButton({ _id, isFavorite }) {
+  const [isFavoriteState, setIsFavoriteState] = useState(Boolean(isFavorite));
   const { fetchData: addProductToSaves } = useFetch();
   const { fetchData: removeProductFromSaves } = useFetch();
   const navigate = useNavigate();
 
   const handleSaveChange = (e, productId) => {
-    setIsSaved(e.target.checked);
+    setIsFavoriteState(e.target.checked);
 
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     if (cookieManager("get", "JWTToken")) {
       if (e.target.checked) {
         addProductToSaves({
-          url: `${baseUrl}/saves`,
+          url: `${baseUrl}/customer/favorites`,
           method: "post",
           data: { productId },
           headers: {
@@ -31,7 +31,7 @@ function ButtinSave({ _id, save }) {
         });
       } else {
         removeProductFromSaves({
-          url: `${baseUrl}/saves/${productId}`,
+          url: `${baseUrl}/customer/favorites/${productId}`,
           method: "delete",
           headers: {
             Authorization: JWTToken,
@@ -46,7 +46,7 @@ function ButtinSave({ _id, save }) {
   return (
     <div className="heart-container" title="Like">
       <input
-        checked={isSaved}
+        checked={isFavoriteState}
         type="checkbox"
         className="checkbox"
         id="Give-It-An-Id"
@@ -85,4 +85,4 @@ function ButtinSave({ _id, save }) {
   );
 }
 
-export default ButtinSave;
+export default FavoriteButton;

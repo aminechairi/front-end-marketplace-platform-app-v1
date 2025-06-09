@@ -5,7 +5,7 @@ import "./productsCard.css";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
-import ButtinSave from "../buttinSave/buttinSave";
+import FavoriteButton from "../favoriteButton/favoriteButton";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import useFetch from "../../hooks/useFetch";
@@ -26,10 +26,10 @@ export default function ProductsCard({
   sold,
   ratingsAverage,
   ratingsQuantity,
-  save,
+  isFavorite,
 }) {  
   const { data: cart, fetchData: addProductToCart } = useFetch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const addProductToShoppingCart = () => {
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
@@ -37,7 +37,7 @@ export default function ProductsCard({
     if (cookieManager("get", "JWTToken")) {
       if (cart.status !== "loading") {
         addProductToCart({
-          url: `${baseUrl}/shoppingcart`,
+          url: `${baseUrl}/customer/shopping-cart`,
           method: "post",
           data: {
             productId: _id,
@@ -72,8 +72,8 @@ export default function ProductsCard({
               }}
             />
           </Link>
-          <div className="save">
-            <ButtinSave _id={_id} save={save} />
+          <div className="favorite">
+            <FavoriteButton _id={_id} isFavorite={isFavorite} />
           </div>
           <div className="ratingsAverage_and_ratingsQuantity">
             <div className="ratingsAverage">

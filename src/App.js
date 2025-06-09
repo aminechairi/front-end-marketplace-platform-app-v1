@@ -10,7 +10,7 @@ import ForgotPassword from "./pages/forgotPassword/forgotPassword";
 import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
 import Profile from "./pages/profile/profile";
 import EmailVerification from "./pages/emailVerification/emailVerification";
-import Saves from "./pages/saves/saves";
+import Favorites from "./pages/favorites/favorites";
 import ShoppingCart from "./pages/shoppingCart/shoppingCart";
 import Orders from "./pages/orders/orders";
 import TooManyRequests from "./pages/tooManyRequests/tooManyRequests";
@@ -27,7 +27,7 @@ import {
   PASSWORD_RESET_CODE,
   EMAIL_VERIFICATION,
   PROFILE,
-  SAVES,
+  FAVORITES,
   SHOPPING_CART,
   ORDERS,
   TOO_MANY_REQUESTS,
@@ -92,10 +92,10 @@ function App() {
         }
       />
       <Route
-        path={SAVES}
+        path={FAVORITES}
         element={
           <ProtectedRoute isProtected={true} redirectTo={HOME}>
-            <Saves />
+            <Favorites />
           </ProtectedRoute>
         }
       />
