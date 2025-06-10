@@ -50,11 +50,11 @@ const useFetch = () => {
 
         if (err.status === 401) {
           logOutFunction(dispatch, navigate);
-        }
-        if (err.status === 403) {
+        } else if (err.status === 403 && err.response?.data?.message.startsWith("Your email is not verified")) {
           navigate(EMAIL_VERIFICATION);
-        }
-        if (err.status === 429) {
+        } else if (err.status === 403) {
+          logOutFunction(dispatch, navigate);
+        } else if (err.status === 429) {
           navigate(TOO_MANY_REQUESTS);
         }
       }
