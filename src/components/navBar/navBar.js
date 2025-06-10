@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
@@ -16,7 +17,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import "./navBar.css";
 
 import ScrollToTop from "../scrollToTop/scrollToTop";
-import { authLogOut } from "../../redux/authSlice";
+import logOutFunction from "../../utils/logOutFunction";
 import {
   HOME,
   LOGIN,
@@ -81,11 +82,8 @@ export default function NavBar() {
     });
   };
 
-  const logOutFunction = async () => {
-    const resultAction = await dispatch(authLogOut());
-    if (authLogOut.fulfilled.match(resultAction)) {
-      navigate(LOGIN);
-    }
+  const logOut = () => {
+    logOutFunction(dispatch, navigate);
   };
 
   const handleSearch = (event) => {
@@ -176,7 +174,7 @@ export default function NavBar() {
                           </ScrollToTop>
                         </li>
                         <li className="logout">
-                          <Link onClick={logOutFunction}>
+                          <Link onClick={logOut}>
                             <LogoutIcon /> log out
                           </Link>
                         </li>
@@ -232,7 +230,7 @@ export default function NavBar() {
                       </Link>
                     </li>
                     <li className="logout">
-                      <Link onClick={logOutFunction}>
+                      <Link onClick={logOut}>
                         <LogoutIcon /> log out
                       </Link>
                     </li>

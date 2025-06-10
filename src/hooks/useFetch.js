@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
 
-import cookieManager from "../utils/cookieManager";
-import { LOGIN, EMAIL_VERIFICATION, TOO_MANY_REQUESTS } from "../routes";
+import logOutFunction from "../utils/logOutFunction";
+import { EMAIL_VERIFICATION, TOO_MANY_REQUESTS } from "../routes";
 
 const useFetch = () => {
   const [data, setData] = useState({ status: "idle", data: null });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const fetchData = useCallback(
@@ -47,8 +49,7 @@ const useFetch = () => {
         }
 
         if (err.status === 401) {
-          cookieManager("delete", "JWTToken");
-          navigate(LOGIN);
+          logOutFunction(dispatch, navigate);
         }
         if (err.status === 403) {
           navigate(EMAIL_VERIFICATION);
@@ -58,7 +59,7 @@ const useFetch = () => {
         }
       }
     },
-    [navigate]
+    [dispatch, navigate]
   );
 
   return { data, fetchData };
