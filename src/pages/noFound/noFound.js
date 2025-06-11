@@ -1,28 +1,19 @@
-import { Link } from "react-router-dom";
-
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
-import ScrollToTop from "../../components/scrollToTop/scrollToTop";
 import { HOME } from "../../routes";
+import WentWrong from "../../components/wentWrong/wentWrong";
 
 export default function NoFound() {
   return (
     <>
       <NavBar />
-      <div className="noFound">
-        <div className="container">
-          <div className="ab">
-            <img src={require("../../imgs/no-results.png")} alt="" />
-            <h1>Uh-oh, something went wrong here</h1>
-            <p>Just keep browsing to get back on track</p>
-            <ScrollToTop>
-              <Link to={HOME}>
-                <button className="buttom">Back to home page</button>
-              </Link>
-            </ScrollToTop>
-          </div>
-        </div>
-      </div>
+      <WentWrong
+        srcImage={require("../../imgs/error-404.png")}
+        title="Oops! The page you are looking for does not exist."
+        paragraph="It may have been removed, or the link you followed may be broken. Please check the URL or return to the home page."
+        buttonContent="GO BACK TO HOME PAGE"
+        to={HOME}
+      />
       <Footer />
     </>
   );

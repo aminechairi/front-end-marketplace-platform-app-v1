@@ -108,13 +108,13 @@ export default function NavBar() {
             <Link to={HOME}>
               <div className="logo">
                 <img
-                  src={require("../../imgs/logo.png")}
+                  src={require("../../imgs/icon logo.png")}
                   width={80}
                   height={80}
                   alt=""
                   loading="lazy"
                 />
-                <h1 className="title">e shop app</h1>
+                <h1 className="title">shop</h1>
               </div>
             </Link>
           </ScrollToTop>

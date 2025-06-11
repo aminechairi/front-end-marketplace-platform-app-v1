@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import "./product.css";
@@ -10,7 +10,6 @@ import ProductSliderSkeletion from "../../components/productSlider/productSlider
 import ProductInformationSkeleton from "../../components/productInformation/productInformationSkeleton";
 import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
-import ScrollToTop from "../../components/scrollToTop/scrollToTop";
 
 import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
@@ -18,6 +17,7 @@ import cookieManager from "../../utils/cookieManager";
 import { HOME } from "../../routes";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
+import WentWrong from "../../components/wentWrong/wentWrong";
 
 // Limits according to media queries
 const limits = [6, 6, 6, 4, 5, 5];
@@ -119,20 +119,13 @@ function Product() {
           />
         </div>
       ) : (
-        <div className="noFound">
-          <div className="container">
-            <div className="ab">
-              <img src={require("../../imgs/no-results.png")} alt="" />
-              <h1>Uh-oh, something went wrong here</h1>
-              <p>Just keep browsing to get back on track</p>
-              <ScrollToTop>
-                <Link to={HOME}>
-                  <button className="buttom">Back to home page</button>
-                </Link>
-              </ScrollToTop>
-            </div>
-          </div>
-        </div>
+        <WentWrong
+          srcImage={require("../../imgs/error-404.png")}
+          title="Oops! The product you are looking for does not exist."
+          paragraph="It may have been removed, or the link you followed may be broken. Please check the URL or return to the home page."
+          buttonContent="GO BACK TO HOME PAGE"
+          to={HOME}
+        />
       )}
       <Footer />
     </>

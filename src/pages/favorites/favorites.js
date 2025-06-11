@@ -9,7 +9,8 @@ import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import limitOfProducts from "../../utils/limitOfProducts";
-import { FAVORITES } from "../../routes";
+import { HOME, FAVORITES } from "../../routes";
+import WentWrong from "../../components/wentWrong/wentWrong";
 
 // Limits according to media queries
 const limits = [12, 12, 12, 19, 20, 20];
@@ -75,21 +76,13 @@ const Favorites = () => {
     <>
       <NavBar />
       {saves.data?.data?.length === 0 && saves.status === "succeeded" ? (
-        <div className="noFound">
-          <div className="container">
-            <div className="ab">
-              <img
-                src={require("../../imgs/break-up.png")}
-                alt="No products found"
-              />
-              <h1>Ready to make a wish?</h1>
-              <p>
-                Start adding items you love to your wishlist by tapping on the
-                heart icon
-              </p>
-            </div>
-          </div>
-        </div>
+        <WentWrong 
+          srcImage={require("../../imgs/break-up.png")}
+          title="Oops! You haven't saved any products yet."
+          paragraph="It seems like you haven't added any products to your favorites. Browse our collection and start saving your favorite items!"
+          buttonContent="GO BACK TO HOME PAGE"
+          to={HOME}
+        />
       ) : (
         <Products
           title={"FAVORITES"}

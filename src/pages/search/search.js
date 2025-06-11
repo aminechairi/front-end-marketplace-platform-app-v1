@@ -314,19 +314,25 @@ function Search() {
                 </div>
               </div>
               {/* Display search results or "No Results" message */}
-              {(products?.data?.data?.length === 0 ||
-                products?.data?.status) &&
+              {(products?.data?.data?.length === 0 || products?.data?.status) &&
               products.status === "succeeded" ? (
                 <div className="not_Found_filter_products">
                   <div className="ab">
-                    <img src={require("../../imgs/search.png")} alt="" />{" "}
-                    <h1>We couldn't find what you were looking for</h1>{" "}
+                    <img src={require("../../imgs/no-results.png")} alt="" />
+                    <h1>
+                      {searchValue
+                        ? `NO RESULTS FOUND FOR: "${
+                            searchValue.length > 20
+                              ? searchValue.slice(0, 20) + "..."
+                              : searchValue
+                          }"`
+                        : "NO RESULTS FOUND"}
+                    </h1>
                     <p>
-                      Keep calm and search again. We have SO many other products
-                      that you will like!
+                      Try searching for something else or go back to the previous page.
                     </p>
                     <button className="buttom" onClick={goBack}>
-                      Continue shopping
+                      GO BACK
                     </button>
                   </div>
                 </div>
@@ -334,7 +340,11 @@ function Search() {
                 <Products
                   title={
                     searchValue
-                      ? `SEARCH RESULTS FOR: "${searchValue}"`
+                      ? `SEARCH RESULTS FOR: "${
+                          searchValue.length > 30
+                            ? searchValue.slice(0, 30) + "..."
+                            : searchValue
+                        }"`
                       : "SEARCH RESULTS:"
                   }
                   status={products?.status}

@@ -23,6 +23,8 @@ import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import limitOfProducts from "../../utils/limitOfProducts";
 import { currency } from "../../constens/constens";
+import { HOME } from "../../routes";
+import WentWrong from "../../components/wentWrong/wentWrong";
 
 // Set product limits based on screen size
 const productLimits = [3, 3, 3, 3, 3, 3];
@@ -817,21 +819,13 @@ const ShoppingCart = () => {
           </div>
         </>
       ) : shoppingCart.status === "succeeded" && products.data?.length === 0 ? (
-        <div className="noFound">
-          <div className="container">
-            <div className="ab">
-              <img
-                src={require("../../imgs/empty-cart.png")}
-                alt="Empty shopping cart"
-              />
-              <h1>Your Cart is Empty</h1>
-              <p>
-                Looks like you haven't added any items to your cart yet. Start
-                shopping now and fill it with your favorite products!
-              </p>
-            </div>
-          </div>
-        </div>
+          <WentWrong 
+            srcImage={require("../../imgs/empty-cart.png")}
+            title="Your Cart is Empty"
+            paragraph="Looks like you haven't added any items to your cart yet. Start shopping now and fill it with your favorite products!"
+            buttonContent="BACK TO HOME PAGE"
+            to={HOME}
+          />
       ) : null}
       <Footer />
     </>

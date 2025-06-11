@@ -1,18 +1,18 @@
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
+import WentWrong from "../../components/wentWrong/wentWrong";
 
 function TooManyRequests() {
   return (
     <>
       <NavBar />
-      <div className="noFound">
-        <div className="container">
-          <div className="ab">
-            <img src={require("../../imgs/too many requests.png")} alt="" />
-            <h1>Too many requests, please try again later.</h1>
-          </div>
-        </div>
-      </div>
+      <WentWrong
+        srcImage={require("../../imgs/too many requests.png")}
+        title="Oops! Too many requests. Please try again later."
+        paragraph="It seems like you have made too many requests in a short period of time. Please wait a moment before trying again."
+        buttonContent="TRY AGAIN LATER"
+        to="/"
+      />
       <Footer />
     </>
   );
