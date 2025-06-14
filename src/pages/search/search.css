@@ -148,14 +148,12 @@
 }
 .filter_products > .main_of_products > .container > .ab .not_Found_filter_products .ab .buttom {
   display: block;
-  width: 200px;
   font-size: 16px;
   padding: calc(7.5px / 2) 30px;
-  border: 1px solid var(--main-color);
   border-radius: 14px;
   cursor: pointer;
-  background-color: var(--main-color);
-  color: white;
+  color: var(--main-color);
   font-weight: 500;
   margin-top: 7.5px;
+  border: 1px solid var(--main-color);
 }

@@ -14,20 +14,16 @@ import PhoneInput from "react-phone-input-2";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import NavBar from "../../components/navBar/navBar";
-import ProductsCardOfShoppingCart from "../../components/productsCardOfShoppingCart/productsCardOfShoppingCart";
-import ProductsCardOfShoppingCartSkeletion from "../../components/productsCardOfShoppingCart/productsCardOfShoppingCartSkeletion";
+import ProductCardOfShoppingCart from "../../components/productCardOfShoppingCart/productCardOfShoppingCart";
+import ShoppingCartSkeleton from "./shoppingCartSkeleton";
 import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
-import limitOfProducts from "../../utils/limitOfProducts";
 import { currency } from "../../constens/constens";
 import { HOME } from "../../routes";
 import WentWrong from "../../components/wentWrong/wentWrong";
-
-// Set product limits based on screen size
-const productLimits = [3, 3, 3, 3, 3, 3];
 
 const couponCodeValidationSchema = Yup.object().shape({
   couponCode: Yup.string()
@@ -288,548 +284,510 @@ const ShoppingCart = () => {
     navigate
   ]);
 
-  return (
-    <>
-      <NavBar />
-      {shoppingCart.status === "loading" ? (
+  if (shoppingCart.status === "loading") {
+    return (
+      <>
+        <NavBar />
+        <ShoppingCartSkeleton />
+        <Footer />
+      </>
+    );
+  }
+
+  if (shoppingCart.status === "succeeded" && products.data?.length === 0) {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/empty-cart.png")}
+          title="Your shopping cart is empty."
+          paragraph="Looks like you haven't added any items to your cart yet.\nStart shopping now and fill it with your favorite products!"
+          buttonContent="BACK TO HOME PAGE"
+          to={HOME}
+        />
+        <Footer />
+      </>
+    );
+  }
+
+  if (shoppingCart.status === "succeeded" && products.data?.length > 0) {
+    return (
+      <>
+        <NavBar />
         <div className="shopping_cart">
           <div className="container">
             <div className="cart_wrapper">
-              <h1 className="cart_title">{"SHOPPING CART"}</h1>
+              <h1 className="cart_title">SHOPPING CART</h1>
 
               <div className="cart_details">
                 <div className="cart_info">
+                  {/* Order Summary */}
                   <div className="checkout_summary">
                     <h1 className="summary_title">ORDER SUMMARY</h1>
 
                     <div className="summary_details">
                       <div className="summary_row">
                         <div className="summary_property">Tax Price:</div>
-                        <div className="summary_value_skeletion">
-                          0.00 {currency}
+                        <div className="summary_value">
+                          {shoppingCart.data?.data.pricing.taxPrice
+                            .toFixed(2)
+                            .replace(".", ",")}{" "}
+                          {currency}
                         </div>
                       </div>
                       <div className="summary_row">
                         <div className="summary_property">Shipping Price:</div>
-                        <div className="summary_value_skeletion">
-                          0.00 {currency}
+                        <div className="summary_value">
+                          {shoppingCart.data?.data.pricing.shippingPrice
+                            .toFixed(2)
+                            .replace(".", ",")}{" "}
+                          {currency}
                         </div>
                       </div>
                       <div className="summary_row">
                         <div className="summary_property">Total Price:</div>
-                        <div className="summary_value_skeletion">
-                          0.00 {currency}
+                        <div
+                          className="summary_value"
+                          style={
+                            shoppingCart.data?.data.coupon
+                              ? {
+                                  textDecoration: "line-through",
+                                  color: "var(--color-of-error)",
+                                }
+                              : null
+                          }
+                        >
+                          {shoppingCart.data?.data.pricing.totalPrice
+                            .toFixed(2)
+                            .replace(".", ",")}{" "}
+                          {currency}
                         </div>
                       </div>
-                      <div className="summary_row">
-                        <div className="summary_property">
-                          Total Price After Discount:
-                        </div>
-                        <div className="summary_value_skeletion">
-                          0.00 {currency}
-                        </div>
-                      </div>
-
-                      <div className="line"></div>
-
-                      <div className="summary_row">
-                        <div className="summary_property">Coupon Code:</div>
-                        <div className="summary_value_skeletion">
-                          COUPON CODE
-                        </div>
-                      </div>
-                      <div className="summary_row">
-                        <div className="summary_property">Coupon Discount:</div>
-                        <div className="summary_value_skeletion">30%</div>
-                      </div>
-                      <div className="summary_row">
-                        <div className="summary_property">Discount Amount:</div>
-                        <div className="summary_value_skeletion">
-                          0.00 {currency}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="product_cards">
-                  {Array.from(new Array(limitOfProducts(productLimits))).map(
-                    (_, i) => {
-                      return (
-                        <ProductsCardOfShoppingCartSkeletion key={i + 1} />
-                      );
-                    }
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : shoppingCart.status === "succeeded" && products.data?.length > 0 ? (
-        <>
-          <div className="shopping_cart">
-            <div className="container">
-              <div className="cart_wrapper">
-                <h1 className="cart_title">SHOPPING CART</h1>
-
-                <div className="cart_details">
-                  <div className="cart_info">
-                    {/* Order Summary */}
-                    <div className="checkout_summary">
-                      <h1 className="summary_title">ORDER SUMMARY</h1>
-
-                      <div className="summary_details">
-                        <div className="summary_row">
-                          <div className="summary_property">Tax Price:</div>
-                          <div className="summary_value">
-                            {shoppingCart.data?.data.pricing.taxPrice
-                              .toFixed(2)
-                              .replace(".", ",")}{" "}
-                            {currency}
-                          </div>
-                        </div>
+                      {shoppingCart.data?.data.coupon ? (
                         <div className="summary_row">
                           <div className="summary_property">
-                            Shipping Price:
+                            Total Price After Discount:
                           </div>
                           <div className="summary_value">
-                            {shoppingCart.data?.data.pricing.shippingPrice
+                            {shoppingCart.data?.data.pricing.totalPriceAfterDiscount
                               .toFixed(2)
                               .replace(".", ",")}{" "}
                             {currency}
                           </div>
                         </div>
-                        <div className="summary_row">
-                          <div className="summary_property">Total Price:</div>
-                          <div
-                            className="summary_value"
-                            style={
-                              shoppingCart.data?.data.coupon
-                                ? {
-                                    textDecoration: "line-through",
-                                    color: "var(--color-of-error)",
-                                  }
-                                : null
-                            }
-                          >
-                            {shoppingCart.data?.data.pricing.totalPrice
-                              .toFixed(2)
-                              .replace(".", ",")}{" "}
-                            {currency}
+                      ) : null}
+                      {shoppingCart.data?.data.coupon ? (
+                        <>
+                          <div className="line"></div>
+                          <div className="summary_row">
+                            <div className="summary_property">Coupon Code:</div>
+                            <div className="summary_value">
+                              {shoppingCart.data?.data.coupon.couponCode}
+                            </div>
                           </div>
-                        </div>
-                        {shoppingCart.data?.data.coupon ? (
                           <div className="summary_row">
                             <div className="summary_property">
-                              Total Price After Discount:
+                              Coupon Discount:
                             </div>
                             <div className="summary_value">
-                              {shoppingCart.data?.data.pricing.totalPriceAfterDiscount
+                              {shoppingCart.data?.data.coupon.couponDiscount}%
+                            </div>
+                          </div>
+                          <div className="summary_row">
+                            <div className="summary_property">
+                              Discounted Amount:
+                            </div>
+                            <div className="summary_value">
+                              {shoppingCart.data?.data.coupon.discountedAmount
                                 .toFixed(2)
                                 .replace(".", ",")}{" "}
                               {currency}
                             </div>
                           </div>
-                        ) : null}
-                        {shoppingCart.data?.data.coupon ? (
-                          <>
-                            <div className="line"></div>
-                            <div className="summary_row">
-                              <div className="summary_property">
-                                Coupon Code:
-                              </div>
-                              <div className="summary_value">
-                                {shoppingCart.data?.data.coupon.couponCode}
-                              </div>
-                            </div>
-                            <div className="summary_row">
-                              <div className="summary_property">
-                                Coupon Discount:
-                              </div>
-                              <div className="summary_value">
-                                {shoppingCart.data?.data.coupon.couponDiscount}%
-                              </div>
-                            </div>
-                            <div className="summary_row">
-                              <div className="summary_property">
-                                Discounted Amount:
-                              </div>
-                              <div className="summary_value">
-                                {shoppingCart.data?.data.coupon.discountedAmount
-                                  .toFixed(2)
-                                  .replace(".", ",")}{" "}
-                                {currency}
-                              </div>
-                            </div>
-                          </>
-                        ) : null}
-                      </div>
-
-                      <button className="submit" onClick={toggleMenu}>
-                        Checkout {`(${shoppingCart.data?.numOfCartItems})`}
-                      </button>
+                        </>
+                      ) : null}
                     </div>
 
-                    {!shoppingCart.data?.data.coupon ? (
-                      <form
-                        className="coupon_form"
-                        onSubmit={formik.handleSubmit}
-                      >
-                        <div className="ab_inputs">
-                          <input
-                            className="input"
-                            type="text"
-                            placeholder="Coupon code"
-                            name="couponCode"
-                            id="couponCode"
-                            value={formik.values.couponCode}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            style={{
-                              borderColor:
-                                formik.touched.couponCode &&
-                                formik.errors.couponCode
-                                  ? "var(--color-of-error)"
-                                  : null,
-                            }}
-                          />
-                          {formik.touched.couponCode &&
-                            formik.errors.couponCode && (
-                              <p className="error_of_input">
-                                {formik.errors.couponCode}
-                              </p>
-                            )}
-                        </div>
-
-                        <input className="submit" type="submit" value="Apply" />
-                      </form>
-                    ) : null}
+                    <button className="submit" onClick={toggleMenu}>
+                      Checkout {`(${shoppingCart.data?.numOfCartItems})`}
+                    </button>
                   </div>
 
-                  <div className="product_cards">
-                    {products.data.map((item, index) => (
-                      <ProductsCardOfShoppingCart
-                        key={index}
-                        _id={item._id}
-                        title={item.title}
-                        imageCover={item.imageCover}
-                        productQuantity={item.productQuantity}
-                        itemQuantity={item.itemQuantity}
-                        size={item.size}
-                        color={item.color}
-                        price={item.price}
-                        totalPrice={item.totalPrice}
-                        deleteItem={deleteItem}
-                        updateItemQuantity={updateItemQuantity}
-                      />
-                    ))}
-                  </div>
+                  {!shoppingCart.data?.data.coupon ? (
+                    <form
+                      className="coupon_form"
+                      onSubmit={formik.handleSubmit}
+                    >
+                      <div className="ab_inputs">
+                        <input
+                          className="input"
+                          type="text"
+                          placeholder="Coupon code"
+                          name="couponCode"
+                          id="couponCode"
+                          value={formik.values.couponCode}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          style={{
+                            borderColor:
+                              formik.touched.couponCode &&
+                              formik.errors.couponCode
+                                ? "var(--color-of-error)"
+                                : null,
+                          }}
+                        />
+                        {formik.touched.couponCode &&
+                          formik.errors.couponCode && (
+                            <p className="error_of_input">
+                              {formik.errors.couponCode}
+                            </p>
+                          )}
+                      </div>
+
+                      <input className="submit" type="submit" value="Apply" />
+                    </form>
+                  ) : null}
+                </div>
+
+                <div className="product_cards">
+                  {products.data.map((item, index) => (
+                    <ProductCardOfShoppingCart
+                      key={index}
+                      _id={item._id}
+                      title={item.title}
+                      imageCover={item.imageCover}
+                      productQuantity={item.productQuantity}
+                      itemQuantity={item.itemQuantity}
+                      size={item.size}
+                      color={item.color}
+                      price={item.price}
+                      totalPrice={item.totalPrice}
+                      deleteItem={deleteItem}
+                      updateItemQuantity={updateItemQuantity}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-          <div className="ab_popup" style={popupStyle} onClick={toggleMenu}>
-            <div className="popup" onClick={(e) => e.stopPropagation()}>
-              <div className="popup_header">
-                <h1 className="title">
-                  CHECKOUT {`(${shoppingCart.data?.numOfCartItems})`}
-                </h1>
-                <CloseIcon className="icon" onClick={toggleMenu} />
+        </div>
+        <div className="ab_popup" style={popupStyle} onClick={toggleMenu}>
+          <div className="popup" onClick={(e) => e.stopPropagation()}>
+            <div className="popup_header">
+              <h1 className="title">
+                CHECKOUT {`(${shoppingCart.data?.numOfCartItems})`}
+              </h1>
+              <CloseIcon className="icon" onClick={toggleMenu} />
+            </div>
+            <form
+              className="checkout_form"
+              onSubmit={formikCheckout.handleSubmit}
+            >
+              {createOrder.status === "loading" ? (
+                <div className="form_loading">
+                  <LinearProgress color="inherit" />
+                </div>
+              ) : null}
+
+              <div className="payment_methods">
+                <label
+                  className={`check_payment ${
+                    formikCheckout.values.paymentMethod === "credit_card"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="credit_card"
+                    onChange={formikCheckout.handleChange}
+                    hidden
+                  />
+                  <CreditCardIcon className="icon" />
+                  <span>Credit Card</span>
+                </label>
+
+                <label
+                  className={`check_payment ${
+                    formikCheckout.values.paymentMethod === "cash_on_delivery"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash_on_delivery"
+                    onChange={formikCheckout.handleChange}
+                    hidden
+                  />
+                  <AddCardIcon className="icon" />
+                  <span>Cash On Delivery</span>
+                </label>
               </div>
-              <form
-                className="checkout_form"
-                onSubmit={formikCheckout.handleSubmit}
-              >
-                {createOrder.status === "loading" ? (
-                  <div className="form_loading">
-                    <LinearProgress color="inherit" />
-                  </div>
-                ) : null}
 
-                <div className="payment_methods">
-                  <label
-                    className={`check_payment ${
-                      formikCheckout.values.paymentMethod === "credit_card"
-                        ? "active"
-                        : ""
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="credit_card"
-                      onChange={formikCheckout.handleChange}
-                      hidden
-                    />
-                    <CreditCardIcon className="icon" />
-                    <span>Credit Card</span>
-                  </label>
+              {/* Phone number input */}
+              <div className="ab_inputs">
+                <label className="label" htmlFor="phone">
+                  Phone Number
+                </label>
+                <PhoneInput
+                  country={"ma"}
+                  onChange={(value) =>
+                    formikCheckout.setFieldValue("phone", value)
+                  }
+                  onBlur={() => formikCheckout.setFieldTouched("phone", true)}
+                  inputProps={{
+                    name: "phone",
+                    id: "phone",
+                    className: "input input_phone",
+                    value: `+${formikCheckout.values.phone || "212"}`,
+                  }}
+                />
+                {formikCheckout.touched.phone &&
+                  formikCheckout.errors.phone && (
+                    <p className="error_of_input">
+                      {formikCheckout.errors.phone}
+                    </p>
+                  )}
+              </div>
 
-                  <label
-                    className={`check_payment ${
-                      formikCheckout.values.paymentMethod === "cash_on_delivery"
-                        ? "active"
-                        : ""
-                    }`}
+              <div className="grid">
+                {/* Saved address input */}
+                <div className="ab_inputs">
+                  <label className="label">Choose Saved Address</label>
+                  <select
+                    disabled={addresses.length === 0}
+                    className="input"
+                    onChange={(e) => {
+                      const id = e.target.value;
+
+                      if (id === "") {
+                        formikCheckout.setValues({
+                          ...formikCheckout.values,
+                          country: "",
+                          city: "",
+                          state: "",
+                          street: "",
+                          postalCode: "",
+                        });
+                      } else {
+                        const selected = addresses.find(
+                          (addr) => addr._id === id
+                        );
+
+                        formikCheckout.setValues({
+                          ...formikCheckout.values,
+                          country: selected.country,
+                          city: selected.city,
+                          state: selected.state,
+                          street: selected.street,
+                          postalCode: selected.postalCode,
+                        });
+                      }
+                    }}
                   >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="cash_on_delivery"
-                      onChange={formikCheckout.handleChange}
-                      hidden
-                    />
-                    <AddCardIcon className="icon" />
-                    <span>Cash On Delivery</span>
-                  </label>
+                    <option value="">
+                      {addresses.length === 0
+                        ? "-- There no addresses saved --"
+                        : "-- Select an address --"}{" "}
+                    </option>
+                    {addresses.map((addr) => (
+                      <option key={addr._id} value={addr._id}>
+                        {`${addr.street}, ${addr.city}, ${addr.country}`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                {/* Phone number input */}
+                {/* Country input */}
                 <div className="ab_inputs">
-                  <label className="label" htmlFor="phone">
-                    Phone Number
+                  <label className="label" htmlFor="country">
+                    Country
                   </label>
-                  <PhoneInput
-                    country={"ma"}
-                    onChange={(value) =>
-                      formikCheckout.setFieldValue("phone", value)
-                    }
-                    onBlur={() => formikCheckout.setFieldTouched("phone", true)}
-                    inputProps={{
-                      name: "phone",
-                      id: "phone",
-                      className: "input input_phone",
-                      value: `+${formikCheckout.values.phone || "212"}`
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="EX: United States"
+                    name="country"
+                    id="country"
+                    value={formikCheckout.values.country}
+                    onChange={formikCheckout.handleChange}
+                    onBlur={formikCheckout.handleBlur}
+                    style={{
+                      borderColor:
+                        formikCheckout.touched.country &&
+                        formikCheckout.errors.country
+                          ? "var(--color-of-error)"
+                          : null,
                     }}
                   />
-                  {formikCheckout.touched.phone &&
-                    formikCheckout.errors.phone && (
+                  {formikCheckout.touched.country &&
+                    formikCheckout.errors.country && (
                       <p className="error_of_input">
-                        {formikCheckout.errors.phone}
+                        {formikCheckout.errors.country}
                       </p>
                     )}
                 </div>
 
-                <div className="grid">
-                  {/* Saved address input */}
-                  <div className="ab_inputs">
-                    <label className="label">Choose Saved Address</label>
-                    <select
-                      disabled={addresses.length === 0}
-                      className="input"
-                      onChange={(e) => {
-                        const id = e.target.value;
-
-                        if (id === "") {
-                          formikCheckout.setValues({
-                            ...formikCheckout.values,
-                            country: "",
-                            city: "",
-                            state: "",
-                            street: "",
-                            postalCode: "",
-                          });
-                        } else {
-                          const selected = addresses.find(
-                            (addr) => addr._id === id
-                          );
-
-                          formikCheckout.setValues({
-                            ...formikCheckout.values,
-                            country: selected.country,
-                            city: selected.city,
-                            state: selected.state,
-                            street: selected.street,
-                            postalCode: selected.postalCode,
-                          });
-                        }
-                      }}
-                    >
-                      <option value="">
-                        {addresses.length === 0
-                          ? "-- There no addresses saved --"
-                          : "-- Select an address --"}{" "}
-                      </option>
-                      {addresses.map((addr) => (
-                        <option key={addr._id} value={addr._id}>
-                          {`${addr.street}, ${addr.city}, ${addr.country}`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Country input */}
-                  <div className="ab_inputs">
-                    <label className="label" htmlFor="country">
-                      Country
-                    </label>
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="EX: United States"
-                      name="country"
-                      id="country"
-                      value={formikCheckout.values.country}
-                      onChange={formikCheckout.handleChange}
-                      onBlur={formikCheckout.handleBlur}
-                      style={{
-                        borderColor:
-                          formikCheckout.touched.country &&
-                          formikCheckout.errors.country
-                            ? "var(--color-of-error)"
-                            : null,
-                      }}
-                    />
-                    {formikCheckout.touched.country &&
-                      formikCheckout.errors.country && (
-                        <p className="error_of_input">
-                          {formikCheckout.errors.country}
-                        </p>
-                      )}
-                  </div>
-
-                  {/* City input */}
-                  <div className="ab_inputs">
-                    <label className="label" htmlFor="city">
-                      City
-                    </label>
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="EX: CA"
-                      name="city"
-                      id="city"
-                      value={formikCheckout.values.city}
-                      onChange={formikCheckout.handleChange}
-                      onBlur={formikCheckout.handleBlur}
-                      style={{
-                        borderColor:
-                          formikCheckout.touched.city &&
-                          formikCheckout.errors.city
-                            ? "var(--color-of-error)"
-                            : null,
-                      }}
-                    />
-                    {formikCheckout.touched.city &&
-                      formikCheckout.errors.city && (
-                        <p className="error_of_input">
-                          {formikCheckout.errors.city}
-                        </p>
-                      )}
-                  </div>
-
-                  {/* state input */}
-                  <div className="ab_inputs">
-                    <label className="label" htmlFor="state">
-                      State
-                    </label>
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="EX: Los Angeles"
-                      name="state"
-                      id="state"
-                      value={formikCheckout.values.state}
-                      onChange={formikCheckout.handleChange}
-                      onBlur={formikCheckout.handleBlur}
-                      style={{
-                        borderColor:
-                          formikCheckout.touched.state &&
-                          formikCheckout.errors.state
-                            ? "var(--color-of-error)"
-                            : null,
-                      }}
-                    />
-                    {formikCheckout.touched.state &&
-                      formikCheckout.errors.state && (
-                        <p className="error_of_input">
-                          {formikCheckout.errors.state}
-                        </p>
-                      )}
-                  </div>
-
-                  {/* street input */}
-                  <div className="ab_inputs">
-                    <label className="label" htmlFor="street">
-                      Street
-                    </label>
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="EX: 1234 Sunset Blvd"
-                      name="street"
-                      id="street"
-                      value={formikCheckout.values.street}
-                      onChange={formikCheckout.handleChange}
-                      onBlur={formikCheckout.handleBlur}
-                      style={{
-                        borderColor:
-                          formikCheckout.touched.street &&
-                          formikCheckout.errors.street
-                            ? "var(--color-of-error)"
-                            : null,
-                      }}
-                    />
-                    {formikCheckout.touched.street &&
-                      formikCheckout.errors.street && (
-                        <p className="error_of_input">
-                          {formikCheckout.errors.street}
-                        </p>
-                      )}
-                  </div>
-
-                  {/* Postal code input */}
-                  <div className="ab_inputs">
-                    <label className="label" htmlFor="postal-code">
-                      Postal Code
-                    </label>
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="EX: 90026"
-                      name="postalCode"
-                      id="postal-code"
-                      value={formikCheckout.values.postalCode}
-                      onChange={formikCheckout.handleChange}
-                      onBlur={formikCheckout.handleBlur}
-                      style={{
-                        borderColor:
-                          formikCheckout.touched.postalCode &&
-                          formikCheckout.errors.postalCode
-                            ? "var(--color-of-error)"
-                            : null,
-                      }}
-                    />
-                    {formikCheckout.touched.postalCode &&
-                      formikCheckout.errors.postalCode && (
-                        <p className="error_of_input">
-                          {formikCheckout.errors.postalCode}
-                        </p>
-                      )}
-                  </div>
+                {/* City input */}
+                <div className="ab_inputs">
+                  <label className="label" htmlFor="city">
+                    City
+                  </label>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="EX: CA"
+                    name="city"
+                    id="city"
+                    value={formikCheckout.values.city}
+                    onChange={formikCheckout.handleChange}
+                    onBlur={formikCheckout.handleBlur}
+                    style={{
+                      borderColor:
+                        formikCheckout.touched.city &&
+                        formikCheckout.errors.city
+                          ? "var(--color-of-error)"
+                          : null,
+                    }}
+                  />
+                  {formikCheckout.touched.city &&
+                    formikCheckout.errors.city && (
+                      <p className="error_of_input">
+                        {formikCheckout.errors.city}
+                      </p>
+                    )}
                 </div>
 
-                <input
-                  className="submit"
-                  type="submit"
-                  value={`Checkout (${shoppingCart.data?.numOfCartItems})`}
-                />
-              </form>
-            </div>
+                {/* state input */}
+                <div className="ab_inputs">
+                  <label className="label" htmlFor="state">
+                    State
+                  </label>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="EX: Los Angeles"
+                    name="state"
+                    id="state"
+                    value={formikCheckout.values.state}
+                    onChange={formikCheckout.handleChange}
+                    onBlur={formikCheckout.handleBlur}
+                    style={{
+                      borderColor:
+                        formikCheckout.touched.state &&
+                        formikCheckout.errors.state
+                          ? "var(--color-of-error)"
+                          : null,
+                    }}
+                  />
+                  {formikCheckout.touched.state &&
+                    formikCheckout.errors.state && (
+                      <p className="error_of_input">
+                        {formikCheckout.errors.state}
+                      </p>
+                    )}
+                </div>
+
+                {/* street input */}
+                <div className="ab_inputs">
+                  <label className="label" htmlFor="street">
+                    Street
+                  </label>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="EX: 1234 Sunset Blvd"
+                    name="street"
+                    id="street"
+                    value={formikCheckout.values.street}
+                    onChange={formikCheckout.handleChange}
+                    onBlur={formikCheckout.handleBlur}
+                    style={{
+                      borderColor:
+                        formikCheckout.touched.street &&
+                        formikCheckout.errors.street
+                          ? "var(--color-of-error)"
+                          : null,
+                    }}
+                  />
+                  {formikCheckout.touched.street &&
+                    formikCheckout.errors.street && (
+                      <p className="error_of_input">
+                        {formikCheckout.errors.street}
+                      </p>
+                    )}
+                </div>
+
+                {/* Postal code input */}
+                <div className="ab_inputs">
+                  <label className="label" htmlFor="postal-code">
+                    Postal Code
+                  </label>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="EX: 90026"
+                    name="postalCode"
+                    id="postal-code"
+                    value={formikCheckout.values.postalCode}
+                    onChange={formikCheckout.handleChange}
+                    onBlur={formikCheckout.handleBlur}
+                    style={{
+                      borderColor:
+                        formikCheckout.touched.postalCode &&
+                        formikCheckout.errors.postalCode
+                          ? "var(--color-of-error)"
+                          : null,
+                    }}
+                  />
+                  {formikCheckout.touched.postalCode &&
+                    formikCheckout.errors.postalCode && (
+                      <p className="error_of_input">
+                        {formikCheckout.errors.postalCode}
+                      </p>
+                    )}
+                </div>
+              </div>
+
+              <input
+                className="submit"
+                type="submit"
+                value={`Checkout (${shoppingCart.data?.numOfCartItems})`}
+              />
+            </form>
           </div>
-        </>
-      ) : shoppingCart.status === "succeeded" && products.data?.length === 0 ? (
-          <WentWrong 
-            srcImage={require("../../imgs/empty-cart.png")}
-            title="Your Cart is Empty"
-            paragraph="Looks like you haven't added any items to your cart yet. Start shopping now and fill it with your favorite products!"
-            buttonContent="BACK TO HOME PAGE"
-            to={HOME}
-          />
-      ) : null}
-      <Footer />
-    </>
-  );
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (shoppingCart.status === "failed") {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/went wrong.png")}
+          title="Something Went Wrong."
+          paragraph="We couldn't retrieve your shopping cart.\nPlease try again later."
+          buttonContent="TRY AGAIN"
+          onClick={() => {
+            fetchShoppingCart({
+              url: `${baseUrl}/customer/shopping-cart`,
+              method: "get",
+              headers: {
+                Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+              },
+            });
+          }}
+        />
+        <Footer />
+      </>
+    );
+  }
 };
 
 export default ShoppingCart;

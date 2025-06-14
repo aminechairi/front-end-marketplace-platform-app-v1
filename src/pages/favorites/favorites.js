@@ -19,7 +19,7 @@ const Favorites = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data: saves, fetchData: fetchSaves } = useFetch();
+  const { data: favorites, fetchData: fetchFavorites } = useFetch();
 
   // Extract page number from URL query params or default to 1
   const queryParams = new URLSearchParams(location.search);
@@ -32,7 +32,7 @@ const Favorites = () => {
     const page = triggeredByPagination ? currentPage : initialPage;
     const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
-    fetchSaves({
+    fetchFavorites({
       url: `${baseUrl}/customer/favorites`,
       method: "get",
       params: {
@@ -45,14 +45,14 @@ const Favorites = () => {
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchSaves, currentPage, initialPage]);
+  }, [fetchFavorites, currentPage, initialPage]);
 
   // Reset pagination trigger after successful fetch
   useEffect(() => {
-    if (saves?.status === "succeeded") {
+    if (favorites?.status === "succeeded") {
       setTriggeredByPagination(false);
     }
-  }, [saves]);
+  }, [favorites]);
 
   const handlePageChange = (_, value) => {
     setTriggeredByPagination(true);
@@ -61,42 +61,100 @@ const Favorites = () => {
   };
 
   let products = [];
-  if (saves.status === "succeeded" && Array.isArray(saves.data?.data)) {
-    for (let i = 0; i < saves.data.data.length; i++) {
+  if (favorites.status === "succeeded" && Array.isArray(favorites.data?.data)) {
+    for (let i = 0; i < favorites.data.data.length; i++) {
       if (
-        JSON.stringify(saves.data.data[i].productId) !==
+        JSON.stringify(favorites.data.data[i].productId) !==
         JSON.stringify({ save: true })
       ) {
-        products.push(saves.data.data[i].productId);
+        products.push(favorites.data.data[i].productId);
       }
     }
   }
 
-  return (
-    <>
-      <NavBar />
-      {saves.data?.data?.length === 0 && saves.status === "succeeded" ? (
-        <WentWrong 
-          srcImage={require("../../imgs/break-up.png")}
-          title="Oops! You haven't saved any products yet."
-          paragraph="It seems like you haven't added any products to your favorites. Browse our collection and start saving your favorite items!"
-          buttonContent="GO BACK TO HOME PAGE"
-          to={HOME}
-        />
-      ) : (
+  if (favorites.status === "loading") {
+    return (
+      <>
+        <NavBar />
         <Products
           title={"FAVORITES"}
-          status={saves.status}
+          status={favorites.status}
           data={{ data: products }}
           limitOfProducts={limitOfProducts(limits)}
-          paginationResults={saves?.data?.paginationResults}
+          paginationResults={favorites?.data?.paginationResults}
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      )}
-      <Footer />
-    </>
-  );
+        <Footer />
+      </>
+    );
+  }
+
+  if (favorites.status === "succeeded" && favorites.data?.data.length === 0) {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/break-up.png")}
+          title="Oops! You haven't saved any products yet."
+          paragraph="It seems like you haven't added any products to your favorites.\nBrowse our collection and start saving your favorite items!"
+          buttonContent="BACK TO HOME PAGE"
+          to={HOME}
+        />
+        <Footer />
+      </>
+    );
+  }
+
+  if (favorites.status === "succeeded" && favorites.data?.data.length > 0) {
+    return (
+      <>
+        <NavBar />
+        <Products
+          title={"FAVORITES"}
+          status={favorites.status}
+          data={{ data: products }}
+          limitOfProducts={limitOfProducts(limits)}
+          paginationResults={favorites?.data?.paginationResults}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+        <Footer />
+      </>
+    );
+  }
+
+  if (favorites.status === "failed") {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/went wrong.png")}
+          title="Something went wrong."
+          paragraph="We couldn't retrieve your favorites.\nPlease try again later."
+          buttonContent="TRY AGAIN"
+          onClick={() => {
+            const page = triggeredByPagination ? currentPage : initialPage;
+            const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
+
+            fetchFavorites({
+              url: `${baseUrl}/customer/favorites`,
+              method: "get",
+              params: {
+                page: page.toString(),
+                limit: `${limitOfProducts(limits)}`,
+                fields: `productId`,
+              },
+              headers: {
+                Authorization: JWTToken,
+              },
+            });
+          }}
+        />
+        <Footer />
+      </>
+    );
+  }
 };
 
 export default Favorites;

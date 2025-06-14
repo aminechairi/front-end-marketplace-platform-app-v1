@@ -205,7 +205,7 @@ function Search() {
       });
     } else return;
   }, [
-    currentCategory,    
+    currentCategory,
     fetchSubCategories,
     currentSubCategory,
     fetchUnderSubCategories,
@@ -313,48 +313,88 @@ function Search() {
                   </ul>
                 </div>
               </div>
-              {/* Display search results or "No Results" message */}
-              {(products?.data?.data?.length === 0 || products?.data?.status) &&
-              products.status === "succeeded" ? (
-                <div className="not_Found_filter_products">
-                  <div className="ab">
-                    <img src={require("../../imgs/no-results.png")} alt="" />
-                    <h1>
-                      {searchValue
-                        ? `NO RESULTS FOUND FOR: "${
-                            searchValue.length > 20
-                              ? searchValue.slice(0, 20) + "..."
-                              : searchValue
-                          }"`
-                        : "NO RESULTS FOUND"}
-                    </h1>
-                    <p>
-                      Try searching for something else or go back to the previous page.
-                    </p>
-                    <button className="buttom" onClick={goBack}>
-                      GO BACK
-                    </button>
-                  </div>
-                </div>
-              ) : (
+
+              {products.status === "loading" && (
                 <Products
-                  title={
-                    searchValue
-                      ? `SEARCH RESULTS FOR: "${
-                          searchValue.length > 30
-                            ? searchValue.slice(0, 30) + "..."
-                            : searchValue
-                        }"`
-                      : "SEARCH RESULTS:"
-                  }
+                  title={searchValue ? `SEARCH RESULTS FOR: "${searchValue}"` : ""}
                   status={products?.status}
                   data={products?.data}
                   gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
                   limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
-                  paginationResults={products?.data?.paginationResults}
-                  currentPage={currentPage}
-                  onPageChange={handlePageChange}
                 />
+              )}
+
+              {products.status === "succeeded" &&
+                products?.data?.data?.length === 0 && (
+                  <div className="not_Found_filter_products">
+                    <div className="ab">
+                      <img src={require("../../imgs/no-results.png")} alt="" />
+                      <h1>No result found.</h1>
+                      <p>
+                        Try searching for something else or go back to the previous page.
+                      </p>
+                      <button className="buttom" onClick={goBack}>
+                        GO BACK
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+              {products.status === "succeeded" &&
+                products?.data?.data?.length > 0 && (
+                  <Products
+                    title={searchValue ? `SEARCH RESULTS FOR: "${searchValue}"` : ""}
+                    status={products?.status}
+                    data={products?.data}
+                    gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
+                    limitOfProducts={limitOfProducts(productLimits)} // Limit number of products displayed
+                    paginationResults={products?.data?.paginationResults}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                  />
+                )}
+
+              {products.status === "failed" && (
+                <div className="not_Found_filter_products">
+                  <div className="ab">
+                    <img src={require("../../imgs/went wrong.png")} alt="" />
+                    <h1>something went wrong.</h1>
+                    <p>
+                      We couldn't retrieve the products Please try again later.
+                    </p>
+                    <button
+                      className="buttom"
+                      onClick={() => {
+                        const page = triggeredByPagination ? currentPage : initialPage; // Determine the correct page
+                        const JWTToken = `Bearer ${cookieManager("get","JWTToken")}`;
+
+                        fetchProducts({
+                          url: `${baseUrl}/products`,
+                          method: "get",
+                          params: {
+                            page: page.toString(),
+                            limit: `${limitOfProducts(productLimits)}`,
+                            search: searchValue,
+                            sort: currentMinRating || currentMinPrice || currentMaxPrice ? undefined : `-sold,-ratingsAverage`,
+                            fields: productsFields,
+                            "ratingsAverage[gte]": currentMinRating,
+                            "price[gte]": currentMinPrice,
+                            "price[lte]": currentMaxPrice,
+                            category: currentCategory,
+                            subCategories: currentSubCategory,
+                            underSubCategories: currentUnderSubCategory,
+                            brand: currentBrand,
+                          },
+                          headers: {
+                            Authorization: JWTToken,
+                          },
+                        });
+                      }}
+                    >
+                      TRY AGAIN
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>

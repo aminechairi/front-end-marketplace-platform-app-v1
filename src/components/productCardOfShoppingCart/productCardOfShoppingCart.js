@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import "./productsCardOfShoppingCart.css";
+import "./productCardOfShoppingCart.css";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { currency } from "../../constens/constens";
 
-export default function ProductsCardOfShoppingCart({
+export default function ProductCardOfShoppingCart({
   _id,
   title,
   imageCover,

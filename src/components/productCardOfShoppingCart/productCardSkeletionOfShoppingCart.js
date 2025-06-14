@@ -1,12 +1,12 @@
-import "./productsCardOfShoppingCartSkeletion.css";
+import "./productCardSkeletionOfShoppingCart.css";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { currency } from "../../constens/constens";
 
-export default function ProductsCardOfShoppingCartSkeletion() {
+export default function ProductCardSkeletionOfShoppingCart() {
   return (
-    <div className="shopping_cart_card_skeletion">
+    <div className="shopping_cart_skeletion_card">
       <section className="product_image_section">
         <div className="product_image_wrapper"></div>
       </section>

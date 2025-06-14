@@ -57,7 +57,7 @@ function Product() {
         category: product.data?.data.category?._id,
         subCategories: product.data?.data.subCategories,
         underSubCategories: product.data?.data.underSubCategories,
-        brand: product.data?.data.brand?._id
+        brand: product.data?.data.brand?._id,
       };
 
       const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
@@ -79,10 +79,10 @@ function Product() {
     }
   }, [fetchProducts, product.data?.data, product.status]);
 
-  return (
-    <>
-      <NavBar />
-      {product.status === "loading" ? (
+  if (product.status === "loading") {
+    return (
+      <>
+        <NavBar />
         <div className="product_page">
           <div className="container">
             <div className="ab">
@@ -95,7 +95,15 @@ function Product() {
             </div>
           </div>
         </div>
-      ) : product.status === "succeeded" && product.data?.data ? (
+        <Footer />
+      </>
+    );
+  }
+
+  if (product.status === "succeeded" && product.data?.data) {
+    return (
+      <>
+        <NavBar />
         <div className="product_page">
           <div className="container">
             <div className="ab">
@@ -118,18 +126,49 @@ function Product() {
             limitOfProducts={limitOfProducts(limits)}
           />
         </div>
-      ) : (
+        <Footer />
+      </>
+    );
+  }
+
+  if (product.status === "succeeded" && product.data?.status === "fail") {
+    return (
+      <>
+        <NavBar />
         <WentWrong
           srcImage={require("../../imgs/error-404.png")}
           title="Oops! The product you are looking for does not exist."
-          paragraph="It may have been removed, or the link you followed may be broken. Please check the URL or return to the home page."
-          buttonContent="GO BACK TO HOME PAGE"
+          paragraph="It may have been removed, or the link you followed may be broken.\nPlease check the URL or return to the home page."
+          buttonContent="BACK TO HOME PAGE"
           to={HOME}
         />
-      )}
-      <Footer />
-    </>
-  );
+        <Footer />
+      </>
+    );
+  }
+
+  if (product.status === "failed") {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/went wrong.png")}
+          title="Something went wrong."
+          paragraph="We couldn't retrieve the product information.\nPlease try again later."
+          buttonContent="TRY AGAIN"
+          onClick={() => {
+            fetchProduct({
+              url: `${baseUrl}/products/${productId}`,
+              headers: {
+                Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+              },
+            });
+          }}
+        />
+        <Footer />
+      </>
+    );
+  }
 }
 
 export default Product;

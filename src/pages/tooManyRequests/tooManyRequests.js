@@ -9,7 +9,7 @@ function TooManyRequests() {
       <WentWrong
         srcImage={require("../../imgs/too many requests.png")}
         title="Oops! Too many requests. Please try again later."
-        paragraph="It seems like you have made too many requests in a short period of time. Please wait a moment before trying again."
+        paragraph="It seems like you have made too many requests in a short period of time.\nPlease wait a moment before trying again."
         buttonContent="TRY AGAIN LATER"
         to="/"
       />

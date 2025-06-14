@@ -2,6 +2,7 @@ import "./profile.css";
 
 import NavBar from "../../components/navBar/navBar";
 import ProfileSkeleton from "./profileSkeleton";
+import WentWrong from "../../components/wentWrong/wentWrong";
 import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
@@ -120,6 +121,30 @@ export default function Profile() {
             </div>
           </div>
         </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (userData.status === "failed") {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/went wrong.png")}
+          title="Something went wrong."
+          paragraph="We couldn't retrieve your profile information.\nPlease try again later."
+          buttonContent="TRY AGAIN"
+          onClick={() =>
+            fetchUserData({
+              url: `${baseUrl}/customer`,
+              method: "get",
+              headers: {
+                Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+              },
+            })
+          }
+        />
         <Footer />
       </>
     );
