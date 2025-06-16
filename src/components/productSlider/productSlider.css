@@ -36,6 +36,15 @@
   .ab
   .section_1
   .product_slider
+  .images {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.product_page
+  .container
+  .ab
+  .section_1
+  .product_slider
   .images::-webkit-scrollbar {
   display: none;
 }

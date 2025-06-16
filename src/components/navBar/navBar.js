@@ -108,7 +108,7 @@ export default function NavBar() {
             <Link to={HOME}>
               <div className="logo">
                 <img
-                  src={require("../../imgs/icon logo.png")}
+                  src={require("../../imgs/logo192.png")}
                   width={80}
                   height={80}
                   alt=""
