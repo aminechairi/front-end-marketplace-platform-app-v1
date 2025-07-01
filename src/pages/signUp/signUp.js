@@ -10,7 +10,6 @@ import "react-phone-input-2/lib/style.css";
 import NavBar from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import LinearProgress from "@mui/material/LinearProgress";
-import PhoneInput from "react-phone-input-2";
 
 import { authSignUp } from "../../redux/authSlice";
 import { setCookie } from "../../redux/cookiesSlice";
@@ -46,11 +45,6 @@ const validationSchema = Yup.object().shape({
 function SignUp() {
   const [oneSubmit, setOneSubmit] = useState(false);
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const handlePhoneNumberChange = (value) => {
-    setPhoneNumber(value);
-  };
-
   const signUp = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -66,9 +60,6 @@ function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      if (phoneNumber.length > 0) {
-        values.phoneNumber = "+" + phoneNumber;
-      }
       dispatch(authSignUp(values));
       setOneSubmit(true);
     },
@@ -186,22 +177,6 @@ function SignUp() {
                 {formik.touched.email && formik.errors.email ? (
                   <p className="error_of_input">{formik.errors.email}</p>
                 ) : null}
-              </div>
-
-              {/* Phone number input */}
-              <div className="ab_inputs">
-                <label className="label" htmlFor="phone-number">
-                  Phone Number (optionals)
-                </label>
-                <PhoneInput
-                  country={"ma"}
-                  placeholder="phone number"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  inputProps={{
-                    className: "input input_phone",
-                  }}
-                />
               </div>
 
               {/* Password input */}
