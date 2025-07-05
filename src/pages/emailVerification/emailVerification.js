@@ -111,7 +111,7 @@ function EmailVerification() {
                   ) : null}
                 </div>
 
-                <input className="submit" type="submit" defaultValue="Submit" />
+                <input className="submit" type="submit" value="erify Email Address" />
               </form>
             ) : null}
           </div>

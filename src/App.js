@@ -4,12 +4,15 @@ import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import HomePage from "./pages/homePage";
 import Search from "./pages/search/search";
 import Product from "./pages/product/product";
+
 import LogIn from "./pages/logIn/logIn";
 import SignUp from "./pages/signUp/signUp";
 import ForgotPassword from "./pages/forgotPassword/forgotPassword";
 import PasswordResetCode from "./pages/passwordResetCode/passwordResetCode";
-import Profile from "./pages/profile/profile";
+
 import EmailVerification from "./pages/emailVerification/emailVerification";
+import AddPhoneNumber from "./pages/addPhoneNumber/addPhoneNumber";
+import Profile from "./pages/profile/profile";
 import Favorites from "./pages/favorites/favorites";
 import ShoppingCart from "./pages/shoppingCart/shoppingCart";
 import Orders from "./pages/orders/orders";
@@ -25,11 +28,14 @@ import {
   SIGNUP,
   FORGOT_PASSWORD,
   PASSWORD_RESET_CODE,
+
   EMAIL_VERIFICATION,
+  ADD_PHONE_NUMBER,
   PROFILE,
   FAVORITES,
   SHOPPING_CART,
   ORDERS,
+
   TOO_MANY_REQUESTS,
   NO_FOUND,
 } from "./routes";
@@ -80,6 +86,14 @@ function App() {
         element={
           <ProtectedRoute isProtected={true} redirectTo={HOME}>
             <EmailVerification />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ADD_PHONE_NUMBER}
+        element={
+          <ProtectedRoute isProtected={true} redirectTo={HOME}>
+            <AddPhoneNumber />
           </ProtectedRoute>
         }
       />

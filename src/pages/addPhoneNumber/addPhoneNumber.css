@@ -1,0 +1,28 @@
+.add_phone_number {
+  padding: 80px 0px;
+}
+
+.add_phone_number .container .ab .form .flag-dropdown {
+  border: none;
+}
+.add_phone_number .container .ab .form .selected-flag {
+  border: 1px solid #3867df79;
+  background-color: var(--backgrounds-color-1);
+  color: var(--text-color);
+}
+.add_phone_number .container .ab .form .country-list {
+  background-color: var(--backgrounds-color-1);
+}
+.add_phone_number .container .ab .form .country {
+  color: var(--text-color);
+}
+.add_phone_number .container .ab .form .country:hover {
+  background-color: var(--backgrounds-color-2);
+}
+.add_phone_number .container .ab .form .highlight {
+  color: var(--text-color);
+  background-color: var(--backgrounds-color-1);
+}
+.add_phone_number .container .ab .form .dial-code {
+  color: var(--imputs-placeholder);
+}

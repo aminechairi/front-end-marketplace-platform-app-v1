@@ -65,13 +65,11 @@
   background-color: var(--backgrounds-color-2);
 }
 .forms .container .ab {
-  padding: 30px 0px;
   position: relative;
   padding: 12px;
   margin: 0px auto;
   border-radius: 14px;
   box-shadow: var(--shadow-1);
-  overflow: hidden;
   background-color: var(--backgrounds-color-1);
 }
 .form_loading {
@@ -79,6 +77,8 @@
   width: 100%;
   height: calc(100%);
   background-color: var(--bg-color-forms-loading);
+  border-radius: 14px;
+  overflow: hidden;
   cursor: wait;
   color: var(--main-color);
   z-index: 1;
@@ -99,6 +99,7 @@
   border-radius: 14px;
   border: 1px solid var(--color-of-error);
   margin-bottom: 6px;
+  text-align: center;
 }
 .alert_error p {
   color: var(--color-of-error);
@@ -110,6 +111,7 @@
   border-radius: 14px;
   border: 1px solid #38b2ac;
   margin-bottom: 6px;
+  text-align: center;
 }
 .alert_success p {
   color: #294e52;
