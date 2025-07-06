@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import axios from "axios";
 import * as Yup from "yup";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { app } from "../../config/firebaseConfig";
 
 import "./addPhoneNumber.css";
 
-// Component imports
 import NavBar from "../../components/navBar/navBar";
 import LinearProgress from "@mui/material/LinearProgress";
 import PhoneInput from "react-phone-input-2";
 import Footer from "../../components/footer/footer";
 
 // Custom hooks and utilities
-import useFetch from "../../hooks/useFetch";
 import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 
@@ -49,7 +48,6 @@ function getFirebaseErrorMessage(error) {
   return "An unexpected error occurred. Please try again.";
 }
 
-// Form validation schemas
 const phoneNumberValidationSchema = Yup.object().shape({
   phoneNumber: Yup.string().required("Phone number is required."),
 });
@@ -61,16 +59,13 @@ const verificationCodeValidationSchema = Yup.object().shape({
 });
 
 function AddPhoneNumber() {
-  // State management
   const [isLoading, setIsLoading] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [error, setError] = useState(null);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [idToken, setIdToken] = useState(null);
 
-  // Firebase auth and custom hooks
   const auth = getAuth(app);
-  const { data: addPhoneNumber, fetchData: fetchAddPhoneNumber } = useFetch();
   const navigate = useNavigate();
 
   // Initialize reCAPTCHA verifier on component mount
@@ -82,96 +77,98 @@ function AddPhoneNumber() {
     );
   }, [auth]);
 
-  // Formik form for phone number submission
   const formikPhoneNumber = useFormik({
     initialValues: { phoneNumber: "" },
     validationSchema: phoneNumberValidationSchema,
     onSubmit: async ({ phoneNumber }) => {
-      // Handle phone number submission and send verification code
       setError(null);
       setIsLoading(true);
 
-      try {
-        const appVerifier = window.recaptchaVerifier;
-        const result = await signInWithPhoneNumber(auth, `+${phoneNumber}`, appVerifier);
-        setConfirmationResult(result);
-      } catch (err) {
-        setError(getFirebaseErrorMessage(err));
-      }
+      const fullPhoneNumber = `+${phoneNumber}`;
+      const token = cookieManager("get", "JWTToken");
 
-      setIsLoading(false);
-    },
+      try {
+        // Step 1: Fetch existing phone numbers
+        const { data } = await axios.get(`${baseUrl}/customer/phone-numbers`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const existingNumbers = data?.data || [];
+
+        // Step 2: Check if phone number already exists
+        const alreadyExists = existingNumbers.some(
+          (item) => item.phone_number === fullPhoneNumber
+        );
+
+        if (alreadyExists) {
+          setError("This phone number already exists in your account.");
+          return;
+        }
+
+        // Step 3: Send verification code via Firebase
+        const appVerifier = window.recaptchaVerifier;
+
+        const confirmation = await signInWithPhoneNumber(auth, fullPhoneNumber, appVerifier);
+        setConfirmationResult(confirmation);
+      } catch (err) {
+        const isFirebaseError = err?.code?.startsWith("auth/");
+        setError(
+          isFirebaseError
+            ? getFirebaseErrorMessage(err)
+            : "An error occurred while adding the phone number. Please try again."
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
   });
 
-  // Formik form for verification code submission
   const formikVerificationCode = useFormik({
     initialValues: { verificationCode: "" },
     validationSchema: verificationCodeValidationSchema,
     onSubmit: async ({ verificationCode }) => {
-      // Handle verification code submission
       setError(null);
       setIsLoading(true);
 
       try {
-        let finalIdToken = idToken;
+        // Step 1: Confirm code if not already confirmed
+        let finalToken = idToken;
 
         if (!isCodeConfirmed) {
           const result = await confirmationResult.confirm(verificationCode);
-          finalIdToken = await result.user.getIdToken();
+          finalToken = await result.user.getIdToken();
           setIsCodeConfirmed(true);
-          setIdToken(finalIdToken);
+          setIdToken(finalToken);
         }
 
-        // Call API to add phone number
-        fetchAddPhoneNumber({
-          url: `${baseUrl}/customer/add-phone-number`,
-          method: "post",
-          data: { idToken: finalIdToken },
-          headers: {
-            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-          },
-        });
+        // Step 2: Submit the verified phone number to your backend
+        await axios.post(
+          `${baseUrl}/customer/phone-numbers`,
+          { idToken: finalToken },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
+            },
+          }
+        );
+
+        return navigate(-1); // Go back to the previous page
       } catch (err) {
-        setError(getFirebaseErrorMessage(err));
+        const isFirebaseError = err?.code?.startsWith("auth/");
+        setError(
+          isFirebaseError
+            ? getFirebaseErrorMessage(err)
+            : "An error occurred while adding the phone number. Please try again."
+        );
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
-    },
-  });
-
-  // Handle API response after verification
-  useEffect(() => {
-    if (addPhoneNumber.status === "succeeded" && addPhoneNumber.data?.status === "Success") {
-      navigate(-1); // Navigate back to the previous page
-    } else if (addPhoneNumber.status === "succeeded" && addPhoneNumber.data?.status !== "Success") {
-      setError("An error occurred while adding the phone number. Please try again.");
-    } else if (addPhoneNumber.status === "failed") {
-      setError("An error occurred while adding the phone number. Please try again.");
     }
-  }, [addPhoneNumber.data?.status, addPhoneNumber.status, navigate]);
-
-  // Display this after verification
-  if (addPhoneNumber.status === "succeeded" && addPhoneNumber.data?.status === "Success") {
-    return (
-      <>
-        <NavBar />
-        <div className="forms add_phone_number">
-          <div className="container">
-            <div className="ab">
-              <div className="form_loading">
-                <LinearProgress color="inherit" />
-              </div>
-              <h1 className="title">Phone Number Added Successfully</h1>
-              <div className="alert_success">
-                <p>Your phone number has been added successfully.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
+  });
 
   return (
     <>
@@ -190,7 +187,7 @@ function AddPhoneNumber() {
             )}
 
             {/* Loading indicator */}
-            {(isLoading || addPhoneNumber.status === "loading") && (
+            {isLoading && (
               <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
@@ -204,7 +201,7 @@ function AddPhoneNumber() {
             )}
 
             {/* Success message after sending verification code */}
-            {confirmationResult && !error && !isLoading && addPhoneNumber.status !== "loading" && (
+            {confirmationResult && !error && !isLoading && (
               <div className="alert_success">
                 <p>Verification code sent to your phone number. Please enter the code below to verify.</p>
               </div>
