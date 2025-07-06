@@ -96,7 +96,6 @@ function AddPhoneNumber() {
         const result = await signInWithPhoneNumber(auth, `+${phoneNumber}`, appVerifier);
         setConfirmationResult(result);
       } catch (err) {
-        console.log(err);
         setError(getFirebaseErrorMessage(err));
       }
 
@@ -133,7 +132,6 @@ function AddPhoneNumber() {
           },
         });
       } catch (err) {
-        console.log(err);
         setError(getFirebaseErrorMessage(err));
       }
 
@@ -144,13 +142,36 @@ function AddPhoneNumber() {
   // Handle API response after verification
   useEffect(() => {
     if (addPhoneNumber.status === "succeeded" && addPhoneNumber.data?.status === "Success") {
-      navigate(-1); // Go back on success
+      navigate(-1); // Navigate back to the previous page
     } else if (addPhoneNumber.status === "succeeded" && addPhoneNumber.data?.status !== "Success") {
       setError("An error occurred while adding the phone number. Please try again.");
     } else if (addPhoneNumber.status === "failed") {
       setError("An error occurred while adding the phone number. Please try again.");
     }
   }, [addPhoneNumber.data?.status, addPhoneNumber.status, navigate]);
+
+  // Display this after verification
+  if (addPhoneNumber.status === "succeeded" && addPhoneNumber.data?.status === "Success") {
+    return (
+      <>
+        <NavBar />
+        <div className="forms add_phone_number">
+          <div className="container">
+            <div className="ab">
+              <div className="form_loading">
+                <LinearProgress color="inherit" />
+              </div>
+              <h1 className="title">Phone Number Added Successfully</h1>
+              <div className="alert_success">
+                <p>Your phone number has been added successfully.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
