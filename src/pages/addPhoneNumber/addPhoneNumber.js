@@ -56,6 +56,7 @@ const verificationCodeValidationSchema = Yup.object().shape({
   verificationCode: Yup.string()
     .required("Verification Code is required.")
     .max(6, "Verification Code must be 6 digits.")
+    .min(6, "Verification Code must be 6 digits.")
 });
 
 function AddPhoneNumber() {
@@ -64,6 +65,7 @@ function AddPhoneNumber() {
   const [error, setError] = useState(null);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [idToken, setIdToken] = useState(null);
+  const [isPhoneNumberVerified, setIsPhoneNumberVerified] = useState(false);
 
   const auth = getAuth(app);
   const navigate = useNavigate();
@@ -156,7 +158,7 @@ function AddPhoneNumber() {
           }
         );
 
-        return navigate(-1); // Go back to the previous page
+        setIsPhoneNumberVerified(true);
       } catch (err) {
         const isFirebaseError = err?.code?.startsWith("auth/");
         setError(
@@ -169,6 +171,28 @@ function AddPhoneNumber() {
       }
     }
   });
+
+  if (isPhoneNumberVerified) {
+    return (
+      <>
+        <NavBar />
+        <div className="forms add_phone_number">
+          <div className="container">
+            <div className="ab">
+              <h1 className="title">Phone Number Verified</h1>
+              <div className="alert_success">
+                <p>Phone number verified successfully</p>
+              </div>
+              <button className="submit" onClick={() => navigate(-1)}>
+                Go Back
+              </button>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -236,7 +260,7 @@ function AddPhoneNumber() {
                   <label htmlFor="verificationCode">Verification Code</label>
                   <input
                     className="input"
-                    type="text"
+                    type="number"
                     placeholder="123456"
                     name="verificationCode"
                     id="verificationCode"
