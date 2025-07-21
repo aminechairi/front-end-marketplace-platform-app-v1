@@ -6,8 +6,6 @@ import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
-import cookieManager from "../../utils/cookieManager";
 import limitOfProducts from "../../utils/limitOfProducts";
 import { HOME, FAVORITES } from "../../routes";
 import WentWrong from "../../components/wentWrong/wentWrong";
@@ -28,22 +26,22 @@ const Favorites = () => {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [triggeredByPagination, setTriggeredByPagination] = useState(false);
 
-  useEffect(() => {
+  const loadFavorites = () => {
     const page = triggeredByPagination ? currentPage : initialPage;
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     fetchFavorites({
-      url: `${baseUrl}/customer/favorites`,
+      url: `/customer/favorites`,
       method: "get",
       params: {
         page: page.toString(),
         limit: `${limitOfProducts(limits)}`,
         fields: `productId`,
       },
-      headers: {
-        Authorization: JWTToken,
-      },
     });
+  };
+
+  useEffect(() => {
+    loadFavorites();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchFavorites, currentPage, initialPage]);
 
@@ -133,23 +131,7 @@ const Favorites = () => {
           title="Something went wrong."
           paragraph="We couldn't retrieve your favorites.\nPlease try again later."
           buttonContent="TRY AGAIN"
-          onClick={() => {
-            const page = triggeredByPagination ? currentPage : initialPage;
-            const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
-            fetchFavorites({
-              url: `${baseUrl}/customer/favorites`,
-              method: "get",
-              params: {
-                page: page.toString(),
-                limit: `${limitOfProducts(limits)}`,
-                fields: `productId`,
-              },
-              headers: {
-                Authorization: JWTToken,
-              },
-            });
-          }}
+          onClick={loadFavorites}
         />
         <Footer />
       </>

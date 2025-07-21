@@ -4,39 +4,32 @@ import { useNavigate } from "react-router-dom";
 import "./favoriteButton.css";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { LOGIN } from "../../routes";
 
 function FavoriteButton({ _id, isFavorite }) {
   const [isFavoriteState, setIsFavoriteState] = useState(Boolean(isFavorite));
-  const { fetchData: addProductToSaves } = useFetch();
-  const { fetchData: removeProductFromSaves } = useFetch();
+  const { data: add, fetchData: addProductToFavorites } = useFetch();
+  const { data: remove, fetchData: removeProductFromFavorites } = useFetch();
   const navigate = useNavigate();
 
   const handleSaveChange = (e, productId) => {
     setIsFavoriteState(e.target.checked);
 
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
     if (cookieManager("get", "JWTToken")) {
-      if (e.target.checked) {
-        addProductToSaves({
-          url: `${baseUrl}/customer/favorites`,
-          method: "post",
-          data: { productId },
-          headers: {
-            Authorization: JWTToken,
-          },
-        });
-      } else {
-        removeProductFromSaves({
-          url: `${baseUrl}/customer/favorites/${productId}`,
-          method: "delete",
-          headers: {
-            Authorization: JWTToken,
-          },
-        });
+      if (add.status !== "loading" && remove.status !== "loading") {
+        if (e.target.checked) {
+          addProductToFavorites({
+            url: `/customer/favorites`,
+            method: "post",
+            data: { productId },
+          });
+        } else {
+          removeProductFromFavorites({
+            url: `/customer/favorites/${productId}`,
+            method: "delete",
+          });
+        }
       }
     } else {
       navigate(LOGIN);

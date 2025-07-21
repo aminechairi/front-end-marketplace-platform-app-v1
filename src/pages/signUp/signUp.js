@@ -1,53 +1,44 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import API from "../../config/api";
+import { setCookie } from "../../redux/slices/cookiesSlice";
+import { EMAIL_VERIFICATION } from "../../routes";
 
 import "./signUp.css";
-import "react-phone-input-2/lib/style.css";
-
 import NavBar from "../../components/navBar/navBar";
+import renderInput from "../../utils/renderInput";
 import Footer from "../../components/footer/footer";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import { authSignUp } from "../../redux/authSlice";
-import { setCookie } from "../../redux/cookiesSlice";
-import { EMAIL_VERIFICATION } from "../../routes";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string()
     .required("First name is required.")
     .min(3, "First name should be at least 3 characters.")
     .max(16, "First name should be at most 16 characters."),
-
   lastName: Yup.string()
     .required("Last name is required.")
     .min(2, "Last name should be at least 2 characters.")
     .max(16, "Last name should be at most 16 characters."),
-
   email: Yup.string()
     .required("Email is required.")
-    .email("Please provide a valid email address."),
-
+    .email("Please enter a valid email."),
   password: Yup.string()
     .required("Password is required.")
-    .min(8, "Password should be at least 8 characters long."),
-
+    .min(8, "Password should be at least 8 characters."),
   confirmPassword: Yup.string()
-    .required("Confirm password is required.")
-    .oneOf(
-      [Yup.ref("password"), null],
-      "Confirm password does not match password."
-    ),
+    .required("Please confirm your password.")
+    .oneOf([Yup.ref("password"), null], "Passwords must match."),
 });
 
-function SignUp() {
-  const [oneSubmit, setOneSubmit] = useState(false);
+const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const signUp = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -58,21 +49,22 @@ function SignUp() {
       password: "",
       confirmPassword: "",
     },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      dispatch(authSignUp(values));
-      setOneSubmit(true);
+    validationSchema,
+    onSubmit: async (values) => {
+      setIsLoading(true);
+      setErrorMessage(null);
+      try {
+        const res = await API.post("/auth/signup", values);
+        dispatch(setCookie({ name: "JWTToken", value: res.data?.token, days: 90 }));
+        navigate(EMAIL_VERIFICATION);
+      } catch (err) {
+        const errorMsg = err.response?.data?.message || "Something went wrong. Please try again.";
+        setErrorMessage(errorMsg);
+      } finally {
+        setIsLoading(false);
+      }
     },
   });
-
-  useEffect(() => {
-    if (signUp.data?.token) {
-      dispatch(
-        setCookie({ name: "JWTToken", value: signUp.data?.token, days: 90 })
-      );
-      navigate(EMAIL_VERIFICATION);
-    }
-  }, [dispatch, signUp.data?.token, navigate]);
 
   return (
     <>
@@ -80,162 +72,36 @@ function SignUp() {
       <div className="forms sign_up">
         <div className="container">
           <div className="ab">
-            {signUp.status === "loading" ? (
+            {isLoading && (
               <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
-            ) : null}
+            )}
 
-            <h1 className="title">sign up</h1>
+            <h1 className="title">Sign Up</h1>
 
-            {signUp.data?.message &&
-            (signUp.data?.status === "fail" ||
-              signUp.data?.status === "error") &&
-            signUp.status === "succeeded" &&
-            oneSubmit === true ? (
+            {errorMessage && !isLoading && (
               <div className="alert_error">
-                <p>{signUp.data?.message}</p>
+                <p>{errorMessage}</p>
               </div>
-            ) : null}
+            )}
 
             <form className="form" onSubmit={formik.handleSubmit}>
               <div className="ab_first_name_and_last_name">
-                {/* First name input */}
-                <div>
-                  <label className="label" htmlFor="firstName">
-                    First Name
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="First Name"
-                    name="firstName"
-                    id="firstName"
-                    value={formik.values.firstName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    style={{
-                      borderColor:
-                        formik.touched.firstName && formik.errors.firstName
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formik.touched.firstName && formik.errors.firstName ? (
-                    <p className="error_of_input">{formik.errors.firstName}</p>
-                  ) : null}
-                </div>
-
-                {/* Last name input */}
-                <div>
-                  <label className="label" htmlFor="lastName">
-                    Last Name
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="Last Name"
-                    name="lastName"
-                    id="lastName"
-                    value={formik.values.lastName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    style={{
-                      borderColor:
-                        formik.touched.lastName && formik.errors.lastName
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formik.touched.lastName && formik.errors.lastName ? (
-                    <p className="error_of_input">{formik.errors.lastName}</p>
-                  ) : null}
-                </div>
+                {renderInput(formik, "First Name", "firstName", "text", "First name")}
+                {renderInput(formik, "Last Name", "lastName", "text", "Last name")}
               </div>
 
-              {/* Email input */}
-              <div className="ab_inputs">
-                <label className="label" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  className="input"
-                  type="email"
-                  placeholder="Email"
-                  name="email"
-                  id="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      formik.touched.email && formik.errors.email
-                        ? "var(--color-of-error)"
-                        : null,
-                  }}
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <p className="error_of_input">{formik.errors.email}</p>
-                ) : null}
-              </div>
+              {renderInput(formik, "Email", "email", "email", "Email")}
+              {renderInput(formik, "Password", "password", "password", "Password")}
+              {renderInput(formik, "Confirm Password", "confirmPassword", "password", "confirm password")}
 
-              {/* Password input */}
-              <div className="ab_inputs">
-                <label className="label" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  className="input"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  id="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      formik.touched.password && formik.errors.password
-                        ? "var(--color-of-error)"
-                        : null,
-                  }}
-                />
-                {formik.touched.password && formik.errors.password ? (
-                  <p className="error_of_input">{formik.errors.password}</p>
-                ) : null}
-              </div>
-
-              {/* Confirm password input */}
-              <div className="ab_inputs">
-                <label className="label" htmlFor="confirmPassword">
-                  Confirm Password
-                </label>
-                <input
-                  className="input"
-                  type="password"
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  value={formik.values.confirmPassword}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      formik.touched.confirmPassword &&
-                      formik.errors.confirmPassword
-                        ? "var(--color-of-error)"
-                        : null,
-                  }}
-                />
-                {formik.touched.confirmPassword &&
-                formik.errors.confirmPassword ? (
-                  <p className="error_of_input">
-                    {formik.errors.confirmPassword}
-                  </p>
-                ) : null}
-              </div>
-
-              <input className="submit" type="submit" value="Sign up" />
+              <input
+                className="submit"
+                type="submit"
+                value={isLoading ? "Signing up..." : "Sign Up"}
+                disabled={isLoading}
+              />
             </form>
           </div>
         </div>
@@ -243,6 +109,6 @@ function SignUp() {
       <Footer />
     </>
   );
-}
+};
 
 export default SignUp;

@@ -1,21 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import categoriesReducer from "./categoriesSlice";
-import brandsReducer from "./brandsSlice";
-
-import authReducer from "./authSlice";
-import cookiesReducer from "./cookiesSlice";
-import emailVerificationReducer from "./emailVerificationSlice";
+import errorReducer from "./slices/errorSlice";
+import cookiesReducer from "./slices/cookiesSlice";
+import themeReducer from "./slices/themeSlice";
 
 const store = configureStore({
   reducer: {
-    categories: categoriesReducer,
-    brands: brandsReducer,
-
-    auth: authReducer,
+    error: errorReducer,
     cookies: cookiesReducer,
-    emailVerification: emailVerificationReducer,
-
+    theme: themeReducer,
   },
 });
 

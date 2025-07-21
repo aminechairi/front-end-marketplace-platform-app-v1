@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import _ from "lodash";
 
@@ -13,8 +12,6 @@ import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
-import cookieManager from "../../utils/cookieManager";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
 
@@ -29,7 +26,6 @@ function Search() {
 
   // Redux store
   const { data: products, fetchData: fetchProducts } = useFetch();
-  const categories = useSelector((state) => state.categories);
 
   const { data: subCategories, fetchData: fetchSubCategories } = useFetch();
   const { data: underSubCategories, fetchData: fetchUnderSubCategories } = useFetch();
@@ -52,15 +48,13 @@ function Search() {
   // State to track pagination and current page
   const [triggeredByPagination, setTriggeredByPagination] = useState(false);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [category, setCategory] = useState(null);
 
-  // useEffect hook to fetch products
-  useEffect(() => {
+  // Load products functionality
+  const loadProducts = async () => {
     const page = triggeredByPagination ? currentPage : initialPage; // Determine the correct page
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
 
     fetchProducts({
-      url: `${baseUrl}/products`,
+      url: `/products`,
       method: "get",
       params: {
         page: page.toString(),
@@ -76,10 +70,12 @@ function Search() {
         underSubCategories: currentUnderSubCategory,
         brand: currentBrand,
       },
-      headers: {
-        Authorization: JWTToken,
-      },
     });
+  };
+
+  // useEffect hook to fetch products
+  useEffect(() => {
+    loadProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     fetchProducts,
@@ -118,8 +114,8 @@ function Search() {
 
   // useEffect hook to initialize price input values based on current URL parameters
   useEffect(() => {
-    minPriceInputRef.current.value = +currentMinPrice ?? "";
-    maxPriceInputRef.current.value = +currentMaxPrice ?? "";
+    minPriceInputRef.current.value = currentMinPrice ?? "";
+    maxPriceInputRef.current.value = currentMaxPrice ?? "";
   }, [currentMinPrice, currentMaxPrice]);
 
   // Function to handle rating filter changes
@@ -147,41 +143,11 @@ function Search() {
   // Function to go back to the previous page
   const goBack = () => navigate(-1);
 
-  // Hook to update image of header of category
-  useEffect(() => {
-    if (currentCategory && categories.data?.data) {
-      const idOfCategory = currentCategory;
-      const item = categories.data?.data.find(
-        (item) => item._id === idOfCategory
-      );
-      if (item) setCategory(item);
-    } else if (currentSubCategory && subCategories.data?.data) {
-      const idOfSubCategory = currentSubCategory;
-      const item = subCategories.data?.data.find(
-        (item) => item._id === idOfSubCategory
-      );
-      if (item) setCategory(item);
-    } else if (currentUnderSubCategory && underSubCategories.data?.data) {
-      const idOfUnderSubCategory = currentUnderSubCategory;
-      const item = underSubCategories.data?.data.find(
-        (item) => item._id === idOfUnderSubCategory
-      );
-      if (item) setCategory(item);
-    }
-  }, [
-    currentCategory,
-    currentSubCategory,
-    currentUnderSubCategory,
-    categories.data?.data,
-    subCategories.data?.data,
-    underSubCategories.data?.data,
-  ]);
-
   // Hook to fetch subcategories or under subcategories
   useEffect(() => {
     if (currentCategory) {
       fetchSubCategories({
-        url: `${baseUrl}/subcategories`,
+        url: `/subcategories`,
         method: "get",
         params: {
           page: 1,
@@ -193,7 +159,7 @@ function Search() {
       });
     } else if (currentSubCategory) {
       fetchUnderSubCategories({
-        url: `${baseUrl}/undersubcategories`,
+        url: `/undersubcategories`,
         method: "get",
         params: {
           page: 1,
@@ -215,20 +181,13 @@ function Search() {
     <>
       <NavBar />
       <div className="filter_products">
-        {category && (
-          <div
-            className="header_of_category"
-            style={{
-              backgroundImage: `url(${category?.image})`,
-            }}
-          >
-            <div className="bg">
-              <div className="container">
-                <h1 className="title">{category?.name}</h1>
-              </div>
+        {/* <div className="header_of_category">
+          <div className="bg">
+            <div className="container">
+              <h1 className="title">Search</h1>
             </div>
           </div>
-        )}
+        </div> */}
 
         {/* DIiplay sub categories or under sub categories */}
         {currentCategory && (
@@ -331,7 +290,8 @@ function Search() {
                       <img src={require("../../imgs/no-results.png")} alt="" />
                       <h1>No result found.</h1>
                       <p>
-                        Try searching for something else or go back to the previous page.
+                        Try searching for something else or go back to the
+                        previous page.
                       </p>
                       <button className="buttom" onClick={goBack}>
                         GO BACK
@@ -343,7 +303,9 @@ function Search() {
               {products.status === "succeeded" &&
                 products?.data?.data?.length > 0 && (
                   <Products
-                    title={searchValue ? `SEARCH RESULTS FOR: "${searchValue}"` : ""}
+                    title={
+                      searchValue ? `SEARCH RESULTS FOR: "${searchValue}"` : ""
+                    }
                     status={products?.status}
                     data={products?.data}
                     gridTemplateColumns={{ lg: 3, xlg: 4 }} // Grid layout for products
@@ -362,35 +324,7 @@ function Search() {
                     <p>
                       We couldn't retrieve the products Please try again later.
                     </p>
-                    <button
-                      className="buttom"
-                      onClick={() => {
-                        const page = triggeredByPagination ? currentPage : initialPage; // Determine the correct page
-                        const JWTToken = `Bearer ${cookieManager("get","JWTToken")}`;
-
-                        fetchProducts({
-                          url: `${baseUrl}/products`,
-                          method: "get",
-                          params: {
-                            page: page.toString(),
-                            limit: `${limitOfProducts(productLimits)}`,
-                            search: searchValue,
-                            sort: currentMinRating || currentMinPrice || currentMaxPrice ? undefined : `-sold,-ratingsAverage`,
-                            fields: productsFields,
-                            "ratingsAverage[gte]": currentMinRating,
-                            "price[gte]": currentMinPrice,
-                            "price[lte]": currentMaxPrice,
-                            category: currentCategory,
-                            subCategories: currentSubCategory,
-                            underSubCategories: currentUnderSubCategory,
-                            brand: currentBrand,
-                          },
-                          headers: {
-                            Authorization: JWTToken,
-                          },
-                        });
-                      }}
-                    >
+                    <button className="buttom" onClick={loadProducts}>
                       TRY AGAIN
                     </button>
                   </div>

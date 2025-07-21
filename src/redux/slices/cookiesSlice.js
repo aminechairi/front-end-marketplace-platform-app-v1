@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import cookieManager from '../utils/cookieManager';
+import cookieManager from '../../utils/cookieManager';
 
 const cookieSlice = createSlice({
   name: 'cookies',

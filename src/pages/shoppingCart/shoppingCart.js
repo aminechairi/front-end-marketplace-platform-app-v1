@@ -4,38 +4,26 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 
-import "./shoppingCart.css";
-import "react-phone-input-2/lib/style.css";
-
 import CloseIcon from "@mui/icons-material/Close";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import AddCardIcon from "@mui/icons-material/AddCard";
-import PhoneInput from "react-phone-input-2";
 import LinearProgress from "@mui/material/LinearProgress";
 
+import "./shoppingCart.css";
 import NavBar from "../../components/navBar/navBar";
+import renderInput from "../../utils/renderInput";
 import ProductCardOfShoppingCart from "../../components/productCardOfShoppingCart/productCardOfShoppingCart";
 import ShoppingCartSkeleton from "./shoppingCartSkeleton";
 import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
-import cookieManager from "../../utils/cookieManager";
 import { currency } from "../../constens/constens";
-import { HOME } from "../../routes";
+import { HOME, ADD_PHONE_NUMBER, ORDERS } from "../../routes";
 import WentWrong from "../../components/wentWrong/wentWrong";
 
-const couponCodeValidationSchema = Yup.object().shape({
-  couponCode: Yup.string()
-    .min(3, "Coupon code must be at least 3 characters.")
-    .max(32, "Coupon code must be at most 32 characters.")
-    .required("Coupon code is required."),
-});
-
 const checkoutValidationSchema = Yup.object().shape({
-  phone: Yup.string()
-    .required("Phone number is required.")
-    .matches(/^\+?\d{8,15}$/, "Phone number must be between 8 and 15 digits."),
+  phoneNumber: Yup.string()
+    .required("Select phone number."),
   country: Yup.string()
     .required("Country is required.")
     .min(2, "Country name must be at least 2 characters.")
@@ -57,13 +45,24 @@ const checkoutValidationSchema = Yup.object().shape({
     .matches(/^\d{4,10}$/, "Postal code must be between 4 and 10 digits."),
 });
 
+const getProductQuantity = (shoppingCartItem) => {
+  if (shoppingCartItem.product.sizes.length > 0) {
+    const size = shoppingCartItem.product.sizes.filter(
+      (item) => item.size === shoppingCartItem.size
+    );
+
+    return size[0].quantity;
+  } else {
+    return shoppingCartItem.product.quantity;
+  }
+};
+
 const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}`);
 
 const ShoppingCart = () => {
   const [products, setProducts] = useState({ data: [] });
   const { data: shoppingCart, fetchData: fetchShoppingCart } = useFetch();
 
-  const [popupVisible, setPopupVisible] = useState(false);
   const [popupStyle, setPopupStyle] = useState({
     opacity: 0,
     visibility: "hidden",
@@ -75,30 +74,20 @@ const ShoppingCart = () => {
 
   const navigate = useNavigate();
 
+  const phoneNumbers = user.data?.data?.phoneNumbers || [];
+  const addresses = user.data?.data?.addressesList || [];
+
+  // Get shopping cart
   useEffect(() => {
     fetchShoppingCart({
-      url: `${baseUrl}/customer/shopping-cart`,
+      url: `/customer/shopping-cart`,
       method: "get",
-      headers: {
-        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-      },
     });
   }, [fetchShoppingCart]);
 
+  // Handle products list
   useEffect(() => {
     if (shoppingCart.status === "succeeded") {
-      const getProductQuantity = (shoppingCartItem) => {
-        if (shoppingCartItem.product.sizes.length > 0) {
-          const productQuantity = shoppingCartItem.product.sizes.filter(
-            (item) => item.size === shoppingCartItem.size
-          );
-
-          return productQuantity[0].quantity;
-        } else {
-          return shoppingCartItem.product.quantity;
-        }
-      };
-
       const productsList = shoppingCart.data?.data?.cartItems.map((item) => {
         return {
           _id: item.product._id,
@@ -117,89 +106,87 @@ const ShoppingCart = () => {
     }
   }, [shoppingCart.data?.data?.cartItems, shoppingCart.status]);
 
+  // Apply coupon
   const formik = useFormik({
     initialValues: {
       couponCode: "",
     },
-    validationSchema: couponCodeValidationSchema,
+    validationSchema: Yup.object().shape({
+      couponCode: Yup.string()
+        .required("Coupon code is required.")
+        .min(3, "Coupon code must be at least 3 characters.")
+        .max(32, "Coupon code must be at most 32 characters."),
+    }),
     onSubmit: async (values) => {
       setProducts({ data: [] });
 
       fetchShoppingCart({
-        url: `${baseUrl}/customer/shopping-cart/apply-coupon`,
+        url: `/customer/shopping-cart/apply-coupon`,
         method: "put",
         data: {
           couponCode: values.couponCode,
-        },
-        headers: {
-          Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
         },
       });
     },
   });
 
-  const deleteItem = (data) => {
+  // Remove item from shopping cart
+  const removeItem = (data) => {
     setProducts({ data: [] });
 
     fetchShoppingCart({
-      url: `${baseUrl}/customer/shopping-cart`,
+      url: `/customer/shopping-cart`,
       method: "delete",
       data,
-      headers: {
-        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-      },
     });
   };
 
+  // Update item in shopping cart
   const updateItemQuantity = (data) => {
     setProducts({ data: [] });
 
     fetchShoppingCart({
-      url: `${baseUrl}/customer/shopping-cart`,
+      url: `/customer/shopping-cart`,
       method: "put",
       data,
-      headers: {
-        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-      },
     });
   };
 
-  useEffect(() => {
-    if (popupVisible) {
-      setPopupStyle({
-        opacity: 1,
-        visibility: "visible",
-        transform: "translateY(0)",
-      });
-    } else {
-      setPopupStyle({
-        opacity: 0,
-        visibility: "hidden",
-        transform: "translateY(-10px)",
-      });
-    }
-  }, [popupVisible]);
-
+  // If the user hasn't added a phone number, redirect to the "Add Phone Number" page.
+  // Otherwise, toggle the visibility of the popup to collect user information.
   const toggleMenu = () => {
-    setPopupVisible(!popupVisible);
+    if (phoneNumbers.length === 0) {
+      navigate(ADD_PHONE_NUMBER);
+    } else {
+      // Toggle popup visibility
+      if (!popupStyle.opacity) {
+        setPopupStyle({
+          opacity: 1,
+          visibility: "visible",
+          transform: "translateY(0)",
+        });
+      } else {
+        setPopupStyle({
+          opacity: 0,
+          visibility: "hidden",
+          transform: "translateY(-10px)",
+        });
+      }
+    }
   };
 
+  // Get customer details
   useEffect(() => {
     fetchUser({
-      url: `${baseUrl}/customer`,
+      url: `/customer`,
       method: "get",
-      headers: {
-        Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-      },
     });
   }, [fetchUser]);
 
-  const addresses = user.data?.data?.addressesList || [];
-
+  // Create order
   const formikCheckout = useFormik({
     initialValues: {
       paymentMethod: "credit_card",
-      phone: "",
       country: "",
       state: "",
       city: "",
@@ -210,40 +197,38 @@ const ShoppingCart = () => {
     onSubmit: async (values) => {
       if (values.paymentMethod === "credit_card") {
         fetchCreateOrder({
-          url: `${baseUrl}/customer/orders/stripe-checkout-session`,
+          url: `/customer/orders/stripe-checkout-session`,
           method: "post",
           data: {
-            phone: values.phone,
+            phone: values.phoneNumber,
             country: values.country,
             state: values.state,
             city: values.city,
             street: values.street,
             postalCode: values.postalCode,
-          },
-          headers: {
-            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
           },
         });
       } else if (values.paymentMethod === "cash_on_delivery") {
         fetchCreateOrder({
-          url: `${baseUrl}/customer/orders/cash-on-delivery`,
+          url: `/customer/orders/cash-on-delivery`,
           method: "post",
           data: {
-            phone: values.phone,
+            phone: values.phoneNumber,
             country: values.country,
             state: values.state,
             city: values.city,
             street: values.street,
             postalCode: values.postalCode,
-          },
-          headers: {
-            Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
           },
         });
       }
     },
   });
 
+  // Handle order creation response:
+  // - If order is successful and initiated via Stripe, redirect to Stripe checkout.
+  // - If order is successful but not Stripe-based, navigate to the orders page.
+  // - If order creation fails, close the popup and refetch the shopping cart.
   useEffect(() => {
     if (
       createOrder.status === "succeeded" &&
@@ -259,20 +244,18 @@ const ShoppingCart = () => {
           });
         })();
       } else {
-        navigate("/orders");
+        navigate(ORDERS);
       }
-    } else if (
-      createOrder.data?.status === "fail" ||
-      createOrder.data?.status === "error"
-    ) {
-      setPopupVisible(false);
+    } else if (createOrder.status === "failed") {
+      setPopupStyle({
+        opacity: 0,
+        visibility: "hidden",
+        transform: "translateY(-10px)",
+      });
 
       fetchShoppingCart({
-        url: `${baseUrl}/customer/shopping-cart`,
+        url: `/customer/shopping-cart`,
         method: "get",
-        headers: {
-          Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-        },
       });
     }
   }, [
@@ -281,10 +264,15 @@ const ShoppingCart = () => {
     createOrder.data?.message,
     createOrder.data?.sessionID,
     fetchShoppingCart,
-    navigate
+    navigate,
   ]);
 
-  if (shoppingCart.status === "loading") {
+  // loading
+  if (
+    shoppingCart.status === "loading" ||
+    (createOrder.status === "succeeded" &&
+      createOrder.data?.status === "Success")
+  ) {
     return (
       <>
         <NavBar />
@@ -294,6 +282,29 @@ const ShoppingCart = () => {
     );
   }
 
+  //  Unexpected error
+  if (shoppingCart.status === "failed" || user.status === "failed") {
+    return (
+      <>
+        <NavBar />
+        <WentWrong
+          srcImage={require("../../imgs/went wrong.png")}
+          title="Something Went Wrong."
+          paragraph="We couldn't retrieve your shopping cart.\nPlease try again later."
+          buttonContent="TRY AGAIN"
+          onClick={() => {
+            fetchShoppingCart({
+              url: `/customer/shopping-cart`,
+              method: "get",
+            });
+          }}
+        />
+        <Footer />
+      </>
+    );
+  }
+
+  // If shopping cart empty
   if (shoppingCart.status === "succeeded" && products.data?.length === 0) {
     return (
       <>
@@ -310,10 +321,12 @@ const ShoppingCart = () => {
     );
   }
 
+ // If shopping cart not empty
   if (shoppingCart.status === "succeeded" && products.data?.length > 0) {
     return (
       <>
         <NavBar />
+        {/* Shopping cart */}
         <div className="shopping_cart">
           <div className="container">
             <div className="cart_wrapper">
@@ -413,40 +426,22 @@ const ShoppingCart = () => {
                     </button>
                   </div>
 
-                  {!shoppingCart.data?.data.coupon ? (
+                  {!shoppingCart.data?.data.coupon && (
                     <form
                       className="coupon_form"
                       onSubmit={formik.handleSubmit}
                     >
-                      <div className="ab_inputs">
-                        <input
-                          className="input"
-                          type="text"
-                          placeholder="Coupon code"
-                          name="couponCode"
-                          id="couponCode"
-                          value={formik.values.couponCode}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          style={{
-                            borderColor:
-                              formik.touched.couponCode &&
-                              formik.errors.couponCode
-                                ? "var(--color-of-error)"
-                                : null,
-                          }}
-                        />
-                        {formik.touched.couponCode &&
-                          formik.errors.couponCode && (
-                            <p className="error_of_input">
-                              {formik.errors.couponCode}
-                            </p>
-                          )}
-                      </div>
+                      {renderInput(
+                        formik,
+                        "Coupon code",
+                        "couponCode",
+                        "text",
+                        "Coupon code"
+                      )}
 
                       <input className="submit" type="submit" value="Apply" />
                     </form>
-                  ) : null}
+                  )}
                 </div>
 
                 <div className="product_cards">
@@ -462,7 +457,7 @@ const ShoppingCart = () => {
                       color={item.color}
                       price={item.price}
                       totalPrice={item.totalPrice}
-                      deleteItem={deleteItem}
+                      removeItem={removeItem}
                       updateItemQuantity={updateItemQuantity}
                     />
                   ))}
@@ -471,6 +466,8 @@ const ShoppingCart = () => {
             </div>
           </div>
         </div>
+
+        {/* Popup */}
         <div className="ab_popup" style={popupStyle} onClick={toggleMenu}>
           <div className="popup" onClick={(e) => e.stopPropagation()}>
             <div className="popup_header">
@@ -479,9 +476,21 @@ const ShoppingCart = () => {
               </h1>
               <CloseIcon className="icon" onClick={toggleMenu} />
             </div>
+
             <form
               className="checkout_form"
-              onSubmit={formikCheckout.handleSubmit}
+              onSubmit={(e) => {
+                e.preventDefault();
+                formikCheckout.handleSubmit();
+                formikCheckout.setTouched({
+                  phoneNumber: true,
+                  country: true,
+                  city: true,
+                  state: true,
+                  street: true,
+                  postalCode: true,
+                });
+              }}
             >
               {createOrder.status === "loading" ? (
                 <div className="form_loading">
@@ -529,26 +538,40 @@ const ShoppingCart = () => {
 
               {/* Phone number input */}
               <div className="ab_inputs">
-                <label className="label" htmlFor="phone">
-                  Phone Number
+                <label className="label" htmlFor="phoneNumber">
+                  Choose Phone Number
                 </label>
-                <PhoneInput
-                  country={"ma"}
-                  onChange={(value) =>
-                    formikCheckout.setFieldValue("phone", value)
-                  }
-                  onBlur={() => formikCheckout.setFieldTouched("phone", true)}
-                  inputProps={{
-                    name: "phone",
-                    id: "phone",
-                    className: "input input_phone",
-                    value: `+${formikCheckout.values.phone || "212"}`,
+                <select
+                  className="input"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  disabled={phoneNumbers.length === 0}
+                  value={formikCheckout.values.phoneNumber}
+                  onChange={formikCheckout.handleChange}
+                  onBlur={formikCheckout.handleBlur}
+                  style={{
+                    borderColor:
+                      formikCheckout.touched.phoneNumber &&
+                      formikCheckout.errors.phoneNumber
+                        ? "var(--color-of-error)"
+                        : null,
                   }}
-                />
-                {formikCheckout.touched.phone &&
-                  formikCheckout.errors.phone && (
+                >
+                  <option value="">
+                    {addresses.length === 0
+                      ? "-- There are no phone numbers saved --"
+                      : "-- Select phone number --"}{" "}
+                  </option>
+                  {phoneNumbers.map((item) => (
+                    <option key={item._id} value={item.phoneNumber}>
+                      {`${item.phoneNumber}`}
+                    </option>
+                  ))}
+                </select>
+                {formikCheckout.touched.phoneNumber &&
+                  formikCheckout.errors.phoneNumber && (
                     <p className="error_of_input">
-                      {formikCheckout.errors.phone}
+                      {formikCheckout.errors.phoneNumber}
                     </p>
                   )}
               </div>
@@ -590,8 +613,8 @@ const ShoppingCart = () => {
                   >
                     <option value="">
                       {addresses.length === 0
-                        ? "-- There no addresses saved --"
-                        : "-- Select an address --"}{" "}
+                        ? "-- There are no addresses saved --"
+                        : "-- Select address --"}{" "}
                     </option>
                     {addresses.map((addr) => (
                       <option key={addr._id} value={addr._id}>
@@ -602,188 +625,57 @@ const ShoppingCart = () => {
                 </div>
 
                 {/* Country input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="country">
-                    Country
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="EX: United States"
-                    name="country"
-                    id="country"
-                    value={formikCheckout.values.country}
-                    onChange={formikCheckout.handleChange}
-                    onBlur={formikCheckout.handleBlur}
-                    style={{
-                      borderColor:
-                        formikCheckout.touched.country &&
-                        formikCheckout.errors.country
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikCheckout.touched.country &&
-                    formikCheckout.errors.country && (
-                      <p className="error_of_input">
-                        {formikCheckout.errors.country}
-                      </p>
-                    )}
-                </div>
+                {renderInput(
+                  formikCheckout,
+                  "Country",
+                  "country",
+                  "text",
+                  "EX: United States"
+                )}
 
                 {/* City input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="city">
-                    City
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="EX: CA"
-                    name="city"
-                    id="city"
-                    value={formikCheckout.values.city}
-                    onChange={formikCheckout.handleChange}
-                    onBlur={formikCheckout.handleBlur}
-                    style={{
-                      borderColor:
-                        formikCheckout.touched.city &&
-                        formikCheckout.errors.city
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikCheckout.touched.city &&
-                    formikCheckout.errors.city && (
-                      <p className="error_of_input">
-                        {formikCheckout.errors.city}
-                      </p>
-                    )}
-                </div>
+                {renderInput(formikCheckout, "City", "city", "text", "EX: CA")}
 
-                {/* state input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="state">
-                    State
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="EX: Los Angeles"
-                    name="state"
-                    id="state"
-                    value={formikCheckout.values.state}
-                    onChange={formikCheckout.handleChange}
-                    onBlur={formikCheckout.handleBlur}
-                    style={{
-                      borderColor:
-                        formikCheckout.touched.state &&
-                        formikCheckout.errors.state
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikCheckout.touched.state &&
-                    formikCheckout.errors.state && (
-                      <p className="error_of_input">
-                        {formikCheckout.errors.state}
-                      </p>
-                    )}
-                </div>
+                {/* State input */}
+                {renderInput(
+                  formikCheckout,
+                  "State",
+                  "state",
+                  "text",
+                  "EX: Los Angeles"
+                )}
 
-                {/* street input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="street">
-                    Street
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="EX: 1234 Sunset Blvd"
-                    name="street"
-                    id="street"
-                    value={formikCheckout.values.street}
-                    onChange={formikCheckout.handleChange}
-                    onBlur={formikCheckout.handleBlur}
-                    style={{
-                      borderColor:
-                        formikCheckout.touched.street &&
-                        formikCheckout.errors.street
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikCheckout.touched.street &&
-                    formikCheckout.errors.street && (
-                      <p className="error_of_input">
-                        {formikCheckout.errors.street}
-                      </p>
-                    )}
-                </div>
+                {/* Street input */}
+                {renderInput(
+                  formikCheckout,
+                  "Street",
+                  "street",
+                  "text",
+                  "EX: 1234 Sunset Blvd"
+                )}
 
-                {/* Postal code input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="postal-code">
-                    Postal Code
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="EX: 90026"
-                    name="postalCode"
-                    id="postal-code"
-                    value={formikCheckout.values.postalCode}
-                    onChange={formikCheckout.handleChange}
-                    onBlur={formikCheckout.handleBlur}
-                    style={{
-                      borderColor:
-                        formikCheckout.touched.postalCode &&
-                        formikCheckout.errors.postalCode
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikCheckout.touched.postalCode &&
-                    formikCheckout.errors.postalCode && (
-                      <p className="error_of_input">
-                        {formikCheckout.errors.postalCode}
-                      </p>
-                    )}
-                </div>
+                {/* Postal Code input */}
+                {renderInput(
+                  formikCheckout,
+                  "Postal Code",
+                  "postalCode",
+                  "text",
+                  "EX: 90026"
+                )}
               </div>
 
               <input
                 className="submit"
                 type="submit"
-                value={`Checkout (${shoppingCart.data?.numOfCartItems})`}
+                value={
+                  createOrder.status === "loading"
+                    ? "checking out..."
+                    : `Checkout (${shoppingCart.data?.numOfCartItems})`
+                }
               />
             </form>
           </div>
         </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (shoppingCart.status === "failed") {
-    return (
-      <>
-        <NavBar />
-        <WentWrong
-          srcImage={require("../../imgs/went wrong.png")}
-          title="Something Went Wrong."
-          paragraph="We couldn't retrieve your shopping cart.\nPlease try again later."
-          buttonContent="TRY AGAIN"
-          onClick={() => {
-            fetchShoppingCart({
-              url: `${baseUrl}/customer/shopping-cart`,
-              method: "get",
-              headers: {
-                Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-              },
-            });
-          }}
-        />
         <Footer />
       </>
     );

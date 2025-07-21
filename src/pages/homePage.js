@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 
 import NavBar from "../components/navBar/navBar";
 import Advertisements from "../components/advertisements/advertisements";
@@ -10,10 +9,6 @@ import Brands from "../components/brands/brands";
 import Footer from "../components/footer/footer";
 
 import useFetch from "../hooks/useFetch";
-import { fetchCategories } from "../redux/categoriesSlice";
-import { fetchBrands } from "../redux/brandsSlice";
-import baseUrl from "../config/config";
-import cookieManager from "../utils/cookieManager";
 import { productsFields } from "../utils/specificFields";
 import limitOfProducts from "../utils/limitOfProducts";
 
@@ -21,34 +16,31 @@ import limitOfProducts from "../utils/limitOfProducts";
 const productLimits = [8, 6, 6, 8, 10, 10];
 
 function HomePage() {
-  const categories = useSelector((state) => state.categories);
+  const { data: categories, fetchData: fetchCategories } = useFetch();
   const { data: products1, fetchData: fetchProducts1 } = useFetch();
   const { data: products2, fetchData: fetchProducts2 } = useFetch();
-  const brands = useSelector((state) => state.brands);
+  const { data: brands, fetchData: fetchBrands } = useFetch();
   const { data: products3, fetchData: fetchProducts3 } = useFetch();
   const { data: products4, fetchData: fetchProducts4 } = useFetch();
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
-    if (!categories.data) {
-      dispatch(
-        fetchCategories({
-          page: "1",
-          limit: "40",
-          fields: `
-            _id,
-            name,
-            image,
-          `,
-          sort: "createdAt",
-        })
-      );
-    }
+    fetchCategories({
+      url: `/categories`,
+      method: "get",
+      params: {
+        page: "1",
+        limit: "40",
+        fields: `
+        _id,
+        name,
+        image,
+      `,
+        sort: "createdAt",
+      },
+    });
 
     fetchProducts1({
-      url: `${baseUrl}/products`,
+      url: `/products`,
       method: "get",
       params: {
         page: "1",
@@ -56,13 +48,10 @@ function HomePage() {
         sort: `-sold`,
         fields: productsFields,
       },
-      headers: {
-        Authorization: JWTToken,
-      },
     });
 
     fetchProducts2({
-      url: `${baseUrl}/products`,
+      url: `/products`,
       method: "get",
       params: {
         page: "1",
@@ -70,41 +59,35 @@ function HomePage() {
         fields: productsFields,
         "discountPercent[lte]": 59,
       },
-      headers: {
-        Authorization: JWTToken,
+    });
+
+    fetchBrands({
+      url: `/brands`,
+      method: "get",
+      params: {
+        page: "1",
+        limit: "48",
+        fields: `
+        _id,
+        name,
+        image,
+      `,
+        sort: "createdAt",
       },
     });
 
-    if (!brands.data) {
-      dispatch(
-        fetchBrands({
-          page: "1",
-          limit: "48",
-          fields: `
-            _id,
-            name,
-            image,
-          `,
-          sort: "createdAt",
-        })
-      );
-    }
-
     fetchProducts3({
-      url: `${baseUrl}/products`,
+      url: `/products`,
       method: "get",
       params: {
         page: "1",
         limit: "20",
         fields: productsFields,
       },
-      headers: {
-        Authorization: JWTToken,
-      },
     });
 
     fetchProducts4({
-      url: `${baseUrl}/products`,
+      url: `/products`,
       method: "get",
       params: {
         page: "1",
@@ -112,18 +95,14 @@ function HomePage() {
         fields: productsFields,
         "price[lte]": 120,
       },
-      headers: {
-        Authorization: JWTToken,
-      },
     });
   }, [
-    categories.data,
+    fetchBrands,
+    fetchCategories,
     fetchProducts1,
     fetchProducts2,
-    brands.data,
     fetchProducts3,
     fetchProducts4,
-    dispatch,
   ]);
 
   return (

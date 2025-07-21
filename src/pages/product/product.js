@@ -12,8 +12,6 @@ import Products from "../../components/products/products";
 import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
-import cookieManager from "../../utils/cookieManager";
 import { HOME } from "../../routes";
 import { productsFields } from "../../utils/specificFields";
 import limitOfProducts from "../../utils/limitOfProducts";
@@ -29,13 +27,8 @@ function Product() {
   const { data: products, fetchData: fetchProducts } = useFetch();
 
   useEffect(() => {
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
     fetchProduct({
-      url: `${baseUrl}/products/${productId}`,
-      headers: {
-        Authorization: JWTToken,
-      },
+      url: `/products/${productId}`,
     });
   }, [fetchProduct, productId]);
 
@@ -60,10 +53,8 @@ function Product() {
         brand: product.data?.data.brand?._id,
       };
 
-      const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
       fetchProducts({
-        url: `${baseUrl}/products`,
+        url: `/products`,
         method: "get",
         params: {
           page: "1",
@@ -71,9 +62,6 @@ function Product() {
           sort: `-sold,-ratingsAverage`,
           fields: productsFields,
           ...theSameRelations,
-        },
-        headers: {
-          Authorization: JWTToken,
         },
       });
     }
@@ -131,7 +119,7 @@ function Product() {
     );
   }
 
-  if (product.status === "succeeded" && product.data?.status === "fail") {
+  if (product.status === "failed" && `${product.data.message}`.startsWith("No product")) {
     return (
       <>
         <NavBar />
@@ -158,10 +146,7 @@ function Product() {
           buttonContent="TRY AGAIN"
           onClick={() => {
             fetchProduct({
-              url: `${baseUrl}/products/${productId}`,
-              headers: {
-                Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-              },
+              url: `/products/${productId}`,
             });
           }}
         />

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
@@ -16,8 +16,9 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import "./navBar.css";
 
-import ScrollToTop from "../scrollToTop/scrollToTop";
+import { toggleTheme } from "../../redux/slices/themeSlice";
 import logOutFunction from "../../utils/logOutFunction";
+import ScrollToTop from "../scrollToTop/scrollToTop";
 import {
   HOME,
   LOGIN,
@@ -36,13 +37,10 @@ export default function NavBar() {
     transform: "translateY(-10px)",
   });
 
-  const [darkMode, setDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem("darkMode");
-    return savedMode === "true" || false;
-  });
-
-  const auth = useSelector((state) => state.cookies.JWTToken);
   const dispatch = useDispatch();
+  const themeMode = useSelector((state) => state.theme.mode);
+  const auth = useSelector((state) => state.cookies.JWTToken);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { searchValue } = useParams();
@@ -63,27 +61,12 @@ export default function NavBar() {
     }
   }, [menuVisible]);
 
-  useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      darkMode ? "dark" : "light"
-    );
-  }, [darkMode]);
-
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode((prevMode) => {
-      const newMode = !prevMode;
-      localStorage.setItem("darkMode", newMode);
-      return newMode;
-    });
-  };
-
   const logOut = () => {
-    logOutFunction(dispatch, navigate);
+    logOutFunction();
   };
 
   const handleSearch = (event) => {
@@ -137,8 +120,15 @@ export default function NavBar() {
           {auth ? (
             <div className="chooses">
               <div className="buttons">
-                <button className="button" onClick={toggleDarkMode}>
-                  {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                <button
+                  className="button"
+                  onClick={() => dispatch(toggleTheme())}
+                >
+                  {themeMode === "light" ? (
+                    <Brightness4Icon />
+                  ) : (
+                    <Brightness7Icon />
+                  )}
                 </button>
                 <button className="button">
                   <ScrollToTop>
@@ -217,14 +207,14 @@ export default function NavBar() {
                       </ScrollToTop>
                     </li>
                     <li>
-                      <Link onClick={toggleDarkMode}>
-                        {darkMode ? (
+                      <Link onClick={() => dispatch(toggleTheme())}>
+                        {themeMode === "light" ? (
                           <>
-                            <Brightness7Icon /> light mode
+                            <Brightness4Icon /> dark mode
                           </>
                         ) : (
                           <>
-                            <Brightness4Icon /> dark mode
+                            <Brightness7Icon /> light mode
                           </>
                         )}
                       </Link>
@@ -241,8 +231,15 @@ export default function NavBar() {
           ) : (
             <div className="logIn_signIn">
               <div className="buttons">
-                <Link className="button" onClick={toggleDarkMode}>
-                  {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                <Link
+                  className="button"
+                  onClick={() => dispatch(toggleTheme())}
+                >
+                  {themeMode === "light" ? (
+                    <Brightness4Icon />
+                  ) : (
+                    <Brightness7Icon />
+                  )}
                 </Link>
                 <ScrollToTop>
                   <Link to={LOGIN} className="button">
@@ -275,14 +272,14 @@ export default function NavBar() {
                       </ScrollToTop>
                     </li>
                     <li>
-                      <Link onClick={toggleDarkMode}>
-                        {darkMode ? (
+                      <Link onClick={() => dispatch(toggleTheme())}>
+                        {themeMode === "light" ? (
                           <>
-                            <Brightness7Icon /> light mode
+                            <Brightness4Icon /> dark mode
                           </>
                         ) : (
                           <>
-                            <Brightness4Icon /> dark mode
+                            <Brightness7Icon /> light mode
                           </>
                         )}
                       </Link>

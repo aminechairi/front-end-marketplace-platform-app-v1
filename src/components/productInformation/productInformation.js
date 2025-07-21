@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import "./productInformation.css";
 
@@ -12,7 +13,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { currency } from "../../constens/constens";
 import { findSmallestPriceSize } from "../../utils/findSmallestPriceSize";
@@ -94,23 +94,18 @@ function ProductInformation({ productInfo }) {
   };
 
   const addProductToShoppingCart = () => {
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
     if (cookieManager("get", "JWTToken")) {
       if (cart.status !== "loading") {
         addProductToCart({
-          url: `${baseUrl}/customer/shopping-cart`,
+          url: `/customer/shopping-cart`,
           method: "post",
           data: {
             productId: productInfo._id,
             quantity,
             size: sizeInfo.size,
           },
-          headers: {
-            Authorization: JWTToken,
-          },
         });
-      }      
+      }
     } else {
       navigate(LOGIN);
     }
@@ -137,6 +132,14 @@ function ProductInformation({ productInfo }) {
   useEffect(() => {
     setQuantity(sizeInfo.quantity === 0 ? 0 : 1);
   }, [sizeInfo.quantity]);
+
+  useEffect(() => {
+    if (cart.status === "succeeded") {
+      toast.success(cart.data?.message);
+    } else if (cart.status === "failed") {
+      toast.error(cart.data?.message || "Something went wrong!");
+    }
+  }, [cart.data?.message, cart.status]);
 
   return (
     <div className="product_information">
@@ -281,10 +284,6 @@ function ProductInformation({ productInfo }) {
             );
           })}
         </div>
-      ) : null}
-
-      {cart.data?.status === "fail" ? (
-        <p className="error_message">{cart.data?.message}</p>
       ) : null}
 
       <div className="q_a_s">

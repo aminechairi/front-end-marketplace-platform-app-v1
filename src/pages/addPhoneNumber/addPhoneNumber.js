@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import axios from "axios";
 import * as Yup from "yup";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
 import { app } from "../../config/firebaseConfig";
+import API from "../../config/api";
 
 import "./addPhoneNumber.css";
+import "react-phone-input-2/lib/style.css";
 
 import NavBar from "../../components/navBar/navBar";
+import renderInput from "../../utils/renderInput";
 import LinearProgress from "@mui/material/LinearProgress";
 import PhoneInput from "react-phone-input-2";
 import Footer from "../../components/footer/footer";
-
-// Custom hooks and utilities
-import baseUrl from "../../config/config";
-import cookieManager from "../../utils/cookieManager";
 
 // Helper function to map Firebase error codes to user-friendly messages
 function getFirebaseErrorMessage(error) {
@@ -48,21 +47,10 @@ function getFirebaseErrorMessage(error) {
   return "An unexpected error occurred. Please try again.";
 }
 
-const phoneNumberValidationSchema = Yup.object().shape({
-  phoneNumber: Yup.string().required("Phone number is required."),
-});
-
-const verificationCodeValidationSchema = Yup.object().shape({
-  verificationCode: Yup.string()
-    .required("Verification Code is required.")
-    .max(6, "Verification Code must be 6 digits.")
-    .min(6, "Verification Code must be 6 digits.")
-});
-
 function AddPhoneNumber() {
   const [isLoading, setIsLoading] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState(null);
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isCodeConfirmed, setIsCodeConfirmed] = useState(false);
   const [idToken, setIdToken] = useState(null);
   const [isPhoneNumberVerified, setIsPhoneNumberVerified] = useState(false);
@@ -81,32 +69,28 @@ function AddPhoneNumber() {
 
   const formikPhoneNumber = useFormik({
     initialValues: { phoneNumber: "" },
-    validationSchema: phoneNumberValidationSchema,
+    validationSchema: Yup.object().shape({
+      phoneNumber: Yup.string().required("Phone number is required."),
+    }),
     onSubmit: async ({ phoneNumber }) => {
-      setError(null);
+      setErrorMessage(null);
       setIsLoading(true);
 
       const fullPhoneNumber = `+${phoneNumber}`;
-      const token = cookieManager("get", "JWTToken");
 
       try {
         // Step 1: Fetch existing phone numbers
-        const { data } = await axios.get(`${baseUrl}/customer/phone-numbers`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const { data } = await API.get(`/customer/phone-numbers`);
 
         const existingNumbers = data?.data || [];
 
         // Step 2: Check if phone number already exists
         const alreadyExists = existingNumbers.some(
-          (item) => item.phone_number === fullPhoneNumber
+          (item) => item.phoneNumber === fullPhoneNumber
         );
 
         if (alreadyExists) {
-          setError("This phone number already exists in your account.");
+          setErrorMessage("This phone number already exists in your account.");
           return;
         }
 
@@ -117,7 +101,7 @@ function AddPhoneNumber() {
         setConfirmationResult(confirmation);
       } catch (err) {
         const isFirebaseError = err?.code?.startsWith("auth/");
-        setError(
+        setErrorMessage(
           isFirebaseError
             ? getFirebaseErrorMessage(err)
             : "An error occurred while adding the phone number. Please try again."
@@ -125,14 +109,18 @@ function AddPhoneNumber() {
       } finally {
         setIsLoading(false);
       }
-    }
+    },
   });
 
   const formikVerificationCode = useFormik({
     initialValues: { verificationCode: "" },
-    validationSchema: verificationCodeValidationSchema,
+    validationSchema: Yup.object().shape({
+      verificationCode: Yup.string()
+        .required("Verification Code is required.")
+        .length(6, "Verification code must be exactly 6 digits."),
+    }),
     onSubmit: async ({ verificationCode }) => {
-      setError(null);
+      setErrorMessage(null);
       setIsLoading(true);
 
       try {
@@ -147,21 +135,14 @@ function AddPhoneNumber() {
         }
 
         // Step 2: Submit the verified phone number to your backend
-        await axios.post(
-          `${baseUrl}/customer/phone-numbers`,
-          { idToken: finalToken },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-            },
-          }
-        );
+        await API.post(`/customer/phone-numbers`, {
+          idToken: finalToken,
+        });
 
         setIsPhoneNumberVerified(true);
       } catch (err) {
         const isFirebaseError = err?.code?.startsWith("auth/");
-        setError(
+        setErrorMessage(
           isFirebaseError
             ? getFirebaseErrorMessage(err)
             : "An error occurred while adding the phone number. Please try again."
@@ -169,7 +150,7 @@ function AddPhoneNumber() {
       } finally {
         setIsLoading(false);
       }
-    }
+    },
   });
 
   if (isPhoneNumberVerified) {
@@ -218,14 +199,14 @@ function AddPhoneNumber() {
             )}
 
             {/* Error display */}
-            {error && (
+            {errorMessage && (
               <div className="alert_error">
-                <p>{error}</p>
+                <p>{errorMessage}</p>
               </div>
             )}
 
             {/* Success message after sending verification code */}
-            {confirmationResult && !error && !isLoading && (
+            {confirmationResult && !errorMessage && !isLoading && (
               <div className="alert_success">
                 <p>Verification code sent to your phone number. Please enter the code below to verify.</p>
               </div>
@@ -251,38 +232,31 @@ function AddPhoneNumber() {
                     <p className="error_of_input">{formikPhoneNumber.errors.phoneNumber}</p>
                   )}
                 </div>
-                <input className="submit" type="submit" value="Send Verification Code" />
+
+                <input
+                  className="submit"
+                  type="submit"
+                  value={isLoading ? "Sending Code..." : "Send Verification Code"}
+                  disabled={isLoading}
+                />
               </form>
             ) : (
               /* Verification code form */
               <form className="form" onSubmit={formikVerificationCode.handleSubmit}>
-                <div className="ab_inputs">
-                  <label htmlFor="verificationCode">Verification Code</label>
-                  <input
-                    className="input"
-                    type="number"
-                    placeholder="123456"
-                    name="verificationCode"
-                    id="verificationCode"
-                    value={formikVerificationCode.values.verificationCode}
-                    onChange={formikVerificationCode.handleChange}
-                    onBlur={formikVerificationCode.handleBlur}
-                    style={{
-                      borderColor:
-                        formikVerificationCode.touched.verificationCode &&
-                        formikVerificationCode.errors.verificationCode
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formikVerificationCode.touched.verificationCode &&
-                    formikVerificationCode.errors.verificationCode && (
-                      <p className="error_of_input">
-                        {formikVerificationCode.errors.verificationCode}
-                      </p>
-                    )}
-                </div>
-                <input className="submit" type="submit" value="Verify Phone Number" />
+                {renderInput(
+                  formikVerificationCode,
+                  "Verification Code",
+                  "verificationCode",
+                  "text",
+                  "Verification Code"
+                )}
+
+                <input
+                  className="submit"
+                  type="submit"
+                  value={isLoading ? "Verifying..." : "Verify Phone Number"}
+                  disabled={isLoading}
+                />
               </form>
             )}
           </div>

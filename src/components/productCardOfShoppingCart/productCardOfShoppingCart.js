@@ -18,7 +18,7 @@ export default function ProductCardOfShoppingCart({
   color,
   price,
   totalPrice,
-  deleteItem,
+  removeItem,
   updateItemQuantity,
 }) {
   const [quantityControl, setQuantityControl] = useState(itemQuantity);
@@ -118,7 +118,7 @@ export default function ProductCardOfShoppingCart({
       <section className="product_action_section">
         <div
           className="delete_product"
-          onClick={() => deleteItem({ productId: _id, size })}
+          onClick={() => removeItem({ productId: _id, size })}
         >
           <DeleteIcon className="delete_icon" />
         </div>

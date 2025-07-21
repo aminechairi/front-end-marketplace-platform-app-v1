@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import "./productsCard.css";
-
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import StarIcon from "@mui/icons-material/Star";
@@ -9,7 +10,6 @@ import FavoriteButton from "../favoriteButton/favoriteButton";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import useFetch from "../../hooks/useFetch";
-import baseUrl from "../../config/config";
 import cookieManager from "../../utils/cookieManager";
 import { currency } from "../../constens/constens";
 import { LOGIN } from "./../../routes";
@@ -32,20 +32,15 @@ export default function ProductsCard({
   const navigate = useNavigate();
 
   const addProductToShoppingCart = () => {
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
     if (cookieManager("get", "JWTToken")) {
       if (cart.status !== "loading") {
         addProductToCart({
-          url: `${baseUrl}/customer/shopping-cart`,
+          url: `/customer/shopping-cart`,
           method: "post",
           data: {
             productId: _id,
             quantity: 1,
             size: size,
-          },
-          headers: {
-            Authorization: JWTToken,
           },
         });
       }      
@@ -53,6 +48,14 @@ export default function ProductsCard({
       navigate(LOGIN);
     }
   }
+
+  useEffect(() => {
+    if (cart.status === "succeeded") {
+      toast.success(cart.data?.message);
+    } else if (cart.status === "failed") {
+      toast.error(cart.data?.message || "Something went wrong!");
+    }
+  }, [cart.data?.message, cart.status]);
 
   return (
     <div className="products_card">

@@ -231,27 +231,3 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-.ab_popup .popup .checkout_form .flag-dropdown {
-  border: none;
-}
-.ab_popup .popup .checkout_form .selected-flag {
-  border: 1px solid #3867df79;
-  background-color: var(--backgrounds-color-1);
-  color: var(--text-color);
-}
-.ab_popup .popup .checkout_form .country-list {
-  background-color: var(--backgrounds-color-1);
-}
-.ab_popup .popup .checkout_form .country {
-  color: var(--text-color);
-}
-.ab_popup .popup .checkout_form .country:hover {
-  background-color: var(--backgrounds-color-2);
-}
-.ab_popup .popup .checkout_form .highlight {
-  color: var(--text-color);
-  background-color: var(--backgrounds-color-1);
-}
-.ab_popup .popup .checkout_form .dial-code {
-  color: var(--imputs-placeholder);
-}

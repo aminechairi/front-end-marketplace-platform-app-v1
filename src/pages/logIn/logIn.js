@@ -1,31 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import API from "../../config/api";
+import { setCookie } from "../../redux/slices/cookiesSlice";
+import { HOME, FORGOT_PASSWORD } from "../../routes";
 
 import "./logIn.css";
 import NavBar from "../../components/navBar/navBar";
+import renderInput from "../../utils/renderInput";
 import Footer from "../../components/footer/footer";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import { authLogIn } from "../../redux/authSlice";
-import { setCookie } from "../../redux/cookiesSlice";
-import { HOME, FORGOT_PASSWORD } from "../../routes";
-
+// Validation schema
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required("Email is required.")
-    .email("Please provide a valid email address."),
+    .email("Please enter a valid email."),
   password: Yup.string().required("Password is required."),
 });
 
-function LogIn() {
-  const [oneSubmit, setOneSubmit] = useState(false);
-
-  const logIn = useSelector((state) => state.auth);
+const LogIn = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -33,21 +33,22 @@ function LogIn() {
       email: "",
       password: "",
     },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      dispatch(authLogIn(values));
-      setOneSubmit(true);
+    validationSchema,
+    onSubmit: async (values) => {
+      setIsLoading(true);
+      setErrorMessage(null);
+      try {
+        const res = await API.post("/auth/login", values);
+        dispatch(setCookie({ name: "JWTToken", value: res.data?.token, days: 90 }));
+        navigate(HOME);
+      } catch (err) {
+        const errorMsg = err.response?.data?.message || "Something went wrong. Please try again.";
+        setErrorMessage(errorMsg);
+      } finally {
+        setIsLoading(false);
+      }
     },
   });
-
-  useEffect(() => {
-    if (logIn.data?.token) {
-      dispatch(
-        setCookie({ name: "JWTToken", value: logIn.data?.token, days: 90 })
-      );
-      navigate(HOME);
-    }
-  }, [dispatch, logIn.data?.token, navigate]);
 
   return (
     <>
@@ -55,80 +56,34 @@ function LogIn() {
       <div className="forms log_in">
         <div className="container">
           <div className="ab">
-            {logIn.status === "loading" ? (
+            {isLoading && (
               <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
-            ) : null}
+            )}
 
-            <h1 className="title">log in</h1>
+            <h1 className="title">Log In</h1>
 
-            {logIn.data?.message &&
-            (logIn.data?.status === "fail" || logIn.data?.status === "error") &&
-            logIn.status === "succeeded" &&
-            oneSubmit === true ? (
+            {errorMessage && !isLoading && (
               <div className="alert_error">
-                <p>{logIn.data?.message}</p>
+                <p>{errorMessage}</p>
               </div>
-            ) : null}
+            )}
 
             <form className="form" onSubmit={formik.handleSubmit}>
-              {/* Email input */}
-              <div className="ab_inputs">
-                <label className="label" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  className="input"
-                  type="email"
-                  placeholder="Email"
-                  name="email"
-                  id="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      formik.touched.email && formik.errors.email
-                        ? "var(--color-of-error)"
-                        : null,
-                  }}
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <p className="error_of_input">{formik.errors.email}</p>
-                ) : null}
-              </div>
+              {renderInput(formik, "Email", "email", "email", "Email")}
+              {renderInput(formik, "Password", "password", "password", "Password")}
 
-              {/* Password input */}
-              <div className="ab_inputs">
-                <label className="label" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  className="input"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  id="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  style={{
-                    borderColor:
-                      formik.touched.password && formik.errors.password
-                        ? "var(--color-of-error)"
-                        : null,
-                  }}
-                />
-                {formik.touched.password && formik.errors.password ? (
-                  <p className="error_of_input">{formik.errors.password}</p>
-                ) : null}
-              </div>
-
-              <input className="submit" type="submit" value="Log in" />
+              <input
+                className="submit"
+                type="submit"
+                value={isLoading ? "Logging in..." : "Log In"}
+                disabled={isLoading}
+              />
             </form>
+
             <Link to={FORGOT_PASSWORD}>
-              <button className="link">forgot password</button>
+              <button className="link">Forgot Password?</button>
             </Link>
           </div>
         </div>
@@ -136,6 +91,6 @@ function LogIn() {
       <Footer />
     </>
   );
-}
+};
 
 export default LogIn;

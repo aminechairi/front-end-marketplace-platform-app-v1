@@ -1,51 +1,80 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSelector, useDispatch } from "react-redux";
+
+import API from "../../config/api";
+import { HOME } from "../../routes";
 
 import "./emailVerification.css";
 import NavBar from "../../components/navBar/navBar";
-import Footer from "../../components/footer/footer";
+import renderInput from "../../utils/renderInput";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import {
-  emailVerification,
-  verifyEmail,
-} from "../../redux/emailVerificationSlice";
-import { HOME } from "../../routes";
-
-const validationSchema = Yup.object().shape({
-  emailVerificationCode: Yup.string().required(
-    "Email verification code is required."
-  ),
-});
+import Footer from "../../components/footer/footer";
 
 function EmailVerification() {
-  const emailVrf = useSelector((state) => state.emailVerification);
-  const dispatch = useDispatch();
+  const [responseMessage, setResponseMessage] = useState(null);
+  const [currentStep, setCurrentStep] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
 
+  // Fetch code when component mounts
   useEffect(() => {
-    dispatch(emailVerification());
-  }, [dispatch]);
+    handleRequestCode();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Formik form setup
   const formik = useFormik({
     initialValues: {
       emailVerificationCode: "",
     },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      dispatch(verifyEmail(values));
-    },
+    validationSchema: Yup.object().shape({
+      emailVerificationCode: Yup.string()
+        .required("Verification code is required.")
+        .length(6, "Verification code must be exactly 6 digits."),
+    }),
+    onSubmit: handleVerifyCode,
   });
 
-  useEffect(() => {
-    if (emailVrf.data?.status === "Verified") {
-      navigate(HOME);
+  // Request code from backend
+  async function handleRequestCode() {
+    setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      const res = await API.get("/customer/verify-email");
+      if (res.data.status === "Verified") {
+        navigate(HOME);
+      } else {
+        setResponseMessage(res.data.message);
+        setCurrentStep(true);
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || "Something went wrong. Please try again.";
+      setErrorMessage(msg);
+    } finally {
+      setIsLoading(false);
     }
-  }, [emailVrf.data?.status, navigate]);
+  }
+
+  // Submit verification code
+  async function handleVerifyCode(values) {
+    setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      const res = await API.post("/customer/verify-email", values);
+      if (res.data.status === "Verified") {
+        navigate(HOME);
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || "Something went wrong. Please try again.";
+      setErrorMessage(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <>
@@ -53,67 +82,52 @@ function EmailVerification() {
       <div className="forms email_verification">
         <div className="container">
           <div className="ab">
-            {emailVrf.status === "loading" ? (
+            {isLoading && (
               <div className="form_loading">
                 <LinearProgress color="inherit" />
               </div>
-            ) : null}
+            )}
 
-            <h1 className="title">email Verification</h1>
+            <h1 className="title">Email Verification</h1>
 
-            {emailVrf.data?.message &&
-            (emailVrf.data?.status === "fail" ||
-              emailVrf.data?.status === "error") &&
-            emailVrf.status === "succeeded" ? (
+            {errorMessage && !isLoading && (
               <div className="alert_error">
-                <p>{emailVrf.data?.message}</p>
+                <p>{errorMessage}</p>
               </div>
-            ) : null}
+            )}
 
-            {emailVrf.data?.message &&
-            (emailVrf.data?.status === "Code_sent" ||
-              emailVrf.data?.status === "Verified") &&
-            emailVrf.status === "succeeded" ? (
+            {responseMessage && !isLoading && !errorMessage && (
               <div className="alert_success">
-                <p>{emailVrf.data?.message}</p>
+                <p>{responseMessage}</p>
               </div>
-            ) : null}
+            )}
 
-            {emailVrf.data?.status !== "Verified" ? (
+            {!currentStep  ? (
+              <button
+                className="submit"
+                onClick={handleRequestCode}
+                disabled={isLoading}
+              >
+                {isLoading ? "Sending Code..." : "Send Verification Code"}
+              </button>
+            ) : (
               <form className="form" onSubmit={formik.handleSubmit}>
-                {/* Email verification code input */}
-                <div className="ab_inputs">
-                  <label className="label" htmlFor="emailVerificationCode">
-                    email verification code
-                  </label>
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="Email verification code"
-                    name="emailVerificationCode"
-                    id="emailVerificationCode"
-                    value={formik.values.emailVerificationCode}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    style={{
-                      borderColor:
-                        formik.touched.emailVerificationCode &&
-                        formik.errors.emailVerificationCode
-                          ? "var(--color-of-error)"
-                          : null,
-                    }}
-                  />
-                  {formik.touched.emailVerificationCode &&
-                  formik.errors.emailVerificationCode ? (
-                    <p className="error_of_input">
-                      {formik.errors.emailVerificationCode}
-                    </p>
-                  ) : null}
-                </div>
+                {renderInput(
+                  formik,
+                  "Verification Code",
+                  "emailVerificationCode",
+                  "text",
+                  "Verification code"
+                )}
 
-                <input className="submit" type="submit" value="erify Email Address" />
+                <input
+                  className="submit"
+                  type="submit"
+                  value={isLoading ? "Verifying..." : "Verify Email"}
+                  disabled={isLoading}
+                />
               </form>
-            ) : null}
+            )}
           </div>
         </div>
       </div>

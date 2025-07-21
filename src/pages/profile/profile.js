@@ -7,21 +7,14 @@ import Footer from "../../components/footer/footer";
 
 import useFetch from "../../hooks/useFetch";
 import { useEffect } from "react";
-import baseUrl from "../../config/config";
-import cookieManager from "../../utils/cookieManager";
 
 export default function Profile() {
   const { data: userData, fetchData: fetchUserData } = useFetch();
 
   useEffect(() => {
-    const JWTToken = `Bearer ${cookieManager("get", "JWTToken")}`;
-
     fetchUserData({
-      url: `${baseUrl}/customer`,
+      url: `/customer`,
       method: "get",
-      headers: {
-        Authorization: JWTToken,
-      },
     });
   }, [fetchUserData]);
 
@@ -137,11 +130,8 @@ export default function Profile() {
           buttonContent="TRY AGAIN"
           onClick={() =>
             fetchUserData({
-              url: `${baseUrl}/customer`,
+              url: `/customer`,
               method: "get",
-              headers: {
-                Authorization: `Bearer ${cookieManager("get", "JWTToken")}`,
-              },
             })
           }
         />
