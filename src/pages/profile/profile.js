@@ -11,6 +11,8 @@ import { useEffect } from "react";
 export default function Profile() {
   const { data: userData, fetchData: fetchUserData } = useFetch();
 
+  const phoneNumbers = userData.data?.data?.phoneNumbers || [];
+
   useEffect(() => {
     fetchUserData({
       url: `/customer`,
@@ -77,9 +79,9 @@ export default function Profile() {
                   <div className="info_item">
                     <div className="info_content">
                       <label>Phone Number</label>
-                      <p style={{
-                        color: !userData.data?.data.phoneNumber ? "var(--color-of-error)" : ""
-                      }}>{userData.data?.data.phoneNumber || "Phone number not found."}</p>
+                      {phoneNumbers.length > 0 && (
+                        <p>{phoneNumbers[0].phoneNumber}</p>
+                      )}
                     </div>
                   </div>
                 </div>
