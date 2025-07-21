@@ -79,8 +79,12 @@ export default function Profile() {
                   <div className="info_item">
                     <div className="info_content">
                       <label>Phone Number</label>
-                      {phoneNumbers.length > 0 && (
+                      {phoneNumbers.length > 0 ? (
                         <p>{phoneNumbers[0].phoneNumber}</p>
+                      ) : (
+                        <p style={{ color: "var(--color-of-error)" }}>
+                          +201000000000 (Not Set)
+                        </p>
                       )}
                     </div>
                   </div>
