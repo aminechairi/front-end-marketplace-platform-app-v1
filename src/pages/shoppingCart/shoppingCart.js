@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { loadStripe } from "@stripe/stripe-js";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,6 +13,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import "./shoppingCart.css";
 import NavBar from "../../components/navBar/navBar";
 import renderInput from "../../utils/renderInput";
+import SuccessConfetti from "../../components/successConfetti/successConfetti";
 import ProductCardOfShoppingCart from "../../components/productCardOfShoppingCart/productCardOfShoppingCart";
 import ShoppingCartSkeleton from "./shoppingCartSkeleton";
 import Footer from "../../components/footer/footer";
@@ -129,6 +131,13 @@ const ShoppingCart = () => {
       });
     },
   });
+
+  // Success toast for apply coupon successfully
+  useEffect(() => {
+    if (`${shoppingCart.data?.message}`.startsWith("Price discount applied")) {
+      toast.success(shoppingCart.data?.message);
+    }
+  }, [shoppingCart.data?.message]);
 
   // Remove item from shopping cart
   const removeItem = (data) => {
@@ -326,6 +335,11 @@ const ShoppingCart = () => {
     return (
       <>
         <NavBar />
+        {/* Success confetti */}
+        {`${shoppingCart.data?.message}`.startsWith(
+          "Price discount applied"
+        ) && <SuccessConfetti />}
+
         {/* Shopping cart */}
         <div className="shopping_cart">
           <div className="container">
